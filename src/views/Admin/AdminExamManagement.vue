@@ -1,27 +1,33 @@
 <template>
-<div>
-  <div class="container">
-    <div class="wrapper">
-      <CustomAdminBtn type="info" icon="fas fa-plus" @onClick="handleCreateExam" >
-       <span> Create an Exam </span>
-      </CustomAdminBtn>
-    </div>
-    <h3 class="title">Upcoming Exams</h3>
-  <div class="pack_container">
-    <div v-for="exam in upcomingExam" :key="exam.id"  class="card" >
-      <ExamCard  @examCardClick="onUpcomingExamCardClick" :exam="exam"/>
-    </div>
+  <div v-if="currentCompState === 'examManagement'">
+    <div class="container">
+      <div class="wrapper">
+        <CustomAdminBtn type="info" icon="fas fa-plus" @onClick="handleCreateExam" >
+        <span> Create an Exam </span>
+        </CustomAdminBtn>
+      </div>
+      <h3 class="title">Upcoming Exams</h3>
+    <div class="pack_container">
+      <div v-for="exam in upcomingExam" :key="exam.id"  class="card" >
+        <ExamCard  @examCardClick="onUpcomingExamCardClick" :exam="exam"/>
+      </div>
+      </div>
     </div>
   </div>
-</div>
+  <span v-else-if="currentCompState === 'isExamManageCreate'">
+    <AdminExamComp />
+  </span>
+
+  <span v-else-if="currentCompState === 'isExamManageEdit'">
+    <AdminExamComp />
+  </span>
+
 </template>
 <script>
 import { ref } from '@vue/reactivity'
-import getExamList from '@/api/examPackApi'
-import { onMounted } from '@vue/runtime-core'
-import { useRoute, useRouter } from 'vue-router'
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue'
 import ExamCard from '../../components/Exam Management/ExamCard.vue'
+import AdminExamComp from '../../components/Exam Management/AdminExamComp.vue'
 
 export default {
   name: "AdminExamManagement",
@@ -30,10 +36,11 @@ export default {
   },
   components: {
     CustomAdminBtn,
-    ExamCard
+    ExamCard,
+    AdminExamComp
 },
   setup() {
-      const upcomingExam = ref([
+    const upcomingExam = ref([
         {
           id: 1, 
           title: 'Chemistry 1st Paper',
@@ -52,39 +59,24 @@ export default {
           date: '10:30 AM | Sunday, 19/10/2021'
         },
       ])
-      
-      
-      const isExam = ref(false)
-      const route = useRoute();
-      const router = useRouter();
      
+    const currentCompState = ref('examManagement') // examManagement | isExamManageEdit | isExamManageCreate
+    const handleCreateExam = () => {
+      currentCompState.value = 'isExamManageCreate';
+    }
 
-      const onUpcomingExamCardClick = (exam) => {
-        // console.log('clicked', examPack)
-        
-        alert(JSON.stringify(exam))
-        
-      }
+    const onUpcomingExamCardClick = (exam) => {
+      // console.log('clicked', examPack)
+      alert(JSON.stringify(exam))
+    }
 
-      const {examList, error, loadExamList} = getExamList();
-      const url = "http://www.exam.poc.ac/api/list_examPack"
-      function apiFetch(){
-          fetch(url)
-          .then(res => res.json())
-          .then(data => {
-              console.log(data)
-          })
-      }
-      // apiFetch();
-      // onMounted(() => {
 
-      // })
-
-      return {
-        upcomingExam,
-        isExam,
-        onUpcomingExamCardClick
-      }
+    return {
+      upcomingExam,
+      onUpcomingExamCardClick,
+      handleCreateExam,
+      currentCompState
+    }
   }
 }
 

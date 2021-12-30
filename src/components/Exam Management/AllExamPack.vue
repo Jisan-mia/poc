@@ -2,7 +2,7 @@
 <div>
   <div class="container">
     <div class="wrapper">
-      <CustomAdminBtn v-if="isAdmin"  type="info" icon="fas fa-plus" @onClick="handleAddExamPack" >
+      <CustomAdminBtn v-if="isAdmin"  type="info" icon="fas fa-plus" @onClick="this.$emit('handleAddExamPack')" >
        <span> Add Exam Pack </span>
       </CustomAdminBtn>
     </div>
@@ -18,7 +18,6 @@
 import { ref } from '@vue/reactivity'
 import getExamList from '../../api/examPackApi'
 import ExamPackCard from '../../components/Exam Management/ExamPackCard.vue'
-import { onMounted } from '@vue/runtime-core'
 import { useRoute, useRouter } from 'vue-router'
 import CustomAdminBtn from '../ui/CustomAdminBtn.vue'
 
@@ -31,7 +30,7 @@ export default {
     ExamPackCard,
     CustomAdminBtn
 },
-  setup() {
+  setup(props, ctx) {
       const examPacks = ref([
         {
           id: 1, 
@@ -75,11 +74,7 @@ export default {
 
       const onExamPackClick = (examPack) => {
         // console.log('clicked', examPack)
-        if(isAdmin.value) {
-          alert(JSON.stringify(examPack))
-        } else {
-          router.push(`/exam-pack/pack-title`)
-        }
+        ctx.emit('examPackClick', examPack)
       }
 
       const {examList, error, loadExamList} = getExamList();

@@ -1,20 +1,19 @@
 <template>
-  <h1>Admin Dashboard</h1>
+  <h1>admin exam pack component</h1>
 </template>
 
 <script>
 export default {
-  name: 'AdminDashboard',
+  name: 'AdminExamPackComp',
   setup() {
 
     return {
-        
+      
     }
   }
-
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
