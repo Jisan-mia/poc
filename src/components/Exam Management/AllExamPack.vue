@@ -1,15 +1,16 @@
 <template>
 <div>
   <div class="container">
-    <button @click="handleAddExamPack" class="primary-btn flex-btn">
-      <i class="fas fa-plus"></i> <span> Add Exam Pack </span>
-    </button>
+    <div class="wrapper">
+      <CustomAdminBtn v-if="isAdmin"  type="info" icon="fas fa-plus" @onClick="handleAddExamPack" >
+       <span> Add Exam Pack </span>
+      </CustomAdminBtn>
+    </div>
   <div class="pack_container">
     <div v-for="examPack in examPacks" :key="examPack.id"  class="card" >
-      <ExamPackCard @unpack-exam="onUnpackExam" :examPack="examPack"/>
+      <ExamPackCard :outline="isAdmin" @examPackClick="onExamPackClick" :examPack="examPack"/>
     </div>
     </div>
-
   </div>
 </div>
 </template>
@@ -18,13 +19,18 @@ import { ref } from '@vue/reactivity'
 import getExamList from '../../api/examPackApi'
 import ExamPackCard from '../../components/Exam Management/ExamPackCard.vue'
 import { onMounted } from '@vue/runtime-core'
+import { useRoute, useRouter } from 'vue-router'
+import CustomAdminBtn from '../ui/CustomAdminBtn.vue'
 
 export default {
   name: "AllExamPack",
-  components: {
-    ExamPackCard
-    
+  props: {
+
   },
+  components: {
+    ExamPackCard,
+    CustomAdminBtn
+},
   setup() {
       const examPacks = ref([
         {
@@ -61,8 +67,19 @@ export default {
           batch: '2021'
         }
       ])
-      const onUnpackExam = (examPack) => {
+      
+      const isAdmin = ref(false);
+      const route = useRoute();
+      const router = useRouter();
+      isAdmin.value = route.path.includes('admin');
+
+      const onExamPackClick = (examPack) => {
         // console.log('clicked', examPack)
+        if(isAdmin.value) {
+          alert(JSON.stringify(examPack))
+        } else {
+          router.push(`/exam-pack/pack-title`)
+        }
       }
 
       const {examList, error, loadExamList} = getExamList();
@@ -80,7 +97,9 @@ export default {
       // })
 
       return {
-        examPacks
+        examPacks,
+        isAdmin,
+        onExamPackClick
       }
   }
 }
@@ -95,6 +114,9 @@ export default {
   flex-direction: column;
   gap: 1.5rem;
   align-items: flex-start;
+}
+.wrapper {
+  max-width: 380px;
 }
 
 .pack_container{

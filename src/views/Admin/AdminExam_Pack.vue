@@ -1,10 +1,14 @@
 <template>
-  <h1> okay</h1>
+  <AllExamPack />
 </template>
 
 <script>
+import AllExamPack from '../../components/Exam Management/AllExamPack.vue'
 export default {
-
+  components: {
+    AllExamPack
+  },
+  name: 'Exam_Pack'
 }
 </script>
 

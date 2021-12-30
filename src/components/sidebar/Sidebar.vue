@@ -34,7 +34,7 @@ export default {
       <SidebarLink to='/admin/student-management' icon="fas fa-user-circle">Student Management</SidebarLink>
       <SidebarLink to="/admin/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
       <!-- <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink> -->
-      <SidebarLink to="" icon="fas fa-cog">
+      <SidebarLink to="/admin/user-management" icon="fas fa-cog">
         <span>Settings</span>
         <div class="nested">
           <SidebarLink :isNested="true" to="/admin/user-management" icon="fas fa-circle">

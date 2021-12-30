@@ -1,28 +1,29 @@
 <template>
  
-    <div class="img__container" :class="[outline ? 'notOutlined' : 'outlined']">
+    <div class="img__container">
       <img src="/images/placeholderImg.svg" alt="">
     </div>
     <div class="text">
-      <h3 @click="$emit('examPackClick', examPack)"> {{examPack.title}} </h3> 
+      <h3 @click="$emit('examCardClick', exam)"> {{exam.title}} </h3> 
 
       <p>
-        Batch {{examPack.batch}} 
+        Batch {{exam.date}} 
       </p>
     </div>  
 </template>
 
 <script>
 export default {
-  name: "ExamPackCard",
-  props: ['examPack', 'outline', 'isExam'],
-  emits: ['examPackClick'],
+  name: "ExamCard",
+  props: {
+    exam: {
+      type: Object
+    }
+  },
+  emits: ['examCardClick'],
   setup(props) {
-     const examPack = props.examPack
-    const titleToUrl = title => title.trim().toLowerCase().split(' ').join('-')
     return {
-      examPack,
-      titleToUrl
+
     }
   }
 }
@@ -62,7 +63,9 @@ export default {
   .text p{
     font-size: 0.9rem;
     color: #000;
+    font-weight: 500;
     line-height: 17px;
+    margin-top: 0.3rem;
   }
 
 </style>
