@@ -2,8 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '../layouts/AppLayout.vue'
 import AuthLayout from '../layouts/AuthLayout.vue'
 const lazyLoadExam = (view) => () => import(`@/views/Exam Management/${view}.vue`);
-const lazyLoadLogin = (view) => () => import(`@/views/Login Register/${view}.vue`)
+const lazyLoadLogin = (view) => () => import(`@/views/Login Register/${view}.vue`);
+const lazyLoadAdmin = (view) => () => import(`@/views/Admin/${view}.vue`);
 const routes = [
+    // general routes
     {
         path: '/',
         name: 'Home',
@@ -32,7 +34,7 @@ const routes = [
         }
     },
 
-
+    // student routes 
     {
         path: '/dashboard',
         name: 'Dashboard',
@@ -106,18 +108,59 @@ const routes = [
             layout: AppLayout
         }
     },
+    // admin routes
     {
-        path: '/user-management',
-        name: 'UserManagement',
-        component: lazyLoadExam('UserManagement'),
+        path: '/admin/dashboard',
+        name: 'AdminDashboard',
+        component: lazyLoadAdmin('AdminDashboard'),
         meta: {
             layout: AppLayout
         }
     },
     {
-        path: '/account-management',
-        name: 'AccountManagement',
-        component: lazyLoadExam('AccountManagement'),
+        path: '/admin/exam-pack',
+        name: 'AdminExam_Pack',
+        component: lazyLoadAdmin('AdminExam_Pack'),
+        meta: {
+            layout: AppLayout
+        }
+    },
+    {
+        path: '/admin/exam-management',   
+        name: 'AdminExamManagement',
+        component: lazyLoadAdmin('AdminExamManagement'),
+        meta: {
+            layout: AppLayout
+        }
+    },
+    {
+        path: '/admin/student-management',   
+        name: 'AdminStudentManagement',
+        component: lazyLoadAdmin('AdminStudentManagement'),
+        meta: {
+            layout: AppLayout
+        }
+    },
+    {
+        path: '/admin/reporting',   
+        name: 'AdminReporting',
+        component: lazyLoadAdmin('AdminReporting'),
+        meta: {
+            layout: AppLayout
+        }
+    },
+    {
+        path: '/admin/user-management',
+        name: 'AdminUserManagement',
+        component: lazyLoadAdmin('AdminUserManagement'),
+        meta: {
+            layout: AppLayout
+        }
+    },
+    {
+        path: '/admin/account-management',
+        name: 'AdminAccountManagement',
+        component: lazyLoadAdmin('AdminAccountManagement'),
         meta: {
             layout: AppLayout
         }
