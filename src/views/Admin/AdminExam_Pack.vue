@@ -4,11 +4,11 @@
   </span>
 
   <span v-else-if="currentCompState == 'isAdminExamPackCreate'">
-    <AdminExamPackComp />
+    <AdminExamPackComp :isAdminExamPackCreate="true" @backExamPack="handleBack" />
   </span>
 
   <span v-else-if="currentCompState  == 'isAdminExamPackEdit'">
-    <AdminExamPackComp />
+    <AdminExamPackComp  :editExamPack="editExamPack" @backExamPack="handleBack" />
   </span>
 </template>
 
@@ -25,21 +25,32 @@ export default {
   setup() {
     const currentCompState = ref('adminExamPack') // adminExamPack | isAdminExamPackEdit | isAdminExamPackCreate
     const handleCreateExamPack = () => {
-      alert('exam pack admin create')
+      // alert('exam pack admin create')
       currentCompState.value = 'isAdminExamPackCreate';
     }
 
+    const editExamPack = ref(null)
+
     const onExamPackCardClick = (examPack) => {
       // console.log('clicked', examPack)
-      alert(JSON.stringify(examPack))
+      editExamPack.value = {...examPack}
+      // alert(JSON.stringify(examPack))
       currentCompState.value = 'isAdminExamPackEdit'
+    }
+
+    const handleBack = () => {
+      currentCompState.value = 'adminExamPack'
+
     }
 
 
     return {
       onExamPackCardClick,
       handleCreateExamPack,
-      currentCompState
+      currentCompState,
+      editExamPack,
+      handleBack
+
     }
   }
 }

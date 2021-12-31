@@ -1,7 +1,28 @@
 <template>
   <div class="form-group">
     <label v-if="label">{{label}}</label>
-    <input v-bind="$attrs" :readonly="readonly" :value="modelValue" @input="updateValue" :placeholder="placeholder">
+    
+    <input 
+      class="input__field" 
+      v-if="!isTextArea" 
+      v-bind="$attrs" 
+      :readonly="readonly" 
+      :value="modelValue" @input="updateValue" 
+      :placeholder="placeholder"
+    >
+    
+    <textarea 
+      v-else-if="isTextArea" 
+      class="input__field" 
+      :style="{
+        ...styles
+      }"
+      v-bind="$attrs" 
+      :readonly="readonly"
+      :value="modelValue" 
+      @input="updateValue" 
+      :placeholder="placeholder"
+    />
   </div>
 </template>
 
@@ -21,6 +42,13 @@ export default {
     readonly: {
       type: Boolean,
       default: () => false
+    },
+    isTextArea: {
+      type: Boolean,
+      default: () => false
+    },
+    styles: {
+      type: Object
     }
   },
   setup(props, context) {
@@ -42,13 +70,14 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  width: 100%;
   label {
     margin-bottom: 0.4rem;
     font-size: 0.9rem;
     color: #000;
   }
 
-  input {
+  .input__field {
     border: 1.8px solid #00A9DC;
     box-sizing: border-box; 
     outline: none;
@@ -61,6 +90,10 @@ export default {
       font-style: italic;
       font-size: 0.9rem;
     }
+  }
+  textarea.input__field {
+    // resize: vertical;
+    
   }
 }
 </style>

@@ -35,35 +35,59 @@ export default {
         {
           id: 1, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 2, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 3, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 4, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 5, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 6, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 7, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         },{
           id: 8, 
           title: 'Elite Exam Mania',
-          batch: '2021'
+          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+          label: 'HSC',
+          batch: '2021',
+          image: ''
         }
       ])
       
