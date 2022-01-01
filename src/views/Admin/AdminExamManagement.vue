@@ -6,7 +6,7 @@
         <span> Create an Exam </span>
         </CustomAdminBtn>
       </div>
-      <h3 class="title">Upcoming Exams</h3>
+      <h3 class="name">Upcoming Exams</h3>
     <div class="pack_container">
       <div v-for="exam in upcomingExam" :key="exam.id"  class="card" >
         <ExamCard  @examCardClick="onUpcomingExamCardClick" :exam="exam"/>
@@ -15,11 +15,11 @@
     </div>
   </div>
   <span v-else-if="currentCompState === 'isExamManageCreate'">
-    <AdminExamComp />
+    <AdminExamComp :isExamManageCreate="true"  @backExam="handleBack"/>
   </span>
 
   <span v-else-if="currentCompState === 'isExamManageEdit'">
-    <AdminExamComp />
+    <AdminExamComp :editExam="editExam"  @backExam="handleBack"/>
   </span>
 
 </template>
@@ -43,20 +43,81 @@ export default {
     const upcomingExam = ref([
         {
           id: 1, 
-          title: 'Chemistry 1st Paper',
-          date: '10:30 AM | Sunday, 19/10/2021'
+          name: 'Chemistry 1st Paper',
+          date: '10:30 AM | Sunday, 19/10/2021',
+detail: "This is exam detail. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam reiciendis mollitia et, officia alias dolorum quisquam minus dolor odio autem!",
+level: "HSC",
+batch: "2021",
+examPack: "elite exam pack3",
+totalMark: 20,
+questionMark: 1,
+passMark: 10,
+amountPerQuestion: 0.5,
+randomization: true,
+sorting: false,
+negativeMarking: false,
+startTime: '',
+endTime: "",
+totalTime: "40",
+
+
         },{
           id: 2, 
-          title: 'Physics 1st Paper',
-          date: '10:30 AM | Sunday, 19/10/2021'
+          name: 'Physics 1st Paper',
+          date: '10:30 AM | Sunday, 19/10/2021',
+          detail: "This is exam detail. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam reiciendis mollitia et, officia alias dolorum quisquam minus dolor odio autem!",
+          level: "HSC",
+          batch: "2021",
+          examPack: "elite exam pack3",
+          totalMark: 20,
+          questionMark: 1,
+          passMark: 10,
+          amountPerQuestion: 0.5,
+          randomization: true,
+          sorting: false,
+          negativeMarking: false,
+          startTime: '',
+          endTime: "",
+          totalTime: "40",
+
+
         },{
           id: 3, 
-          title: 'Physics 2nd Paper',
-          date: '10:30 AM | Sunday, 19/10/2021'
+          name: 'Physics 2nd Paper',
+          date: '10:30 AM | Sunday, 19/10/2021',
+          detail: "This is exam detail. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam reiciendis mollitia et, officia alias dolorum quisquam minus dolor odio autem!",
+          level: "HSC",
+          batch: "2021",
+          examPack: "elite exam pack3",
+          totalMark: 20,
+          questionMark: 1,
+          passMark: 10,
+          amountPerQuestion: 0.5,
+          randomization: true,
+          sorting: false,
+          negativeMarking: false,
+          startTime: '',
+          endTime: "",
+          totalTime: "40",
         },{
           id: 4, 
-          title: 'Chemistry 2nd Paper',
-          date: '10:30 AM | Sunday, 19/10/2021'
+          name: 'Chemistry 2nd Paper',
+          date: '10:30 AM | Sunday, 19/10/2021',
+          detail: "This is exam detail. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam reiciendis mollitia et, officia alias dolorum quisquam minus dolor odio autem!",
+          level: "HSC",
+          batch: "2021",
+          examPack: "elite exam pack3",
+          totalMark: 20,
+          questionMark: 1,
+          passMark: 10,
+          amountPerQuestion: 0.5,
+          randomization: true,
+          sorting: false,
+          negativeMarking: false,
+          startTime: '',
+          endTime: "",
+          totalTime: "40",
+
         },
       ])
      
@@ -65,13 +126,22 @@ export default {
       currentCompState.value = 'isExamManageCreate';
     }
 
+    const editExam = ref(null)
     const onUpcomingExamCardClick = (exam) => {
       // console.log('clicked', examPack)
-      alert(JSON.stringify(exam))
+      editExam.value = {...exam};
+      currentCompState.value = 'isExamManageEdit';
+    }
+
+    const handleBack = () => {
+      currentCompState.value = 'examManagement'
+
     }
 
 
     return {
+      editExam,
+      handleBack,
       upcomingExam,
       onUpcomingExamCardClick,
       handleCreateExam,
@@ -94,7 +164,7 @@ export default {
 .wrapper {
   max-width: 380px;
 }
-.title {
+.name {
   color: #00A9DC;
   font-weight: bold;
   font-size: 1.8rem;

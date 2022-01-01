@@ -4,7 +4,7 @@
       <img src="/images/placeholderImg.svg" alt="">
     </div>
     <div class="text">
-      <h3 @click="$emit('examCardClick', exam)"> {{exam.title}} </h3> 
+      <h3 @click="$emit('examCardClick', exam)"> {{exam.name}} </h3> 
 
       <p>
         Batch {{exam.date}} 

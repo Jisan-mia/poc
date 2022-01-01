@@ -1,6 +1,6 @@
-<!-- <template>
-  <div class="toggle__container" @click="onToggleSwitch" >
-    <div :class="['wrapper', modelValue ? 'on' : 'off']">
+<template>
+  <div class="toggle__container" @click="onToggleSwitch"  >
+    <div :class="['wrapper', modelValue ? 'on' : 'off', disabled ? 'disable': '' ]">
       <div class="circle">
       </div>
     </div>
@@ -14,10 +14,17 @@ export default {
     modelValue: {
       type: Boolean,
       default: () => false
+    },
+    disabled: {
+      type: Boolean,
+      default: () => false
     }
   },
   setup(props, ctx) {
     const onToggleSwitch = () => {
+      if(props.disabled) {
+        return;
+      }
       ctx.emit('update:modelValue', !props.modelValue)
     }
     return {
@@ -34,7 +41,9 @@ export default {
   display: flex;
 
   .wrapper {
-    width: 34px;
+    position: relative;
+    width: 36px;
+    height: 15px;
     min-height: 15px;
     display: flex;
     cursor: pointer;
@@ -42,29 +51,66 @@ export default {
     align-items: center;
     padding: 2px;
     transition: all 0.5s;
+    background: #C4C4C4;
 
     
     .circle {
-      background: #fff;
-      width: 15px;
-      height: 15px;
+      background: #878787;
+      width: 22px;
+      height: 22px;
       border-radius: 15px;
+      position: relative;
+      left:  -2px;
     }
   }
   .wrapper.on {
-    background: green;
+    // background: green;
     justify-content: flex-end;
   }
-  .wrapper.off {
-    background: grey;
-    justify-content: flex-start;
+
+  .wrapper.on .circle {
+    background: #00A9DC;
+    left: 4px;
+    
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      left: -15px;
+    }
+    to {
+      left: 4px;
+    } 
+  }
+  .wrapper.off .circle{
+    // background: grey;
+    // justify-content: flex-start;
+    
+    animation: slideOut 0.3s ease;
+  }
+
+  @keyframes slideOut {
+    from {
+      left: 15px;
+    }
+    to { 
+      left: -2px;
+
+    }
+  }
+
+  
+  .wrapper.disable{
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 }
 </style>
- -->
+ 
 
 <!-- below is example of v-model use -->
-
+<!--
 <template>
   <div class="checkbox__slider">
     <input type="checkbox" :disabled="disabled"  :checked="modelValue" id="checkbox" @change="onChange">
@@ -86,7 +132,9 @@ export default {
     }
   },
   setup(props, ctx) {
+    console.log(props.modelValue)
     const onChange = (event) => {
+      console.log(props.modelValue)
       ctx.emit('update:modelValue',  event.target.checked)
     }
 
@@ -142,3 +190,5 @@ export default {
   }
 }
 </style>
+
+-->

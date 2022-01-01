@@ -57,10 +57,17 @@
           </div>
         </div>
 
-        <div class="back__btn"  v-if="isAdminExamPackCreate">
-          <CustomAdminBtn type="info"  @onClick="this.$emit('backExamPack') ">
-            Back
-          </CustomAdminBtn>  
+        <div class="btn__cont"  v-if="isAdminExamPackCreate">
+          <div class="btn__wrapper">
+            <CustomAdminBtn type="info" icon="fas fa-plus" @onClick="handleAddExamPack ">
+              Add Exam Pack
+            </CustomAdminBtn>  
+          </div>
+          <div class="btn__wrapper">
+            <CustomAdminBtn type="info"  @onClick="this.$emit('backExamPack') ">
+              Back
+            </CustomAdminBtn>  
+          </div>
         </div>
 
         
@@ -105,12 +112,18 @@ export default {
       console.log('create exam')
     }
 
+
+    const handleAddExamPack = () => {
+      alert('new exam pack added')
+    }
+
     
     return {
       examPack,
       handleEditPack,
       handleDeletePack,
-      handleCreateExam
+      handleCreateExam,
+      handleAddExamPack
     };
   },
   components: { AdminCustomInput, CustomAdminBtn }
