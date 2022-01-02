@@ -5,7 +5,7 @@ export default {
   props: {},
   components: { SidebarLink },
   setup() {
-    const position = 'admin'
+    const position = 'admin';
     return { collapsed, toggleSidebar, sidebarWidth, position }
   }
 }
@@ -34,7 +34,7 @@ export default {
       <SidebarLink to='/admin/student-management' icon="fas fa-user-circle">Student Management</SidebarLink>
       <SidebarLink to="/admin/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
       <!-- <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink> -->
-      <SidebarLink to="/admin/user-management" icon="fas fa-cog">
+      <SidebarLink  icon="fas fa-cog">
         <span>Settings</span>
         <div class="nested">
           <SidebarLink :isNested="true" to="/admin/user-management" icon="fas fa-circle">
@@ -76,6 +76,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+@import '@/styles/config.scss';
 .poc_logo2
 {
   width: 2rem;

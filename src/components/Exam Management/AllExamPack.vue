@@ -162,9 +162,7 @@ export default {
   gap: 0.8em;
 }
 @media (max-width: 600px) {
-  .pack_container{
-    padding: 1em 1em;
-  }
+
 }
 .primary-btn{
   border: none;

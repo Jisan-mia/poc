@@ -16,7 +16,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/styles/config.scss';
 .app-container{
   background-color: #fafafa;
 	min-height: 100vh;
@@ -32,6 +33,10 @@ export default {
 		transition: all 0.4s;
 		padding: 0.2rem 1.8rem;
 		margin-top: 45px;
+
+    @include maxMedia(768px) {
+      margin-left: 0rem;
+    }
 	
 }
 </style>>

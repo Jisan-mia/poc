@@ -163,7 +163,7 @@ export default {
       type: Object
     }
   },
-  setup(props) {
+  setup(props, context) {
     const examInfo = ref({
       name: '',
       date: '',
@@ -190,6 +190,7 @@ export default {
     }
     const handleQuestionEditor = () => {
       console.log('question editor')
+      context.emit('onQuestionEditor')
     }
     const handleCreateExam = () => {
       console.log('create exam')

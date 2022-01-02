@@ -15,11 +15,15 @@
     </div>
   </div>
   <span v-else-if="currentCompState === 'isExamManageCreate'">
-    <AdminExamComp :isExamManageCreate="true"  @backExam="handleBack"/>
+    <AdminExamComp :isExamManageCreate="true"  @backExam="handleBack" @onQuestionEditor="handleQuestionEditor"/>
   </span>
 
   <span v-else-if="currentCompState === 'isExamManageEdit'">
-    <AdminExamComp :editExam="editExam"  @backExam="handleBack"/>
+    <AdminExamComp :editExam="editExam"  @backExam="handleBack" @onQuestionEditor="handleQuestionEditor"/>
+  </span>
+
+  <span v-else-if="currentCompState === 'questionEditor'">
+    <CreateAllExamQuestion />
   </span>
 
 </template>
@@ -28,6 +32,7 @@ import { ref } from '@vue/reactivity'
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue'
 import ExamCard from '../../components/Exam Management/ExamCard.vue'
 import AdminExamComp from '../../components/Exam Management/AdminExamComp.vue'
+import CreateAllExamQuestion from '@/components/Exam Management/Create Exam Questions/CreateAllExamQuestion.vue'
 
 export default {
   name: "AdminExamManagement",
@@ -37,7 +42,8 @@ export default {
   components: {
     CustomAdminBtn,
     ExamCard,
-    AdminExamComp
+    AdminExamComp,
+    CreateAllExamQuestion
 },
   setup() {
     const upcomingExam = ref([
@@ -121,7 +127,7 @@ totalTime: "40",
         },
       ])
      
-    const currentCompState = ref('examManagement') // examManagement | isExamManageEdit | isExamManageCreate
+    const currentCompState = ref('examManagement') // examManagement | isExamManageEdit | isExamManageCreate | questionEditor
     const handleCreateExam = () => {
       currentCompState.value = 'isExamManageCreate';
     }
@@ -138,6 +144,10 @@ totalTime: "40",
 
     }
 
+    const handleQuestionEditor = () => {
+      currentCompState.value = 'questionEditor'
+    }
+
 
     return {
       editExam,
@@ -145,7 +155,8 @@ totalTime: "40",
       upcomingExam,
       onUpcomingExamCardClick,
       handleCreateExam,
-      currentCompState
+      currentCompState,
+      handleQuestionEditor
     }
   }
 }
@@ -153,7 +164,7 @@ totalTime: "40",
 </script>
 
 
-<style scoped>
+<style scoped >
 
 .container{
   display: flex;

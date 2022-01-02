@@ -5,7 +5,7 @@ import { collapsed } from './state'
 
 export default {
   props: {
-    to: { type: String, required: true },
+    to: { type: String, required: false },
     icon: { type: String, required: true },
     isNested: {
       type: Boolean, 
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <router-link :to="to" class="link" :class="{ active: isActive }">
+  <router-link :to="to || ''" class="link" :class="{ active: isActive && to}">
     <i class="icon" :class="icon" v-if="isNested === false" />
     <i class="iconNested" :class="[icon]" v-else />
     
