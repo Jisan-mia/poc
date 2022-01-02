@@ -50,8 +50,8 @@ button {
   border: none;
   width: 100%;
   @include maxMedia(500px) {
-    font-size: 0.85rem;
-    padding: 0.65rem;
+    font-size: 0.96rem;
+    padding: 0.85rem;
   }
   
   &:active {

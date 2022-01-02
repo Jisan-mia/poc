@@ -1,21 +1,39 @@
 <script>
 import SidebarLink from './SidebarLink'
+import { ref } from 'vue'
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
 export default {
   props: {},
   components: { SidebarLink },
   setup() {
     const position = 'admin';
-    return { collapsed, toggleSidebar, sidebarWidth, position }
+    const isActive = ref(false);
+    const toggleActive = () =>  {
+      isActive.value = !isActive.value
+      console.log(isActive.value)
+    }
+    return { collapsed, toggleSidebar, sidebarWidth, position,toggleActive, isActive }
   }
 }
 </script>
 
 <template>
-  <div class="sidebar" :style="{ width: sidebarWidth }">
+  <div v-if="!isActive"  class="hamburger" @click="toggleActive">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <div :class="['sidebar', isActive ? 'active' : '']">
+    
     <h1>
-      <span v-if="collapsed">
+      <span class="crossBar__parent" v-if="isActive">
         <img alt="Vue logo" class= "poc_logo2" src="@/assets/poc_logo_small.png" />
+
+        <div class="crossBar" @click="toggleActive">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+        </div>
       </span>
       <span v-else><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
     </h1>
@@ -88,6 +106,7 @@ export default {
   transition: 0.2s linear;
 }
 .sidebar {
+  width: 200px;
   color: black;
   background-color: var(--sidebar-bg-color); 
   float: left;
@@ -99,9 +118,67 @@ export default {
   bottom: 0;
   padding-left: 1.5em;
   padding-right: 1.6em;
-  transition: 0.1s ease;
+  transition: 0.3s ease;
   display: flex;
   flex-direction: column;
+  @include maxMedia(768px) {
+    left: -300px;
+  }
+}
+
+.sidebar.active {
+  left: 0px;
+}
+
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+  position: relative;
+  left: 28px;
+  top: 40px;
+  width: 25px;
+  height: 25px;
+
+  @include maxMedia(768px) {
+    display: flex;
+  }
+  .bar {
+    height: 2px;
+    width: 100%;
+    background: black;
+  }
+  
+}
+
+.crossBar__parent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.crossBar {
+  width: 25px; 
+  height: 25px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  cursor: pointer;
+
+  .bar1, .bar2 {
+    height: 2px;
+    width: 100%;
+    background: black;
+  }
+  .bar1 {
+    transform: rotate(45deg) translate(9px);
+  }
+  .bar2 {
+    transform: rotate(-45deg) translate(9px);
+    
+  }
 }
 .nested{
   position: absolute;
