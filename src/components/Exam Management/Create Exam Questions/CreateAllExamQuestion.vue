@@ -82,9 +82,11 @@ export default {
 
   .selection__area {
     width: 100%;
+    max-width: 260px;
     
     @include maxMedia(768px) {
       grid-row: 1;
+      max-width: inherit;
     }
    .selection__inner {
     display: flex;

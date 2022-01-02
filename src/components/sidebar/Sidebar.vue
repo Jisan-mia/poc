@@ -1,24 +1,20 @@
 <script>
 import SidebarLink from './SidebarLink'
 import { ref } from 'vue'
-import { collapsed, toggleSidebar, sidebarWidth } from './state'
+import { isActive, toggleActive } from './state'
 export default {
   props: {},
   components: { SidebarLink },
   setup() {
     const position = 'admin';
-    const isActive = ref(false);
-    const toggleActive = () =>  {
-      isActive.value = !isActive.value
-      console.log(isActive.value)
-    }
-    return { collapsed, toggleSidebar, sidebarWidth, position,toggleActive, isActive }
+  
+    return { position,toggleActive, isActive }
   }
 }
 </script>
 
 <template>
-  <div v-if="!isActive"  class="hamburger" @click="toggleActive">
+  <div  class="hamburger" @click="toggleActive">
     <div class="bar"></div>
     <div class="bar"></div>
     <div class="bar"></div>
@@ -35,7 +31,7 @@ export default {
           <div class="bar2"></div>
         </div>
       </span>
-      <span v-else><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
+      <span class="bigSpan"><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
     </h1>
 
     <span v-if="position == 'user'">
@@ -155,9 +151,20 @@ export default {
 }
 
 .crossBar__parent {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
+
+  @include maxMedia(768px) {
+    display: flex;
+  }
+}
+
+.bigSpan {
+  display: block;
+  @include maxMedia(768px) {
+    display: none;
+  }
 }
 .crossBar {
   width: 25px; 
