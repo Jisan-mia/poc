@@ -1,13 +1,265 @@
 <template>
-  <h1>Create Question type B</h1>
+  <div class="questionCont">
+    <div class="inner">
+      <div class="question__area">
+        <div class="question__inner">
+
+          <div class="question">
+            <div class="question__top">
+              <p>Question</p>
+              <div class="img__cont">
+                <img src="/images/addQuestionImg.svg" alt="">
+              </div>
+            </div>
+
+            <div class="qBottom">
+              <AdminCustomInput 
+                :isTextArea="true"
+                placeholder="question..."
+                v-model="questionTypeTwo.paragraph"
+                :style="{
+                  minHeight: '120px',
+                  resize: 'vertical'
+                }"
+               />
+            </div>
+
+          
+          </div>
+
+          <div class="hints">
+            <div class="hints__option">
+              <ul>
+                <li v-for="key in Object.keys(questionTypeTwo.hintsOption)" :key="key">
+                  <AdminCustomInput
+                    v-model="questionTypeTwo.hintsOption[key]"
+                    :placeholder="questionTypeTwo.hintsOption[key]"
+                    :label="questionTypeTwo.hintsHeader"
+                    :style="{
+                      border: 'none',
+                      padding: '0.2rem'
+                    }"
+                   />
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+          
+          <div class="option__cont">
+            <p>
+              {{questionTypeTwo.optionsHeader}}
+            </p>
+
+            <div class="options">
+            <CustomRadioButton
+              v-for="option in questionTypeTwo.options"
+              :key="option"
+              :option="option"
+              name='type1'
+              v-model="questionTypeTwo.correctAns"
+            />
+          </div>
+          </div>
+          
+
+
+
+          <div class="btns">
+            <button class="delete">
+              <i class="far fa-trash-alt fa-2x"></i>
+              <span>Delete Question</span>
+            </button>
+
+            <div class="wrapper">
+              <CustomAdminBtn type="info" :rounded="true">
+                Save
+              </CustomAdminBtn>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="selection__area">
+        
+        <div class="selection__inner"> 
+          <CustomSelect 
+            :options="typeOptions"
+            v-model="typeSelected"
+            :style="{
+              borderRadius: '10px', 
+              fontSize: '1rem',
+              padding:  '1rem',
+              backgroundColor:'#E4E4E4',
+              border: 'none'
+            }"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { ref } from '@vue/reactivity';
+import CustomSelect from '../../ui/CustomSelect.vue';
+import AdminCustomInput from '../AdminCustomInput.vue';
+import CustomRadioButton from '../../ui/CustomRadioButton.vue';
+import CustomAdminBtn from '../../ui/CustomAdminBtn.vue';
 export default {
-  name: 'CreateQuestionTypeB'
+  name: "CreateQuestionTypeB",
+  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn },
+  setup() {
+
+    const typeOptions = ref(['Type 01', 'Type 02', 'Type 03']);
+    const typeSelected = ref('Type 01')
+    const questionTypeTwo = ref({
+      correctAns: '',
+      type: "B",
+      paragraph: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+      questionNo: 2,
+      hintsHeader: "Follow below information",
+      hintsOption: {
+        i: "this is hint one" ,
+        ii: "this is hint two" ,
+        iii: "this is hint three" ,
+      },         
+      optionsHeader: "Which option is true",
+      options: [
+          "i & ii",
+          "ii & iii",
+          "i & iii",
+          "i, ii, iii"
+      ],
+    })
+
+    return {
+      typeOptions,
+      questionTypeTwo,
+      typeSelected
+    }
+  }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
+@import '@/styles/config.scss';
+.questionCont {
+  background: #F4F4F4;
+  border-radius: 35px;
+  padding: 3.5rem;
+  .inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 5em;
+    justify-content: start;
+    width: 100%;
+    @include maxMedia(768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+  }
+    @include maxMedia(768px) {
+      padding: 1.65rem;
+    }
+
+  
+  .question__area {
+    width: 100%;
+    min-height: 340px;
+
+    .question__inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .question {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        &__top {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 1.15rem;
+          font-weight: 500;
+        }
+        .img__cont {
+          max-width: 20px;
+          max-height: 20px;
+          cursor: pointer;
+          img {
+            width: 100%;
+          }
+        }
+      }
+      .options {
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.95rem;
+      }
+      .option__cont{
+        @extend .option;
+        margin: 1rem 0;
+      }
+      
+
+      .btns {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        margin-top: 1.5rem;
+        .wrapper{
+          min-width: 150px;
+        }
+        .delete {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          background-color: inherit;
+          
+          font-weight: 500;
+
+          i.far {
+            color: red;
+            width: 28px;
+          }
+          span {
+            color: red;
+            font-size: 1.1rem;
+            margin-left:0.5rem;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+
+  }
+
+
+  .selection__area {
+    width: 100%;
+    min-width: 250px;
+    max-width: 260px;
+    
+    @include maxMedia(768px) {
+      grid-row: 1;
+      max-width: inherit;
+    }
+  }
+}
 </style>

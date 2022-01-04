@@ -28,11 +28,27 @@
           </div>
 
           <div class="options">
-            options
+            <CustomRadioButton
+              v-for="option in questionTypeOne.options"
+              :key="option"
+              :option="option"
+              name='type1'
+              v-model="questionTypeOne.correctAns"
+              :isEditOption="true"
+            />
           </div>
 
           <div class="btns">
-            btns
+            <button class="delete">
+              <i class="far fa-trash-alt fa-2x"></i>
+              <span>Delete Question</span>
+            </button>
+
+            <div class="wrapper">
+              <CustomAdminBtn type="info" :rounded="true">
+                Save
+              </CustomAdminBtn>
+            </div>
           </div>
         </div>
       </div>
@@ -60,9 +76,11 @@
 import { ref } from '@vue/reactivity';
 import CustomSelect from '../../ui/CustomSelect.vue';
 import AdminCustomInput from '../AdminCustomInput.vue';
+import CustomRadioButton from '../../ui/CustomRadioButton.vue';
+import CustomAdminBtn from '../../ui/CustomAdminBtn.vue';
 export default {
   name: "CreateQuestionTypeA",
-  components: { CustomSelect, AdminCustomInput },
+  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn },
   setup() {
 
     const typeOptions = ref(['Type 01', 'Type 02', 'Type 03']);
@@ -136,6 +154,49 @@ export default {
           cursor: pointer;
           img {
             width: 100%;
+          }
+        }
+      }
+
+      .options {
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.95rem;
+        margin-top:0.9rem;
+      }
+
+      .btns {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        margin-top: 1.5rem;
+        .wrapper{
+          min-width: 150px;
+        }
+        .delete {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          background: inherit;
+          
+          font-weight: 500;
+
+          i.far {
+            color: red;
+            width: 28px;
+          }
+          span {
+            color: red;
+            font-size: 1.1rem;
+            margin-left:0.5rem;
+            text-decoration: underline;
           }
         }
       }

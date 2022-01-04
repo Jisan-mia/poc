@@ -35,7 +35,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
 button {
-  background: #06A964;
+  background: transparent;
   font-size: 1.05rem;
   cursor: pointer;
 
@@ -54,7 +54,7 @@ button {
   white-space: nowrap;
   transition: all 0.2s linear;
 
-   text-align: center;
+  text-align: center;
 
 
   @include maxMedia(500px) {
@@ -85,6 +85,7 @@ button {
     background-color: #00A9DC;
     color: #fff;
   }
+ 
   &.round {
     border-radius: 5px;
   }

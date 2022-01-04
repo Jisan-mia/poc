@@ -1,4 +1,5 @@
 <template>
+  <div class="parent">
   <label :class="['form-control', active ? 'active': '']">
     <input 
       type="radio" 
@@ -9,59 +10,76 @@
       :name="name"
     >
     <span v-if="!isEditOption">{{option}}</span>
-    <span v-else-if="isEditOption">
-      <AdminCustomInput
-        v-model="option"
-        :placeholder="option"
-        :style="{borderBottom: '1px solid grey'}"
-       />
-    </span>
   </label>
+  <span class="editOption" v-if="isEditOption">
+    <AdminCustomInput
+      v-model="option"
+      :placeholder="option"
+      :style="{
+        border: 'none',
+        background: 'transparent',
+        padding: '0rem',
+        minHeight: '40px',
+        resize: 'vertical'
+      }"
+      :isTextArea="true"
+    />
+  </span>
+  </div>
 </template>
 
 <script>
 import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import AdminCustomInput from '../Exam Management/AdminCustomInput.vue';
+import AdminCustomInput1 from '../Exam Management/AdminCustomInput.vue';
 export default {
-    name: "CustomRadioButton",
-    props: {
-        modelValue: {
-            type: String
-        },
-        option: {
-            type: String
-        },
-        isEditOption: {
-            type: Boolean,
-            default: () => false
-        },
-        name: {
-            type: [String, Number]
-        }
+  name: "CustomRadioButton",
+  props: {
+    modelValue: {
+        type: String
     },
-    setup(props, ctx) {
-        const active = ref(false);
-        const checked = computed(() => {
-            return props.modelValue === props.option;
-        });
-        const onChange = (event) => {
-            ctx.emit("update:modelValue", event.target.value);
-        };
-        return {
-            onChange,
-            active,
-            checked
-        };
+    option: {
+        type: String
     },
-    components: { AdminCustomInput }
+    isEditOption: {
+        type: Boolean,
+        default: () => false
+    },
+    name: {
+        type: [String, Number]
+    }
+  },
+  setup(props, ctx) {
+    const active = ref(false);
+    const checked = computed(() => {
+        return props.modelValue === props.option;
+    });
+    const onChange = (event) => {
+        ctx.emit("update:modelValue", event.target.value);
+    };
+    return {
+        onChange,
+        active,
+        checked
+    };
+  },
+  components: { AdminCustomInput, AdminCustomInput1 }
 }
 </script>
 
 <style scoped lang="scss">
 
 
-
+.parent {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.1rem;
+}
+.editOption {
+  border-bottom: 1px solid grey;
+  width: 100%;
+}
 .form-control {
   font-size: 1.12rem;
   font-weight: 400;
@@ -109,7 +127,7 @@ export default {
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     /* Windows High Contrast Mode */
-    background-color: #00A9DC;;
+    background-color:  #00B066;
   }
 
   input[type="radio"]:checked::before {
