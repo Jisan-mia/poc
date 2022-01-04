@@ -1,21 +1,22 @@
 <template>
   <div class="top__section">
     <div class="select">
-      <select name="examPack" id="examPack" >
-        <option selected disabled value="">Exam Pack</option>
-        <option value="elite exam pack1">elite exam pack</option>
-        <option value="elite exam pack2">elite exam pack2</option>
-        <option value="elite exam pack3">elite exam pack3</option>
-      </select>
+      <CustomSelect
+        v-model="selectedPack"
+        :options="examPackList"
+        :style="selectStyle"
+        placeholder="Exam Pack"
+
+      />
     </div>
 
     <div class="select">
-      <select name="exam" id="exam"  >
-        <option selected disabled value="">Exam Name</option>
-        <option value="Physics 1st chapter">Physics 1st chapter</option>
-        <option value="Physics 2nd chapter">Physics 2nd chapter</option>
-        <option value="Force chapter">Force chapter</option>
-      </select>
+      <CustomSelect
+        v-model="selectedExam"
+        :options="examList"
+        :style="selectStyle"
+        placeholder="Exam"
+      />
     </div>
 
   </div>
@@ -28,12 +29,32 @@
 
 <script>
 import CreateQuestionTypeA from "./CreateQuestionTypeA.vue"
+import CustomSelect from "../../ui/CustomSelect.vue";
+import { ref } from '@vue/reactivity';
 export default {
-    name: "CreateAllExamQuestion",
-    components: { CreateQuestionTypeA },
-    setup() {
-        return {};
-    },
+  name: "CreateAllExamQuestion",
+  components: { CreateQuestionTypeA, CustomSelect },
+  setup() {
+    const selectStyle = {
+      borderRadius: '10px', 
+      fontSize: '1rem',
+      padding:  '1rem',
+      backgroundColor:'#E4E4E4',
+      border: 'none'
+    }
+
+    const examPackList = ref(['Elite Exam Pack1', 'Elite Exam Pack2', 'Elite Exam Pack3']);
+    const examList = ref(['Physics 1st chapter', 'Physics 2nd chapter', 'Force Chapter'])
+    const selectedExam = ref('')
+    const selectedPack = ref('')
+    return {
+      selectStyle,
+      examList,
+      examPackList,
+      selectedExam,
+      selectedPack
+    };
+  },
 }
 </script>
 
@@ -47,16 +68,10 @@ export default {
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 3.5rem;
-  select {
-    width: 100%;
-    height: 100%;
-    outline: none;
-    border: none;
-    font-size: 1rem;
-    padding:  1rem;
-    background: #E4E4E4;
-    border-radius: 10px;
-    cursor: pointer;
+  .select {
+    min-width: 100px;
+    width: 250px;
+    max-width: 300px;
   }
     
 }

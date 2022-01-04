@@ -2,50 +2,59 @@
   <label :class="['form-control', active ? 'active': '']">
     <input 
       type="radio" 
+      :checked="modelValue === option"
       :value="option" 
       :id="option"
-      @change="onChange"
+      @change="$emit('update:modelValue', option)"
       :name="name"
-      
     >
-    {{option}}
+    <span v-if="!isEditOption">{{option}}</span>
+    <span v-else-if="isEditOption">
+      <AdminCustomInput
+        v-model="option"
+        :placeholder="option"
+        :style="{borderBottom: '1px solid grey'}"
+       />
+    </span>
   </label>
 </template>
 
 <script>
 import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
+import AdminCustomInput from '../Exam Management/AdminCustomInput.vue';
 export default {
-  name: 'CustomRadioButton',
-  props: {
-    modelValue: {
-      type: String
+    name: "CustomRadioButton",
+    props: {
+        modelValue: {
+            type: String
+        },
+        option: {
+            type: String
+        },
+        isEditOption: {
+            type: Boolean,
+            default: () => false
+        },
+        name: {
+            type: [String, Number]
+        }
     },
-    option: {
-      type: String
+    setup(props, ctx) {
+        const active = ref(false);
+        const checked = computed(() => {
+            return props.modelValue === props.option;
+        });
+        const onChange = (event) => {
+            ctx.emit("update:modelValue", event.target.value);
+        };
+        return {
+            onChange,
+            active,
+            checked
+        };
     },
-    name: {
-      type: [String, Number]
-    }
-  },
-  setup(props,ctx) {
-    const active = ref(false);
-    const checked = computed(() => {
-      return props.modelValue === props.option
-    })
-  
-    const onChange = (event) => {
-      ctx.emit('update:modelValue', event.target.value);
-      console.log(event.target.value)
-    }
-    
-    console.log('name', props.name)
-    return{
-      onChange,
-      active,
-      checked
-    }
-  }
+    components: { AdminCustomInput }
 }
 </script>
 

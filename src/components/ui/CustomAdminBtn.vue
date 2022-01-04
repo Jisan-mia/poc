@@ -49,6 +49,14 @@ button {
   outline: none;
   border: none;
   width: 100%;
+
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s linear;
+
+   text-align: center;
+
+
   @include maxMedia(500px) {
     font-size: 0.96rem;
     padding: 0.85rem;
@@ -81,5 +89,30 @@ button {
     border-radius: 5px;
   }
 
+  &:hover {
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+    box-shadow: 0 7px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+  &:active {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:disabled {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    box-shadow: none;
+  }
+
+
 }
+
+ 
 </style>
