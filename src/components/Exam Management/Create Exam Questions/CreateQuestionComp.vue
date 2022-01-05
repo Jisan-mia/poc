@@ -123,12 +123,19 @@ export default {
   });
 
     const compProps = computed(() => {
-      return comp.value === 'CreateQuestionTypeA'
-                ? questionTypeOne.value
-                : comp.value === 'CreateQuestionTypeB'
-                ? questionTypeTwo.value
-                : questionTypeThree.value
-              
+      if(comp.value === 'CreateQuestionTypeA') {
+        return {
+          questionTypeOne: questionTypeOne.value
+        }
+      } else if (comp.value === 'CreateQuestionTypeB') {
+        return {
+          questionTypeTwo: questionTypeTwo.value
+        }
+      } else if (comp.value === 'CreateQuestionTypec') {
+        return {
+          questionTypeThree: questionTypeThree.value
+        }
+      } 
     })
     return {
       typeOptions,

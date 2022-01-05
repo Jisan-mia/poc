@@ -23,6 +23,7 @@
 
     
     </div>
+    {{questionTypeOne}}
 
     <div class="options">
       <CustomRadioButton
@@ -65,7 +66,8 @@ export default {
       required: true
     }
   },
-  setup() {
+  setup(props) {
+    console.log(props.questionTypeOne)
 
     return {
 

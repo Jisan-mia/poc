@@ -30,7 +30,10 @@ export default {
     }
 
   },
-  setup() {
+  setup(props) {
+    console.log(props.questionTypeOne)
+
+    return {}
   },
   components: { CreateQuestionTypeA, CreateQuestionTypeB }
 }

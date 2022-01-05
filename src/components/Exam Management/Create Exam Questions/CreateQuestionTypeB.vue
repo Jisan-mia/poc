@@ -9,7 +9,7 @@
         </div>
       </div>
 
-      <div class="qBottom" v-if="questionTypeTwo.paragraph">
+      <div class="qBottom">
         <AdminCustomInput 
           :isTextArea="true"
           placeholder="উদ্দীপক..."
@@ -100,7 +100,10 @@ export default {
       required: true
     }
   },
-  setup() {
+  setup(props) {
+    console.log(props.questionTypeTwo);
+    
+
     return {
     }
   }
