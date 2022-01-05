@@ -37,7 +37,8 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    }
+    },
+  
   }
 }
 </script>
@@ -58,11 +59,11 @@ select {
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
+  &:disabled {
+    opacity: 0.85;
+  }
 }
-select:focus {
-  border-color: #00A9DC;
-  outline: 0;
-}
+select
 select:focus::ms-value {
   color: #000;
   background: #fff;
@@ -70,5 +71,6 @@ select:focus::ms-value {
 select::ms-expand {
   opacity: 0;
 }
+
 
 </style>

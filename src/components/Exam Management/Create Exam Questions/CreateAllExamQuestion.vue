@@ -22,18 +22,18 @@
   </div>
 
   <div class="questionComp">
-    <CreateQuestionTypeA />
+    <CreateQuestionComp />
   </div>
   
 </template>
 
 <script>
-import CreateQuestionTypeA from "./CreateQuestionTypeA.vue"
 import CustomSelect from "../../ui/CustomSelect.vue";
 import { ref } from '@vue/reactivity';
+import CreateQuestionComp from "./CreateQuestionComp.vue";
 export default {
   name: "CreateAllExamQuestion",
-  components: { CreateQuestionTypeA, CustomSelect },
+  components: { CustomSelect, CreateQuestionComp },
   setup() {
     const selectStyle = {
       borderRadius: '10px', 
