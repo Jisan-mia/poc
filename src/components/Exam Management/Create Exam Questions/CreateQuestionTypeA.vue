@@ -3,8 +3,8 @@
 
     <div class="question">
       <div class="question__top">
-        <p>Question</p>
-        <div class="img__cont">
+        <p>প্রশ্ন...</p>
+        <div class="img__cont" v-if="!isFromTypeC">
           <img src="/images/addQuestionImg.svg" alt="">
         </div>
       </div>
@@ -12,7 +12,7 @@
       <div class="qBottom">
         <AdminCustomInput 
           :isTextArea="true"
-          placeholder="question..."
+          placeholder="প্রশ্ন..."
           v-model="questionTypeOne.question"
           :style="{
             minHeight: '120px',
@@ -20,10 +20,9 @@
           }"
           />
       </div>
-
-    
     </div>
-    {{questionTypeOne}}
+
+    <!-- {{questionTypeOne}} -->
 
     <div class="options">
       <CustomRadioButton
@@ -36,18 +35,8 @@
       />
     </div>
 
-    <div class="btns">
-      <button class="delete">
-        <i class="far fa-trash-alt fa-2x"></i>
-        <span>Delete Question</span>
-      </button>
-
-      <div class="wrapper">
-        <CustomAdminBtn type="info" :rounded="true">
-          Save
-        </CustomAdminBtn>
-      </div>
-    </div>
+    <QuestionCreateBtns v-if="!isFromTypeC" />
+    
   </div>
 </template>
 
@@ -57,13 +46,18 @@ import CustomSelect from '../../ui/CustomSelect.vue';
 import AdminCustomInput from '../AdminCustomInput.vue';
 import CustomRadioButton from '../../ui/CustomRadioButton.vue';
 import CustomAdminBtn from '../../ui/CustomAdminBtn.vue';
+import QuestionCreateBtns from './QuestionCreateBtns.vue';
 export default {
   name: "CreateQuestionTypeA",
-  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn },
+  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn, QuestionCreateBtns },
   props: {
     questionTypeOne: {
       type: Object,
       required: true
+    },
+    isFromTypeC: {
+      type: Boolean,
+      default: () => false
     }
   },
   setup(props) {
@@ -120,39 +114,7 @@ export default {
     margin-top:0.9rem;
   }
 
-  .btns {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-
-    margin-top: 1.5rem;
-    .wrapper{
-      min-width: 150px;
-    }
-    .delete {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      background: inherit;
-      
-      font-weight: 500;
-
-      i.far {
-        color: red;
-        width: 28px;
-      }
-      span {
-        color: red;
-        font-size: 1.1rem;
-        margin-left:0.5rem;
-        text-decoration: underline;
-      }
-    }
-  }
+  
 }
 
 

@@ -1,8 +1,8 @@
 <template>
   <div class="question__inner">
 
-    <div class="question">
-      <div class="question__top">
+    <div class="question" v-if="!isFromTypeC">
+      <div class="question__top" >
         <p>উদ্দীপক...</p>
         <div class="img__cont">
           <img src="/images/addQuestionImg.svg" alt="">
@@ -24,7 +24,8 @@
 
     <div class="hints">
       <p class="hints__header">
-        {{questionTypeTwo.hintsHeader}}
+        <!-- {{questionTypeTwo.hintsHeader}} -->
+        নিচের তথ্যগুলো লক্ষ করঃ
       </p>
       <div class="hints__option">
         <ul>
@@ -53,7 +54,8 @@
     
     <div class="option__cont">
       <p>
-        {{questionTypeTwo.optionsHeader}}
+        <!-- {{questionTypeTwo.optionsHeader}} -->
+        নিচের কোনটি সঠিকঃ
       </p>
 
       <div class="options">
@@ -70,18 +72,7 @@
 
 
 
-    <div class="btns">
-      <button class="delete">
-        <i class="far fa-trash-alt fa-2x"></i>
-        <span>Delete Question</span>
-      </button>
-
-      <div class="wrapper">
-        <CustomAdminBtn type="info" :rounded="true">
-          Save
-        </CustomAdminBtn>
-      </div>
-    </div>
+    <QuestionCreateBtns v-if="!isFromTypeC" />
   </div>
 </template>
 
@@ -91,13 +82,18 @@ import CustomSelect from '../../ui/CustomSelect.vue';
 import AdminCustomInput from '../AdminCustomInput.vue';
 import CustomRadioButton from '../../ui/CustomRadioButton.vue';
 import CustomAdminBtn from '../../ui/CustomAdminBtn.vue';
+import QuestionCreateBtns from './QuestionCreateBtns.vue';
 export default {
   name: "CreateQuestionTypeB",
-  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn },
+  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn, QuestionCreateBtns },
   props: {
     questionTypeTwo: {
       type: Object,
       required: true
+    },
+    isFromTypeC: {
+      type: Boolean,
+      default: () => false
     }
   },
   setup(props) {

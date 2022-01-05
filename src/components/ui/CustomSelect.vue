@@ -59,11 +59,15 @@ select {
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
-  &:disabled {
-    opacity: 0.85;
+  &:disabled{
+    cursor: none;
+    opacity: 0.83;
   }
 }
-select
+select:focus {
+  border-color: #00A9DC;
+  outline: 0;
+}
 select:focus::ms-value {
   color: #000;
   background: #fff;

@@ -131,7 +131,7 @@ export default {
         return {
           questionTypeTwo: questionTypeTwo.value
         }
-      } else if (comp.value === 'CreateQuestionTypec') {
+      } else if (comp.value === 'CreateQuestionTypeC') {
         return {
           questionTypeThree: questionTypeThree.value
         }
