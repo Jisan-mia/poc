@@ -20,25 +20,34 @@ export default {
   </div>
 
   <div :class="['sidebar', isActive ? 'active' : '']">
-    
-    <h1>
-      <span class="crossBar__parent" v-if="isActive">
-        <img alt="Vue logo" class= "poc_logo2" src="@/assets/poc_logo_small.png" />
-
-        <div class="crossBar" @click="toggleActive">
-          <div class="bar1"></div>
-          <div class="bar2"></div>
-        </div>
-      </span>
-      <span class="bigSpan"><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
-    </h1>
-
     <span>
-      <SidebarLink to="/dashboard" icon="fas fa-home">Dashboard</SidebarLink>
-      <SidebarLink to="/exam-pack" icon="fas fa-columns">Exam Pack</SidebarLink>
-      <SidebarLink to="/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
-      <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink>
+      <h1>
+        <span class="crossBar__parent" v-if="isActive">
+          <img alt="Vue logo" class= "poc_logo2" src="@/assets/poc_logo_small.png" />
+
+          <div class="crossBar" @click="toggleActive">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+          </div>
+        </span>
+        <span class="bigSpan"><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
+      </h1>
+
+      <span>
+        <SidebarLink to="/dashboard" icon="fas fa-home">Dashboard</SidebarLink>
+        <SidebarLink to="/exam-pack" icon="fas fa-columns">Exam Pack</SidebarLink>
+        <SidebarLink to="/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
+        <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink>
+      </span>
+
     </span>
+
+
+    <span class="logout">
+      <SidebarLink to="/logout" icon="fas fa-sign-out-alt">Logout</SidebarLink>
+    </span>
+
+
 
     
 <!-- 
@@ -88,10 +97,15 @@ export default {
   transition: 0.3s ease;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   @include maxMedia(768px) {
     left: -300px;
   }
 }
+
+.logout {
+  margin-bottom:0.9rem;
+  }
 
 .sidebar.active {
   left: 0px;

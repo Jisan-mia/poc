@@ -28,6 +28,12 @@ const routes = [
             layout: AuthLayout
         }
     },
+    
+    {
+        path: '/logout',
+        name: 'Logout',
+        component: () => import('@/views/Logout.vue'),
+    },
     {
         path: '/register',
         name: 'Register',
