@@ -10,7 +10,11 @@ const routes = [
         name: 'Home',
         component: () => import('@/views/Home.vue'),
     },
-
+    { 
+        path: "/:pathMatch(.*)*", 
+        name: 'PageNotFound',
+        component: () => import('@/components/ui/PageNotFound.vue')
+    },
     {
         path: '/login-register',
         name: 'LoginRegister',
