@@ -9,7 +9,7 @@
     <div class="profile__cont" >
       <div class="profile" v-for="user in allUsers" :key="user.id" @click="handleUserEdit(user)">
         <div class="img__container">
-          <img src="/images/profile1.jpg" alt="">
+          <img src="/images/profile1.jpeg" alt="">
         </div>
         <p class="name">{{user.name}}</p>
         <p class="position">{{user.position}}</p>

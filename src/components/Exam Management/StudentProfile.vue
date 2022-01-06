@@ -4,7 +4,7 @@
     <div class="profile">
       <div class="profile__info">
         <div class="img__container1">
-          <img src="/images/profile1.jpg" alt="">
+          <img src="/images/profile1.jpeg" alt="">
         </div>
         <div class="profile__detail">
           <p class="basic">Sylhet | HSC 2021 | Science</p>

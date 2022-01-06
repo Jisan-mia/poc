@@ -3,7 +3,7 @@
     <h2>Edit Profile</h2>
 
     <div class="img__container">
-      <img src="/images/jisanProfile.png" alt="">
+      <img src="/images/profile1.jpeg" alt="">
       <span><i class="fas fa-edit "></i></span>
     </div>
   
@@ -75,6 +75,7 @@ h2{
 .img__container img{
   width:100%;
   height: 100%;
+  
 }
 
 .img__container span{

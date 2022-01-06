@@ -127,7 +127,7 @@
         <td>
           <div class="student__info">
             <div class="img__container">
-              <img src="/images/jisanProfile.png" alt="">
+              <img src="/images/profile1.jpeg" alt="">
             </div>
             <div class="info">
               <h4> {{report.student_name}} </h4>
@@ -422,6 +422,9 @@ table {
       img{
         width:100%;
         height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background-position: center center;
       }
     }
     
