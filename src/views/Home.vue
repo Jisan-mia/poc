@@ -9,8 +9,16 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
 export default {
   name: "Home",
+  setup() {
+    const router = useRouter();
+    router.push('/login-register')
+    return {
+
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
