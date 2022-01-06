@@ -21,15 +21,21 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
 import CustomAuthInput from '../../components/Auth Components/CustomAuthInput.vue'
 import CustomPhoneInput from '../../components/Auth Components/CustomPhoneInput.vue'
 import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.vue'
 import SendOtp from '../../components/Auth Components/SendOtp.vue'
+import { useStore } from 'vuex'
 export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp },
   name: 'Login',
   setup() {
+    const store = useStore();
+    const user = computed(() => store.state.user)
+    console.log(user.value)
+
+    console.log(user.value.password)
     const userAuthInput = ref({
       phoneNumber: '',
       password: ''
