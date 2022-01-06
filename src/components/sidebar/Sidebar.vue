@@ -6,9 +6,8 @@ export default {
   props: {},
   components: { SidebarLink },
   setup() {
-    const position = 'admin';
   
-    return { position,toggleActive, isActive }
+    return {toggleActive, isActive }
   }
 }
 </script>
@@ -34,39 +33,11 @@ export default {
       <span class="bigSpan"><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
     </h1>
 
-    <span v-if="position == 'user'">
+    <span>
       <SidebarLink to="/dashboard" icon="fas fa-home">Dashboard</SidebarLink>
       <SidebarLink to="/exam-pack" icon="fas fa-columns">Exam Pack</SidebarLink>
       <SidebarLink to="/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
       <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink>
-    </span>
-
-    <span v-else-if="position == 'admin'">
-      <SidebarLink to="/admin/dashboard" icon="fas fa-home">Dashboard</SidebarLink>
-      <SidebarLink to="/admin/exam-pack" icon="fas fa-columns">Exam Pack</SidebarLink>
-      <SidebarLink to='/admin/exam-management' icon="fas fa-user-circle">Exam Management</SidebarLink>
-      <SidebarLink to='/admin/student-management' icon="fas fa-user-circle">Student Management</SidebarLink>
-      <SidebarLink to="/admin/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
-      <!-- <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink> -->
-      <SidebarLink  icon="fas fa-cog">
-        <span>Settings</span>
-        <div class="nested">
-          <SidebarLink :isNested="true" to="/admin/user-management" icon="fas fa-circle">
-            <span class="text">
-              User Management 
-            </span>
-          </SidebarLink>  
-          <SidebarLink :isNested="true" to="/admin/account-management" icon="fas fa-circle"> 
-            <span class="text">
-              Account Management 
-            </span>
-          </SidebarLink>  
-        </div>
-      </SidebarLink>
-    </span>
-
-    <span v-else>
-
     </span>
 
     
