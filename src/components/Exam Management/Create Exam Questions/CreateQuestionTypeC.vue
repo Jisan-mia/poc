@@ -8,7 +8,8 @@
       <div class="question__top">
         <p>উদ্দীপক</p>
         <div class="img__cont">
-          <img src="/images/addQuestionImg.svg" alt="">
+          <!-- <img src="/images/addQuestionImg.svg" alt=""> -->
+          <InputImgComp @input="handleImgInput" />
         </div>
       </div>
 
@@ -51,6 +52,7 @@ import CreateQuestionTypeA from './CreateQuestionTypeA.vue';
 import CreateQuestionTypeB from './CreateQuestionTypeB.vue';
 import QuestionCreateBtns from './QuestionCreateBtns.vue';
 import AdminCustomInput from '../AdminCustomInput.vue';
+import InputImgComp from '../../ui/InputImgComp.vue';
 export default {
   name: "CreateQuestionTypeC",
   props: {
@@ -63,9 +65,14 @@ export default {
   setup(props) {
     console.log(props.questionTypeOne)
 
-    return {}
+    const handleImgInput = (img) => {
+      props.questionTypeOne.img = img
+    }
+    return {
+      handleImgInput
+    }
   },
-  components: { CreateQuestionTypeA, CreateQuestionTypeB, QuestionCreateBtns, AdminCustomInput }
+  components: { CreateQuestionTypeA, CreateQuestionTypeB, QuestionCreateBtns, AdminCustomInput, InputImgComp }
 }
 </script>
 

@@ -1,5 +1,4 @@
 <template>
-  <div class="parent">
   <label :class="['form-control', active ? 'active': '']">
     <input 
       type="radio" 
@@ -11,21 +10,7 @@
     >
     <span v-if="!isEditOption">{{option}}</span>
   </label>
-  <span class="editOption" v-if="isEditOption">
-    <AdminCustomInput
-      v-model="option"
-      :placeholder="option"
-      :style="{
-        border: 'none',
-        background: 'transparent',
-        padding: '0rem',
-        minHeight: '40px',
-        resize: 'vertical'
-      }"
-      :isTextArea="true"
-    />
-  </span>
-  </div>
+ 
 </template>
 
 <script>
@@ -71,15 +56,7 @@ export default {
 <style scoped lang="scss">
 
 
-.parent {
-  display: flex;
-  justify-content: flex-start;
-  gap: 0.1rem;
-}
-.editOption {
-  border-bottom: 1px solid grey;
-  width: 100%;
-}
+
 .form-control {
   font-size: 1.12rem;
   font-weight: 400;

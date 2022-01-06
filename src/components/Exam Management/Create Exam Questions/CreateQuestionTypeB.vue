@@ -5,7 +5,8 @@
       <div class="question__top" >
         <p>উদ্দীপক...</p>
         <div class="img__cont">
-          <img src="/images/addQuestionImg.svg" alt="">
+          <!-- <img src="/images/addQuestionImg.svg" alt=""> -->
+          <InputImgComp @input="handleImgInput" />
         </div>
       </div>
 
@@ -83,9 +84,10 @@ import AdminCustomInput from '../AdminCustomInput.vue';
 import CustomRadioButton from '../../ui/CustomRadioButton.vue';
 import CustomAdminBtn from '../../ui/CustomAdminBtn.vue';
 import QuestionCreateBtns from './QuestionCreateBtns.vue';
+import InputImgComp from '../../ui/InputImgComp.vue';
 export default {
   name: "CreateQuestionTypeB",
-  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn, QuestionCreateBtns },
+  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn, QuestionCreateBtns, InputImgComp },
   props: {
     questionTypeTwo: {
       type: Object,
@@ -99,8 +101,11 @@ export default {
   setup(props) {
     console.log(props.questionTypeTwo);
     
-
+    const handleImgInput = (img) => {
+      props.questionTypeOne.img = img
+    }
     return {
+      handleImgInput
     }
   }
 }

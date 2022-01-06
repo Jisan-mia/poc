@@ -54,7 +54,7 @@ export default {
     })
 
     const questionTypeOne = ref({
-
+      img: '',
       type: "A",
       correctAns: '',
       question: "",
@@ -68,6 +68,7 @@ export default {
     })
 
     const questionTypeTwo = ref({
+      img: '',
       correctAns: '',
       type: "B",
       paragraph: "",
@@ -87,6 +88,7 @@ export default {
     })
 
     const questionTypeThree = ref({
+      img: '',
       type: "C",
       paragraphHeader: "Answer the below 2 questions following the paragraph",
       paragraph: "",

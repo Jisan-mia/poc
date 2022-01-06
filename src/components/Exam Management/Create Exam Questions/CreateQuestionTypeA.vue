@@ -5,7 +5,7 @@
       <div class="question__top">
         <p>প্রশ্ন...</p>
         <div class="img__cont" v-if="!isFromTypeC">
-          <img src="/images/addQuestionImg.svg" alt="">
+          <InputImgComp @input="handleImgInput" />
         </div>
       </div>
 
@@ -22,17 +22,43 @@
       </div>
     </div>
 
-    <!-- {{questionTypeOne}} -->
+
+<!-- <span :style="{maxWidth: '300px'}">
+      {{JSON.stringify(questionTypeOne)}}
+  </span>     -->
 
     <div class="options">
-      <CustomRadioButton
-        v-for="option in questionTypeOne.options"
-        :key="option"
-        :option="option"
-        name='type1'
-        v-model="questionTypeOne.correctAns"
-        :isEditOption="true"
-      />
+
+      <div class="option" v-for="(option, index) in questionTypeOne.options" :key="index">
+        <span class="radio">
+          <CustomRadioButton
+            :option="questionTypeOne.options[index]"
+            name='type1'
+            v-model="questionTypeOne.correctAns"
+            :isEditOption="true"
+          />
+        </span>
+        <span class='input__elm'>
+          <AdminCustomInput 
+            :placeholder="questionTypeOne.options[index]"
+            v-model="questionTypeOne.options[index]"
+            :style="{
+              border: 'none',
+              background: 'transparent',
+              padding: '0rem',
+              minHeight: '40px',
+              resize: 'vertical',
+              width: '100%'
+            }"
+            :isTextArea="true"
+          />
+        </span>
+
+      </div>
+
+
+      
+      
     </div>
 
     <QuestionCreateBtns v-if="!isFromTypeC" />
@@ -47,9 +73,10 @@ import AdminCustomInput from '../AdminCustomInput.vue';
 import CustomRadioButton from '../../ui/CustomRadioButton.vue';
 import CustomAdminBtn from '../../ui/CustomAdminBtn.vue';
 import QuestionCreateBtns from './QuestionCreateBtns.vue';
+import InputImgComp from '../../ui/InputImgComp.vue';
 export default {
   name: "CreateQuestionTypeA",
-  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn, QuestionCreateBtns },
+  components: { CustomSelect, AdminCustomInput, CustomRadioButton, CustomAdminBtn, QuestionCreateBtns, InputImgComp },
   props: {
     questionTypeOne: {
       type: Object,
@@ -62,9 +89,11 @@ export default {
   },
   setup(props) {
     console.log(props.questionTypeOne)
-
+    const handleImgInput = (img) => {
+      props.questionTypeOne.img = img
+    }
     return {
-
+handleImgInput
     }
   }
 }
@@ -112,6 +141,20 @@ export default {
     justify-content: center;
     gap: 0.95rem;
     margin-top:0.9rem;
+
+    .option {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 1px solid grey;
+      
+      .radio{
+        flex-basis: 4%;
+      }
+      .input__elm {
+        flex-basis: 96%;
+      }
+    }
   }
 
   
