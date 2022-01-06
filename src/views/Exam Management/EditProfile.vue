@@ -75,6 +75,9 @@ h2{
 .img__container img{
   width:100%;
   height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-position: center center;
   
 }
 
