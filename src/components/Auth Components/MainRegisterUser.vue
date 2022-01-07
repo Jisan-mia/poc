@@ -52,28 +52,28 @@ import { useRouter } from 'vue-router'
 import { watchEffect } from '@vue/runtime-core'
 import ImgInputModel from '../ui/ImgInputModel.vue'
 export default {
-    name: "MainRegisterUser",
-    props: {
-        isRegistrationPage: {
-            type: Boolean,
-            default: () => false
-        }
-    },
-    setup(props) {
-        const router = useRouter();
-        const handleRegisterNewUser = () => {
-            router.push("/dashboard");
-        };
-        const imgFile = ref(null);
-        watchEffect(() => {
-            console.log(imgFile);
-        });
-        return {
-            handleRegisterNewUser,
-            imgFile
-        };
-    },
-    components: { ImgInputModel }
+  name: "MainRegisterUser",
+  props: {
+    isRegistrationPage: {
+      type: Boolean,
+      default: () => false
+    }
+  },
+  setup(props) {
+    const router = useRouter();
+    const handleRegisterNewUser = () => {
+        router.push("/dashboard");
+    };
+    const imgFile = ref(null);
+    watchEffect(() => {
+      console.log(imgFile);
+    });
+    return {
+      handleRegisterNewUser,
+      imgFile
+    };
+  },
+  components: { ImgInputModel }
 }
 </script>
 
