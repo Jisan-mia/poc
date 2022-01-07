@@ -5,7 +5,7 @@
     </h3>
 
     <form @submit.prevent="handleUserRegister">
-      <CustomPhoneInput v-model="userAuthInput.phoneNumber" placeholder="Enter your phone number" />
+      <CustomPhoneInput v-model="userAuthInput.phone_number" placeholder="Enter your phone number" />
       <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" type="text"/>
 
       <p>
@@ -42,7 +42,7 @@ export default {
 
     console.log(user.value.password)
     const userAuthInput = ref({
-      phoneNumber: '',
+      phone_number: '',
       password: ''
     })
     const currentStep = ref('register')
@@ -50,7 +50,17 @@ export default {
 
     const handleUserRegister = () => {
       // currentStep.value = 'SendOtp'
-      currentStep.value = 'mainRegister'
+      if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userAuthInput.value.phone_number)){
+        alert('Phone number not in correct pattern');
+        return;
+      } else if(!userAuthInput.value.password.length >= 5 ) {
+        alert('Password must be at least 5 character')
+        return;
+      } 
+      
+
+      currentStep.value = 'mainRegister';
+
       console.log('handle user resisteer func called')
     }
 
