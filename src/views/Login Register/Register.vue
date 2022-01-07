@@ -16,30 +16,41 @@
       <CustomLoginRegisterBtn  buttonText="Register" />
     </form>
   </div>
-  <SendOtp isRegistrationPage="true" v-else/>
+  <!-- its main -->
+  <!-- <SendOtp isRegistrationPage="true" v-else/>  -->
+
+  <!-- it's temporary -->
+  <MainRegisterUser v-else />
 
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
 import CustomAuthInput from '../../components/Auth Components/CustomAuthInput.vue'
 import CustomPhoneInput from '../../components/Auth Components/CustomPhoneInput.vue'
 import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.vue'
 import SendOtp from '../../components/Auth Components/SendOtp.vue'
+import MainRegisterUser from '../../components/Auth Components/MainRegisterUser.vue'
+import { useStore } from 'vuex'
 export default {
-  components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp },
+  components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
   name: 'Register',
   setup() {
+    const store = useStore();
+    const user = computed(() => store.state.user)
+    console.log(user.value)
+
+    console.log(user.value.password)
     const userAuthInput = ref({
       phoneNumber: '',
       password: ''
     })
-    const loginSteps = ref(['register', 'SendOtp']);
     const currentStep = ref('register')
 
 
     const handleUserRegister = () => {
-      currentStep.value = 'SendOtp'
+      // currentStep.value = 'SendOtp'
+      currentStep.value = 'mainRegister'
       console.log('handle user resisteer func called')
     }
 

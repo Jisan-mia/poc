@@ -2,8 +2,12 @@
   <div class="container">
 
     <div class="img__container">
-      <img src="/images/placeholderImg2.svg" alt="">
-      <span><i class="fas fa-edit "></i></span>
+      <img :src="imgFile || '/images/placeholderImg2.svg'" alt="">
+
+      <span>
+        <i class="fas fa-edit "></i>
+        <ImgInputModel v-model="imgFile" />
+      </span>
     </div>
   
 
@@ -43,26 +47,33 @@
 </template>
 
 <script>
+import { ref } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
+import { watchEffect } from '@vue/runtime-core'
+import ImgInputModel from '../ui/ImgInputModel.vue'
 export default {
-  name: "MainRegisterUser",
-  props: {
-    isRegistrationPage: {
-      type: Boolean,
-      default: () => false
-    }
-  },
-
-  setup(props) {
-    const router = useRouter()
-    const handleRegisterNewUser = () => {
-      router.push('/dashboard')
-    }
-    return {
-      handleRegisterNewUser
-    }
-  }
-  
+    name: "MainRegisterUser",
+    props: {
+        isRegistrationPage: {
+            type: Boolean,
+            default: () => false
+        }
+    },
+    setup(props) {
+        const router = useRouter();
+        const handleRegisterNewUser = () => {
+            router.push("/dashboard");
+        };
+        const imgFile = ref(null);
+        watchEffect(() => {
+            console.log(imgFile);
+        });
+        return {
+            handleRegisterNewUser,
+            imgFile
+        };
+    },
+    components: { ImgInputModel }
 }
 </script>
 
@@ -100,6 +111,9 @@ h2{
 .img__container img{
   width:100%;
   height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background-position: center center;
 }
 
 .img__container span{
@@ -116,6 +130,15 @@ h2{
   color: rgb(255, 255, 255);
   background: #00A9DC;
   cursor: pointer;
+
+  input {
+    position: absolute;
+    /* top: 0; */
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    cursor: pointer;
+  }
 }
 
 

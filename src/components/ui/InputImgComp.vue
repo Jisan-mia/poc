@@ -35,11 +35,10 @@ export default {
         reader.onload = e => {
           this.previewImage = e.target.result
           this.$emit('input', e.target.result)
-
         }
         
         reader.readAsDataURL(file[0])
-        this.$emit('input', file[0])
+        // this.$emit('input', file[0])
       }
     }
   }

@@ -1,3 +1,4 @@
+import userApi from "../../../api/userApi";
 import { userMutationTypes } from "./user.mutationTypes";
 
 const state = {
@@ -6,11 +7,16 @@ const state = {
 }
 
 const mutations = {
-
+  [userMutationTypes.SET_USER](state, payload) {
+    state = {...state, ...payload }
+  }
 }
 
 const actions = {
-
+  async registerByPhonePass(context, payload) {
+    const res = await userApi.registerUserByPhonePass(payload);
+    context.commit(res.data)
+  }
 }
 
 const getters = {
