@@ -1,7 +1,9 @@
 <template>
   <div class="login_cont" v-if="currentStep === 'register'">
+    <p>{{phone_number}}</p>
     <h3>
       Register
+      {{ JSON.stringify(user)}}
     </h3>
 
     <form @submit.prevent="handleUserRegister">
@@ -32,12 +34,16 @@ import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.v
 import SendOtp from '../../components/Auth Components/SendOtp.vue'
 import MainRegisterUser from '../../components/Auth Components/MainRegisterUser.vue'
 import { useStore } from 'vuex'
+import { watchEffect } from '@vue/runtime-core'
 export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
   name: 'Register',
   setup() {
     const store = useStore();
-    const user = computed(() => store.state.user)
+    const user = computed(() => store.state.userState.user)
+    const phone_number = computed(() => store.state.userState.user.phone_number)
+    const error = ref(null)
+
     console.log(user.value)
 
     console.log(user.value.password)
@@ -47,8 +53,20 @@ export default {
     })
     const currentStep = ref('register')
 
+    watchEffect(() => {
+      console.log(user.value)
+    })
 
-    const handleUserRegister = () => {
+    const validate = () => {
+      console.log(user.value)
+      if(!phone_number.value && !password.value) {
+        alert('User could not register');
+        return
+      } 
+      currentStep.value = 'mainRegister';
+    }
+
+    const handleUserRegister = async () => {
       // currentStep.value = 'SendOtp'
       if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userAuthInput.value.phone_number)){
         alert('Phone number not in correct pattern');
@@ -57,17 +75,32 @@ export default {
         alert('Password must be at least 5 character')
         return;
       } 
+      try {
+        await store.dispatch('userState/registerByPhonePass', {
+          ...userAuthInput.value
+        })
+        console.log(user.value)
+      } catch(err) {
+        console.log(err.message);
+        error.value = err.message;
+      }
       
-
-      currentStep.value = 'mainRegister';
-
-      console.log('handle user resisteer func called')
+      // if(!user.value.phone_number && !user.value.password) {
+      //   alert('User could not register')
+      //   return
+      // } 
+      
+      // setTimeout(validate, 1000)
+      
+      
     }
 
     return {
       userAuthInput,
       handleUserRegister,
-      currentStep
+      currentStep,
+      user,
+      phone_number
     }
   }
 }

@@ -7,6 +7,6 @@ export default createStore({
   modules: {
     counter1: counter,
     counter2: counter2,
-    user: user,
+    userState: user
   }
 })

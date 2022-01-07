@@ -2,20 +2,29 @@ import userApi from "../../../api/userApi";
 import { userMutationTypes } from "./user.mutationTypes";
 
 const state = {
-  phone_number: '',
-  password: '123456',
+  user: {
+    phone_number: '',
+    password: '',
+  }
 }
 
 const mutations = {
   [userMutationTypes.SET_USER](state, payload) {
-    state = {...state, ...payload }
+    state.user = {...state.user, ...payload }
+    console.log(state)
   }
 }
 
 const actions = {
   async registerByPhonePass(context, payload) {
     const res = await userApi.registerUserByPhonePass(payload);
-    context.commit(res.data)
+    console.log(res)
+    const data = await res.data;
+    if(data) {
+      context.commit(userMutationTypes.SET_USER , data)
+    } else {
+      throw new Error('could not complete register')
+    }
   }
 }
 
