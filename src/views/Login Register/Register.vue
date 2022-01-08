@@ -57,7 +57,7 @@ export default {
         alert('User could not register');
         return;
       } 
-      
+
       currentStep.value = 'sendOtp';
     }
 
@@ -105,6 +105,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin: 0 1rem;
 
   h3{
     margin: 1.6rem 0;

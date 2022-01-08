@@ -42,8 +42,8 @@ export default {
   border: none;
   width: 100%;
   @include maxMedia(500px) {
-    font-size: 1.2rem;
-    padding: 0.3rem 0;
+    font-size: 1.1rem;
+    padding: 0.2rem 0;
   }
   
   &:active {

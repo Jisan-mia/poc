@@ -1,7 +1,9 @@
 <template>
   <header>
     <div class="img__container">
-      <img src="@/assets/poc_logo.svg" alt="">
+      <router-link to="/">
+        <img src="@/assets/poc_logo.svg" alt="">
+      </router-link>
     </div>
 
     <router-link to="/" >
@@ -29,6 +31,7 @@ header {
  
   .img__container {
     max-width: 150px;
+    cursor: pointer;
     @include maxMedia(500px) {
       max-width: 120px;
     }
