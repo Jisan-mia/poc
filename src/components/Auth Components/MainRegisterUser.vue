@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2 class="title"> Complete Your Profile</h2>
 
     <div class="img__container">
       <img :src="userInputs.image || '/images/placeholderImg2.svg'" alt="">
@@ -14,30 +15,30 @@
     <div class="form__area">
       <input placeholder="Your name*" type="text" class="input__field" v-model="userInputs.name">
 
-      <input placeholder="Email Address(Optional)" type="email" v-model="userInputs.email" class="input__field">
+      <input placeholder="Email Address" type="email" v-model="userInputs.email" class="input__field">
 
-      <select name="label" id="label" aria-placeholder="Level" v-model="userInputs.level">
-        <option value="JSC">JSC</option>
-        <option value="SSC">SSC</option>
-        <option value="HSC">HSC</option>
-        <option value="O-Label">O-Label</option>   
-        <option value="A-Label">A-Label</option>
-      </select>
+      <CustomSelect 
+        placeholder="Level*"
+        :options="levelOptions"
+        v-model="userInputs.level"
+        :style="selectStyle"
+      />
 
-      <select name="batch" id="batch" v-model="userInputs.batch">
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-      </select>
+      <CustomSelect 
+        placeholder="Batch*"
+        :options="batchOptions"
+        v-model="userInputs.batch"
+        :style="selectStyle"
+      />
 
+      <CustomSelect 
+        placeholder="Board*"
+        :options="boardOptions"
+        v-model="userInputs.board"
+        :style="selectStyle"
+      />
 
-      <select name="division" id="division" v-model="userInputs.board">
-        <option value="dhaka">Dhaka</option>
-        <option value="sylhet">Sylet</option>
-        <option value="comilla">Comilla</option>
-      </select>
-
-      <input placeholder="School/Collage" v-model="userInputs.institution" type="text" class="input__field">
+      <input placeholder="Institution*" v-model="userInputs.institution" type="text" class="input__field">
       <button @click="handleRegisterNewUser" class="edit__btn">Register</button>
 
     </div>
@@ -51,6 +52,7 @@ import { ref } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
 import { watchEffect } from '@vue/runtime-core'
 import ImgInputModel from '../ui/ImgInputModel.vue'
+import CustomSelect from '../ui/CustomSelect.vue'
 export default {
   name: "MainRegisterUser",
   props: {
@@ -61,9 +63,6 @@ export default {
   },
   setup(props) {
     const router = useRouter();
-    const handleRegisterNewUser = () => {
-        router.push("/dashboard");
-    };
     const imgFile = ref(null);
     const userInputs = ref({
       user:'',
@@ -75,21 +74,85 @@ export default {
       board:'',
       institution:''
     })
+        
+    const levelOptions = ref(['JSC', 'SSC', 'HSC', 'O-Level', 'A-Level'])
+    const batchOptions = ref(['2021', '2022', '2023'])
+    const boardOptions = ref(['Dhaka', 'Shylet', 'Comilla'])
+    const selectStyle = ref({
+          borderRadius: '1.1rem',
+          outline: 'none',
+          fontSize: '1.1rem',
+          padding: '1rem 1.1rem',
+          border: '1.5px solid #00D4FE'
+        })
     watchEffect(() => {
       console.log(imgFile);
     });
+    const handleRegisterNewUser = () => {
+      const isError = ref(false)
+      for(let key in userInputs.value) {
+        if(userInputs.value[key] == '') {
+          if(key == 'email' || key == 'user') {
+            // alert('email/user might be empty')
+            continue;
+          }
+          isError.value = true
+          alert('Please fill the input field ' + key + ' is empty');
+          break; 
+        }
+        else if (key == 'name' && userInputs.value.name.length < 3) {
+          alert('Student name must be at least 3 character')
+          isError.value = true
+          break;
+        }
+        else if(key == 'email' && !/\S+@\S+\.\S+/.test(userInputs.value['email'])) {
+          alert('Please enter valid email');
+          isError.value = true
+          break;
+        } else if(key == 'institution' && userInputs.value.institution.length < 4) {
+          alert('Institution must be at least 4 character');
+          isError.value = true
+          break
+        } else {
+
+          isError.value = false;
+        }
+      }
+
+      if(isError.value) {
+        return;
+      }
+
+      
+
+
+
+
+      
+
+
+        // router.push("/dashboard");
+    };
+    
+
+
+
     return {
       handleRegisterNewUser,
       imgFile,
-      userInputs
+      userInputs,
+      levelOptions,
+      batchOptions,
+      boardOptions,
+      selectStyle
     };
   },
-  components: { ImgInputModel }
+  components: { ImgInputModel, CustomSelect }
 }
 </script>
 
 <style lang="scss" scoped>
-
+@import '@/styles/config.scss';
 .container{
   width: 100%;
   height: 100%;
@@ -103,12 +166,16 @@ h2{
   font-style: normal;
   font-weight: bold;
   font-size: 2.3rem;
-  line-height: 90px;
+  line-height: 2.4;
   text-align: center;
   background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
 	-webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
+  margin-top: -5rem;
+  @include maxMedia(768px) {
+    margin-top: 0;
+  }
 }
 
 .img__container{
@@ -188,10 +255,10 @@ h2{
 
 @media  (max-width:768px) {
   .form__area .input__field,  .form__area select, .edit__btn{
-    border-radius: 1rem;
-    outline: none;
-    font-size: 1.1rem;
-    padding: 0.9rem 1rem;
+    // border-radius: 1rem;
+    // outline: none;
+    // font-size: 1.1rem;
+    // padding: 0.9rem 1rem;
   }
   .container .form__area{
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

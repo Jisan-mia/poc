@@ -36,7 +36,7 @@ const actions = {
         phone_number: '',
         password: ''
       })
-
+      
       throw new Error('could not complete register')
     }
   }

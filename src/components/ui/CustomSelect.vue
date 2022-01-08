@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 select {
   width: 100%;
-  height: 52px;
+  min-height: 52px;
   padding: 0 24px 0 10px;
   vertical-align: middle;
   background: #fff

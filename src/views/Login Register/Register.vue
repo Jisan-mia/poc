@@ -17,10 +17,10 @@
     </form>
   </div>
   <!-- its main -->
-  <!-- <SendOtp isRegistrationPage="true" v-else/>  -->
+  <SendOtp isRegistrationPage="true" v-else/> 
 
   <!-- it's temporary -->
-  <MainRegisterUser v-else />
+  <!-- <MainRegisterUser v-else /> -->
 
 </template>
 
@@ -55,9 +55,10 @@ export default {
       console.log(user.value)
       if(!user.value.phone_number && !user.value.password) {
         alert('User could not register');
-        return
+        return;
       } 
-      currentStep.value = 'mainRegister';
+      
+      currentStep.value = 'sendOtp';
     }
 
     const handleUserRegister = async () => {
@@ -73,6 +74,8 @@ export default {
         await store.dispatch('userState/registerByPhonePass', {
           ...userAuthInput.value
         })
+
+
       } catch(err) {
         console.log(err.message);
         error.value = err.message;
