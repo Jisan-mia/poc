@@ -52,6 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/config.scss';
 .forgot {
   height: calc(100vh - 125px);
   display: flex;
@@ -75,6 +76,12 @@ export default {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     // margin: 0;
+
+    @include maxMedia(550px) {
+      font-size: 1.9rem;
+      line-height: 2rem;
+      margin: 2.9rem 0;
+    }
   }
   form {
     display: flex;

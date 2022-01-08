@@ -21,6 +21,7 @@ const registerUserByPhonePass = async (data) => {
 }
 
 
+
 export default {
   registerUserByPhonePass
 }

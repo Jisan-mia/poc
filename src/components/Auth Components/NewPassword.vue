@@ -38,6 +38,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/config.scss';
+
 .otp_cont {
   // height: calc(100vh - 125px);
   display: flex;
@@ -57,6 +59,9 @@ export default {
     text-align: center;
     width: 400px;
     min-width: 200px;
+    @include maxMedia(460px) {
+      width: 100%
+    }
     
   }
 }
