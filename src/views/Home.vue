@@ -1,24 +1,29 @@
 <template>
-  <div class="home">
-    <router-link :to='{name: "LoginRegister"}'>
+    <!-- <router-link :to='{name: "LoginRegister"}'>
       <h2>
         Go to Login/register
       </h2>
-    </router-link>
-  </div>
+    </router-link> -->
+
+      <LoginRegister v-if="!isLoggedIn"/>
+
+      <Dashboard v-else-if="isLoggedIn"/>
 </template>
 
 <script>
+import { ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
+import LoginRegister from './LoginRegister.vue';
+import Dashboard from './Exam Management/Dashboard.vue';
 export default {
   name: "Home",
   setup() {
-    const router = useRouter();
-    router.push('/login-register')
+    const isLoggedIn = ref(false);
     return {
-
-    }
-  }
+        isLoggedIn
+    };
+  },
+  components: { LoginRegister, Dashboard }
 };
 </script>
 <style lang="scss" scoped>

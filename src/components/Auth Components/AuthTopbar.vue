@@ -4,7 +4,7 @@
       <img src="@/assets/poc_logo.svg" alt="">
     </div>
 
-    <router-link :to="{name: 'LoginRegister'}" >
+    <router-link to="/" >
       <h3>
         Back To Home
       </h3>

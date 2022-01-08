@@ -16,11 +16,6 @@ const routes = [
         component: () => import('@/components/ui/PageNotFound.vue')
     },
     {
-        path: '/login-register',
-        name: 'LoginRegister',
-        component: () => import('@/views/LoginRegister.vue'),
-    },
-    {
         path: '/login',
         name: 'Login',
         component: lazyLoadLogin('Login'),

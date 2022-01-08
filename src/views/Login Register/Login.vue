@@ -32,10 +32,9 @@ export default {
   name: 'Login',
   setup() {
     const store = useStore();
-    const user = computed(() => store.state.user)
-    console.log(user.value)
+    // const user = computed(() => store.state.userState.user)
+   
 
-    console.log(user.value.password)
     const userAuthInput = ref({
       phoneNumber: '',
       password: ''

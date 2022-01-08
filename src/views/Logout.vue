@@ -8,8 +8,7 @@ export default {
   name: 'Logout',
   setup() {
     const router = useRouter();
-
-    router.push('/login-register')
+    
   }
 
 }
