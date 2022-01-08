@@ -1,5 +1,6 @@
 <template>
   <div class="login_cont" v-if="currentStep === 'login'">
+    
     <h3>
       Login
     </h3>

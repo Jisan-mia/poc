@@ -58,6 +58,8 @@ export default {
         return;
       } 
 
+      
+
       currentStep.value = 'sendOtp';
     }
 

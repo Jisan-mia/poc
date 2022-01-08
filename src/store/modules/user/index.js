@@ -40,6 +40,8 @@ const actions = {
       throw new Error('could not complete register')
     }
   }
+
+  
 }
 
 const getters = {
