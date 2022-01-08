@@ -5,6 +5,15 @@ const state = {
   user: {
     phone_number: '',
     password: '',
+
+    user:'', // same as phone_number
+    image: '',
+    name:"",
+    email:'',
+    level:'',
+    batch:'',
+    board:'',
+    institution:''
   }
 }
 
@@ -23,6 +32,11 @@ const actions = {
     if(data) {
       context.commit(userMutationTypes.SET_USER , data)
     } else {
+      context.commit(userMutationTypes.SET_USER , {
+        phone_number: '',
+        password: ''
+      })
+
       throw new Error('could not complete register')
     }
   }

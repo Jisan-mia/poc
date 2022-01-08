@@ -2,21 +2,21 @@
   <div class="container">
 
     <div class="img__container">
-      <img :src="imgFile || '/images/placeholderImg2.svg'" alt="">
+      <img :src="userInputs.image || '/images/placeholderImg2.svg'" alt="">
 
       <span>
         <i class="fas fa-edit "></i>
-        <ImgInputModel v-model="imgFile" />
+        <ImgInputModel v-model="userInputs.image" />
       </span>
     </div>
   
 
     <div class="form__area">
-      <input placeholder="Your name*" type="text" class="input__field">
+      <input placeholder="Your name*" type="text" class="input__field" v-model="userInputs.name">
 
-      <input placeholder="Email Address(Optional)" type="email" class="input__field">
+      <input placeholder="Email Address(Optional)" type="email" v-model="userInputs.email" class="input__field">
 
-      <select name="label" id="label" aria-placeholder="Level">
+      <select name="label" id="label" aria-placeholder="Level" v-model="userInputs.level">
         <option value="JSC">JSC</option>
         <option value="SSC">SSC</option>
         <option value="HSC">HSC</option>
@@ -24,20 +24,20 @@
         <option value="A-Label">A-Label</option>
       </select>
 
-      <select name="batch" id="batch">
+      <select name="batch" id="batch" v-model="userInputs.batch">
         <option value="2023">2023</option>
         <option value="2022">2022</option>
         <option value="2021">2021</option>
       </select>
 
 
-      <select name="division" id="division">
+      <select name="division" id="division" v-model="userInputs.board">
         <option value="dhaka">Dhaka</option>
         <option value="sylhet">Sylet</option>
         <option value="comilla">Comilla</option>
       </select>
 
-      <input placeholder="School/Collage" type="text" class="input__field">
+      <input placeholder="School/Collage" v-model="userInputs.institution" type="text" class="input__field">
       <button @click="handleRegisterNewUser" class="edit__btn">Register</button>
 
     </div>
@@ -65,12 +65,23 @@ export default {
         router.push("/dashboard");
     };
     const imgFile = ref(null);
+    const userInputs = ref({
+      user:'',
+      image: '',
+      name:"",
+      email:'',
+      level:'',
+      batch:'',
+      board:'',
+      institution:''
+    })
     watchEffect(() => {
       console.log(imgFile);
     });
     return {
       handleRegisterNewUser,
-      imgFile
+      imgFile,
+      userInputs
     };
   },
   components: { ImgInputModel }
