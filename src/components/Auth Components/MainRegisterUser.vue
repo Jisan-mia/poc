@@ -53,6 +53,8 @@ import { useRouter } from 'vue-router'
 import { watchEffect } from '@vue/runtime-core'
 import ImgInputModel from '../ui/ImgInputModel.vue'
 import CustomSelect from '../ui/CustomSelect.vue'
+import { getNotification } from '../../api/common'
+import { useStore } from 'vuex'
 export default {
   name: "MainRegisterUser",
   props: {
@@ -63,6 +65,7 @@ export default {
   },
   setup(props) {
     const router = useRouter();
+    const store = useStore();
     const imgFile = ref(null);
     const userInputs = ref({
       user:'',
@@ -93,24 +96,26 @@ export default {
       for(let key in userInputs.value) {
         if(userInputs.value[key] == '') {
           if(key == 'email' || key == 'user') {
-            // alert('email/user might be empty')
             continue;
           }
           isError.value = true
-          alert('Please fill the input field ' + key + ' is empty');
+          store.dispatch('notifications/add',getNotification('warning', `${key} is empty`))
           break; 
         }
         else if (key == 'name' && userInputs.value.name.length < 3) {
-          alert('Student name must be at least 3 character')
+          store.dispatch('notifications/add',getNotification('warning', 'Student name must be at least 3 character'))
+
           isError.value = true
           break;
         }
         else if(key == 'email' && !/\S+@\S+\.\S+/.test(userInputs.value['email'])) {
-          alert('Please enter valid email');
+          store.dispatch('notifications/add',getNotification('warning', 'Please enter valid email'))
+          
           isError.value = true
           break;
         } else if(key == 'institution' && userInputs.value.institution.length < 4) {
-          alert('Institution must be at least 4 character');
+          store.dispatch('notifications/add',getNotification('warning', 'Institution must be at least 4 character'))
+
           isError.value = true
           break
         } else {

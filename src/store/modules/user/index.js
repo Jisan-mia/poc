@@ -41,13 +41,14 @@ const actions = {
         message: 'Error registering user'
       }
 
-      context.dispatch('notification/add', notification, {root: true})
+      context.dispatch('notifications/add', notification , {root: true})
       
       throw new Error('could not complete register')
     }
   }
 
 }
+
 
 const getters = {
 

@@ -44,7 +44,7 @@ export default {
     const notificationsState = computed(() => store.state.notifications.notifications)
     const error = ref(null)
 
-    console.log(user.value, notificationsState.value)
+    // console.log(user.value, notificationsState.value)
 
     const userAuthInput = ref({
       phone_number: '',
@@ -55,21 +55,14 @@ export default {
 
 
     const validate = () => {
-      console.log(user.value)
       if(!user.value.phone_number && !user.value.password) {
         // alert('User could not register');
         return;
       } 
-
-      
-
       currentStep.value = 'sendOtp';
     }
 
-    
-    watchEffect(() => {
-      console.log(notificationsState.value)
-    })
+  
     
 
     const handleUserRegister = async () => {
@@ -86,11 +79,9 @@ export default {
           ...userAuthInput.value
         })
 
-
       } catch(err) {
         console.log(err.message);
-        store.dispatch('notifications/add', getNotification('warning', 'User could not register'))
-
+        
         error.value = err.message;
       }
       
