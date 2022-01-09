@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <NotificationContainer />
      <component :is="this.$route.meta.layout || 'div'">
       <router-view />
     </component>
@@ -8,10 +9,11 @@
 
 
 <script>
+import NotificationContainer from "./components/ui/NotificationContainer.vue";
 
 
 export default {
-
+  components: { NotificationContainer }
 }
 </script>
 

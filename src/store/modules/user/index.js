@@ -36,15 +36,16 @@ const actions = {
         phone_number: '',
         password: ''
       })
+      const notification = {
+        type: 'error',
+        message: 'Error registering user'
+      }
+
+      context.dispatch('notification/add', notification, {root: true})
       
       throw new Error('could not complete register')
     }
   }
-
-  
-  
-
-
 
 }
 

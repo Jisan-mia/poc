@@ -1,8 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useStore } from 'vuex';
 import AppLayout from '../layouts/AppLayout.vue'
 import AuthLayout from '../layouts/AuthLayout.vue'
 const lazyLoadExam = (view) => () => import(`@/views/Exam Management/${view}.vue`);
 const lazyLoadLogin = (view) => () => import(`@/views/Login Register/${view}.vue`);
+
+const store = useStore()
 const routes = [
     // general routes
     {
@@ -44,7 +47,8 @@ const routes = [
         name: 'Dashboard',
         component: lazyLoadExam('Dashboard'),
         meta: {
-            layout: AppLayout
+            layout: AppLayout, 
+            requireLogin: true
         }
     },
     {
@@ -52,7 +56,8 @@ const routes = [
         name: 'Exam_Pack',
         component: lazyLoadExam('Exam_Pack'),
         meta: {
-            layout: AppLayout
+            layout: AppLayout, 
+            requireLogin: true
         }
     },
     {
@@ -61,7 +66,8 @@ const routes = [
         component: lazyLoadExam('ExamUnpack'),
         props: true,
         meta: {
-            layout: AppLayout
+            layout: AppLayout, 
+            requireLogin: true
         }
     },
     {
@@ -69,6 +75,10 @@ const routes = [
         name: 'ExamPage',
         component: lazyLoadExam('ExamPage'),
         props: true,
+        meta: {
+            layout: AppLayout, 
+            requireLogin: true
+        }
     },
     
     {
@@ -76,7 +86,8 @@ const routes = [
         name: 'Reporting',
         component: lazyLoadExam('Reporting'),
         meta: {
-            layout: AppLayout
+            layout: AppLayout, 
+            requireLogin: true
         }
     },
     {
@@ -84,7 +95,8 @@ const routes = [
         name: 'SpecificExamReport',
         component: lazyLoadExam('SpecificExamReport'),
         meta: {
-            layout: AppLayout
+            layout: AppLayout, 
+            requireLogin: true
         }
     },
 
@@ -93,7 +105,8 @@ const routes = [
         name: 'EditProfile',
         component: lazyLoadExam('EditProfile'),
         meta: {
-            layout: AppLayout
+            layout: AppLayout, 
+            requireLogin: true
         }
     },
 ]
@@ -108,6 +121,15 @@ const router = createRouter({
 //     const loginViews = () => to.name === 'Login' || to.name === 'Register' || to.name === 'LoginRegister'
 //     if (!loginViews() && !isAuthenticated) next({ name: 'LoginRegister' })
 //     else next()
+// })
+
+// router.beforeEach((to, from, next) => {
+//     const isAuthenticated = computed(() => store.state.user.user.isAuthenticated)
+//     if (to.matched.some(record => record.meta.requireLogin) && !isAuthenticated) {
+//         next('/')
+//     } else {
+//         next()
+//     }
 // })
 
 export default router

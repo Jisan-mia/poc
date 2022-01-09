@@ -33,15 +33,18 @@ import SendOtp from '../../components/Auth Components/SendOtp.vue'
 import MainRegisterUser from '../../components/Auth Components/MainRegisterUser.vue'
 import { useStore } from 'vuex'
 import { watchEffect } from '@vue/runtime-core'
+import { getNotification } from '../../api/common'
+
 export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
   name: 'Register',
   setup() {
     const store = useStore();
     const user = computed(() => store.state.userState.user)
+    const notificationsState = computed(() => store.state.notifications.notifications)
     const error = ref(null)
 
-    console.log(user.value)
+    console.log(user.value, notificationsState.value)
 
     const userAuthInput = ref({
       phone_number: '',
@@ -54,7 +57,7 @@ export default {
     const validate = () => {
       console.log(user.value)
       if(!user.value.phone_number && !user.value.password) {
-        alert('User could not register');
+        // alert('User could not register');
         return;
       } 
 
@@ -63,13 +66,19 @@ export default {
       currentStep.value = 'sendOtp';
     }
 
+    
+    watchEffect(() => {
+      console.log(notificationsState.value)
+    })
+    
+
     const handleUserRegister = async () => {
       // currentStep.value = 'SendOtp'
       if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userAuthInput.value.phone_number)){
-        alert('Phone number not in correct pattern');
+        store.dispatch('notifications/add', getNotification('warning', 'Please enter a valid phone number'))
         return;
-      } else if(!userAuthInput.value.password.length >= 5 ) {
-        alert('Password must be at least 5 character')
+      } else if(userAuthInput.value.password.length < 5 ) {
+        store.dispatch('notifications/add', getNotification('warning', 'Password must be at least 5 character'))
         return;
       } 
       try {
@@ -80,6 +89,8 @@ export default {
 
       } catch(err) {
         console.log(err.message);
+        store.dispatch('notifications/add', getNotification('warning', 'User could not register'))
+
         error.value = err.message;
       }
       
@@ -94,6 +105,7 @@ export default {
       handleUserRegister,
       currentStep,
       user,
+      notificationsState
     }
   }
 }
