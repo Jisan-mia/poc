@@ -31,7 +31,7 @@
         </td>
         <td>
           <span>
-            Average Mark
+            Negative Marking
           </span>
         </td>
       </tr>
@@ -41,35 +41,37 @@
         
 
         <td class="id" > 
-          <router-link :to="{name: 'SpecificExamReport', params: {examId: report.examId}}">
+          <router-link :to="{name: 'SpecificExamReport', params: {examId: cutHash(report.exam_id)}}">
             <span>
-              #{{report.examId}}
+              #{{cutHash(report.exam_id)}}
             </span>
           </router-link>
          
         </td>
         <td class="subject">
-          <router-link :to="{name: 'SpecificExamReport', params: {examId: report.examId}}">
+          <router-link :to="{name: 'SpecificExamReport', params: {examId: cutHash(report.exam_id)}}">
             <span>
-              {{report.subject}}
+              {{report.Exam_name}}
             </span>
           </router-link>
         </td>
         <td>
           <div class="date__time">
-            <span class="date">{{report.date.date}}</span>
-            <span class="time">{{report.date.time}}</span>
+            <span class="date">{{dateF(report.Exam_end_date)}}</span>
+            <span class="time">
+              {{report.Exam_end_time}}
+              </span>
           </div>
         </td>
 
         <td class="highest">
           <span>
-            {{`${report.highest_score.own}/${report.highest_score.max}`}}
+            {{`${report.score}/${report.total_mark}`}}
           </span>
         </td>
         <td class="average">
           <span>
-            {{report.average_mark}}%
+            {{report.negative_marking}}
           </span>
         </td>
       </tr>
@@ -80,11 +82,55 @@
 <script>
 import { computed, onMounted, ref } from '@vue/runtime-core';
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex';
+import dayjs from "dayjs";
+
 export default {
   name: 'ReportingComp',
   setup() {
-    const route = useRoute();
-    const reports = ref([
+    const store = useStore();
+    const isLoading = computed(() => store.state.isLoading);
+
+    const reports = computed(() => store.state.reportingState.reportings)
+    const examLists = computed(() => store.state.examPackState.examLists);
+/*
+    // const reportingExamIds = computed(() => {
+    //   return reportings.value.map(r => r.exam_name);
+    // })
+    // let examReport = ref(null);
+    // if(reportings.value.length !== 0 && examLists.value.length !== 0) {
+    //   const exams = computed(() => examLists.value.map(exam => {
+    //     if(reportingExamIds.value.indexOf(exam.id) != -1) {
+    //       const report = computed(() => reportings.value.filter(r => r.exam_name == exam.id))
+    //       const mainReport = computed(() => Object.assign({}, report.value)[0])
+    //       delete mainReport.value.id
+    //       // console.log(mainReport.value)
+    //         return {
+    //           ...exam,
+    //           ...mainReport.value,
+    //         }
+    //     } else {
+    //       return false;
+    //     }
+    //   }).filter(Boolean))
+
+    //   examReport.value = exams.value
+    // }
+
+    
+
+    // console.log(examReport.value)
+    
+    */
+    const cutHash = computed(() => (id) => id.split('').filter(c => c == '#' ? false : c).join(''))
+    
+    const dateF = computed(() => (date) => {
+      return dayjs(date).format('DD/MM/YYYY');
+    });
+
+
+
+    const reportsd = ref([
       {
         highest_score: {own: 20, max: 30},
 average_mark: 55.33,
@@ -261,7 +307,10 @@ examId: 'HSC2022',
     onMounted(() => {
     })
     return {
-      reports
+      reports,
+      isLoading,
+      cutHash,
+      dateF
     }
   }
 }

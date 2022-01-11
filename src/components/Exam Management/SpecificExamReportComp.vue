@@ -7,14 +7,16 @@
 
         <div class="item1">
           <div class="exam__img">
-            <img src="/images/placeholderImg.svg" alt="">
+            <img :src="'http://www.exam.poc.ac'+currentExam.cover_photo" alt="">
           </div>
         </div>
 
         <div class="item2">
-          <h3>Physics 1s Paper-2</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam excepturi possimus officia porro eius ipsum saepe.</p>
-          <p>10:30 AM | Sunday, 19/10/2021</p>
+          <h3> {{currentExam.Exam_name}}</h3>
+          <p>
+            {{currentExam.details}}
+          </p>
+          <p>{{endTime}} | {{dayName}}, {{endDate}}</p>
         </div>
 
         <div class="item3">
@@ -23,11 +25,15 @@
             <div class="more__info">
               <div class="group">
                 <p class="label">Batch</p>
-                <p class="value">HSC2021</p>
+                <p class="value">
+                  {{currentExam.level}}{{currentExam.batch}}
+                </p>
               </div>
               <div class="group">
                 <p class="label">Exam Pack</p>
-                <p class="value">Elite Exam Mania</p>
+                <p class="value">
+                  {{currentExamPack.ExamPack_name}}
+                </p>
               </div>
             </div>
           </div>
@@ -37,15 +43,24 @@
             <div class="more__info mark__info">
               <div class="group">
                 <p class="label">Total Mark</p>
-                <p class="value">30</p>
+                <p class="value">
+                   {{currentExam.total_mark}}
+                  
+                </p>
               </div>
               <div class="group">
                 <p class="label">Per Question Mark</p>
-                <p class="value">1</p>
+                <p class="value">
+              {{currentExam.mark_per_question}}
+
+                </p>
               </div>
               <div class="group">
                 <p class="label">Pass Mark</p>
-                <p class="value">12.5</p>
+                <p class="value">
+              {{currentExam.pass_mark}}
+
+                </p>
               </div>
             </div>
           </div>
@@ -56,9 +71,9 @@
           <h3>Your Performance</h3>
 
           <div class="infos">
-            <p>Score: 25/30</p>
-            <p>Timestamp: 10:20 pm</p>
-            <p>Negative Marketing: -5</p>
+            <p>Score: {{currentExam.score}}/{{currentExam.total_mark}}</p>
+            <p>Timestamp: {{currentExam.timestamp}}</p>
+            <p>Negative Marketing: {{currentExam.negative_marking}}</p>
           </div>
 
           <button class="view__btn">
@@ -162,12 +177,51 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from '@vue/runtime-core';
+import { computed, onMounted, ref, watchEffect } from '@vue/runtime-core';
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex';
+import dayjs from 'dayjs';
 export default {
   name: 'SpecificExamReportComp',
   setup() {
     const route = useRoute();
+    const store = useStore();
+    const examPacks = computed(() => store.state.examPackState.examPacks)
+    const examLists = computed(() => store.state.reportingState.reportings)
+
+
+    console.log(examPacks.value,examLists.value )
+    const { examId } = route.params;
+    console.log({examId})
+
+
+    const currentExam = computed(() => examLists.value.find(exam => exam.exam_id == `#${examId}`));
+
+    watchEffect(async () => {
+      try{
+        await store.dispatch('reportingState/loadSpecificReports', currentExam.value.Exam_name);
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.id));
+    console.log(currentExamPack.value)
+
+
+
+    const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format('DD/MM/YYYY'))
+    const endTime = currentExam.value.Exam_end_time;
+    
+    const days = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+    const dayNum = computed(() => dayjs(endDate.value).day())
+
+// days[dayNum.value]
+    console.log(dayNum.value)
+    const dayName = days.value[dayNum.value]
+    console.log(dayName)
+
+
     const specificExamReports = ref([
       {
         scores: {own: 25, max: 30},
@@ -351,7 +405,13 @@ export default {
     onMounted(() => {
     })
     return {
-      specificExamReports
+      specificExamReports,
+      currentExam,
+      currentExamPack,
+      endDate,
+      endTime,
+      dayName,
+
     }
   }
 }
@@ -526,8 +586,14 @@ table {
       border-radius: 18px;
       width: 100%;
       height: 140px;
+      overflow: hidden;
+
       img{
-        max-width: 75px;
+        width: 100%;
+        height: 100%;
+        border-radius: 18px;
+        object-fit: cover;
+        background-position: center center;
       }
     }
 

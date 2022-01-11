@@ -4,7 +4,15 @@
       <img src="@/assets/poc_logo.svg" alt="">
     </div>
 
-    <Timer />
+    <Counter
+      :year="2022"
+      :month="0"
+      :date="11"
+      :hour="20"
+      :minute="0"
+      :second="0"
+      :millisecond="0"
+     />
       
   </header>
 </template>
@@ -13,7 +21,7 @@
 import { computed, ref } from '@vue/reactivity';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
-import Timer from '../ui/Timer.vue';
+import Counter from '../ui/Counter.vue';
 export default {
   name: "ExamPageTopBar",
   setup() {
@@ -34,7 +42,7 @@ export default {
         exam_total_time,
     };
   },
-  components: { Timer }
+  components: { Counter }
 }
 </script>
 

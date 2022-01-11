@@ -2,7 +2,10 @@
   <div class="app-container">
     <Sidebar />
     <main class="main">
-      <slot />
+      <span v-if="isLoading">
+        loading..
+      </span>
+      <slot v-else/>
     </main>
   </div>
   
@@ -19,12 +22,19 @@ export default {
    setup() {
     const store = useStore(); 
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
+    const isLoading = computed(() => store.state.isLoading);
+
+
+    store.commit('setIsLoading', true)
 
     watchEffect(async () => {
       if(isAuthenticated.value) {
         try{
           await store.dispatch('examPackState/loadExamPacks');
           await store.dispatch('examPackState/loadExamLists');
+          await store.dispatch('reportingState/loadStudentReporting')
+          store.commit('setIsLoading', false)
+
         }
         catch(error) {
           console.log(error)
@@ -34,7 +44,7 @@ export default {
 
 
     return {
-      
+      isLoading
     }
   }
 }

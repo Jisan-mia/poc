@@ -4,9 +4,9 @@
       ...
     </span>
     <span v-else>
-    <ExamPageTopBar />
-    <ExamPageExamDetail />
-    <ShowAllExamQuestions />
+      <ExamPageTopBar />
+      <ExamPageExamDetail />
+      <ShowAllExamQuestions />
 
     </span>
   </div>

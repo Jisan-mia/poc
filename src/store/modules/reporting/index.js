@@ -2,12 +2,17 @@ import reportingApi from "../../../api/reportingApi"
 import { reportingMutationsTypes } from "./reporting.mutationTypes"
 
 const state = {
-  reportings: []
+  reportings: [],
+  specificReportings: [],
 }
 
 const mutations = {
   [reportingMutationsTypes.LOAD_STUDENT_REPORTING](state, payload) {
     state.reportings = payload
+    console.log(state)
+  },
+  [reportingMutationsTypes.LOAD_SPECIFIC_REPORTING](state, payload) {
+    state.specificReportings = payload;
     console.log(state)
   }
 }
@@ -19,7 +24,32 @@ const actions = {
     const data = await res.data;
 
     if(data) {
-      context.commit(reportingMutationsTypes.LOAD_STUDENT_REPORTING, data)
+      console.log(context.rootState.examPackState.examLists, data)
+
+      const reportings = data;
+      const examLists = context.rootState.examPackState.examLists;
+      if(context.rootState.examPackState.examLists.length !== 0 && reportings.length !== 0) {
+        const reportingExamIds = reportings.map(r => r.exam_name);
+        // console.log(reportingExamIds)
+
+        const examReports = examLists.map(exam => {
+          if(reportingExamIds.indexOf(exam.id) != -1) {
+            const report = reportings.filter(r => r.exam_name == exam.id)
+            const mainReport = Object.assign({}, report)[0]
+            delete mainReport.id
+            // console.log(mainReport.value)
+              return {
+                ...exam,
+                ...mainReport,
+              }
+          } else {
+            return false;
+          }
+        }).filter(Boolean)
+        // console.log(examReports)
+        context.commit(reportingMutationsTypes.LOAD_STUDENT_REPORTING, examReports);
+      }
+
     } else {
       const notification = {
         type: 'error',
@@ -31,6 +61,26 @@ const actions = {
       throw new Error('could not get student reporting')
     }
   },
+  async loadSpecificReports(context, exam_name) {
+    console.log(exam_name)
+    const res = await reportingApi.getSpecificReporting(exam_name);
+    console.log(res);
+    const data = await res.data;
+
+    if(data) {
+      context.commit(reportingMutationsTypes.LOAD_SPECIFIC_REPORTING, data)
+    } else {
+      const notification = {
+        type: 'error',
+        message: 'Error getting specific report'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+      
+      throw new Error('could not get specific report');
+    }
+  }
+
 }
 
 
