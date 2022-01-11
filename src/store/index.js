@@ -21,6 +21,6 @@ export default createStore({
     userState: user,
     notifications: notifications,
     examPackState: examPack,
-    reporting: reporting
+    reportingState: reporting
   }
 })

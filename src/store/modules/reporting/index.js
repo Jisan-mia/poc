@@ -2,12 +2,12 @@ import reportingApi from "../../../api/reportingApi"
 import { reportingMutationsTypes } from "./reporting.mutationTypes"
 
 const state = {
-  reportingS: []
+  reportings: []
 }
 
 const mutations = {
   [reportingMutationsTypes.LOAD_STUDENT_REPORTING](state, payload) {
-    state.reportingS = payload
+    state.reportings = payload
     console.log(state)
   }
 }
@@ -17,10 +17,9 @@ const actions = {
     const res = await reportingApi.getStudentReporting();
     console.log(res)
     const data = await res.data;
-    context.dispatch('notifications/add', {type: 'info', message:'getting getting Student Reporting'} , {root: true})
 
     if(data) {
-      context.commit(examPackMutationTypes.LOAD_EXAMPACK, data)
+      context.commit(reportingMutationsTypes.LOAD_STUDENT_REPORTING, data)
     } else {
       const notification = {
         type: 'error',

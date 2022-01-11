@@ -4,44 +4,37 @@
       <img src="@/assets/poc_logo.svg" alt="">
     </div>
 
-      <div class="timer">
-        <p>Time Remaining</p>
-        <h3>
-          <span>00</span><span>:</span><span>{{exam_total_time}}</span><span>:</span><span>00</span>
-        </h3>
-      </div>
+    <Timer />
+      
   </header>
 </template>
 
 <script>
-import { computed } from '@vue/reactivity';
+import { computed, ref } from '@vue/reactivity';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
+import Timer from '../ui/Timer.vue';
 export default {
-  name: 'ExamPageTopBar',
+  name: "ExamPageTopBar",
   setup() {
     const route = useRoute();
     const store = useStore();
-    const examPacks = computed(() => store.state.examPackState.examPacks)
-    const examLists = computed(() => store.state.examPackState.examLists)
-
-
-    console.log(examPacks.value,examLists.value )
+    const examPacks = computed(() => store.state.examPackState.examPacks);
+    const examLists = computed(() => store.state.examPackState.examLists);
+    console.log(examPacks.value, examLists.value);
     const { id } = route.params;
-    console.log({id})
-    console.log(examLists.value)
-
-    const currentExam = computed(() => examLists.value.find(exam => exam.id == id))
-
-
+    console.log({ id });
+    console.log(examLists.value);
+    const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
     // all we need in this component is totalTime
-    const {exam_total_time} = currentExam.value
-    console.log(exam_total_time)
+    const { exam_total_time } = currentExam.value;
+    console.log(exam_total_time);
 
     return {
-      exam_total_time
-    }
-  }
+        exam_total_time,
+    };
+  },
+  components: { Timer }
 }
 </script>
 
@@ -66,31 +59,7 @@ header {
     }
   }
 
-  .timer {
-background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
-    color: #fff;
-    padding: 0.9rem 1rem;
-    border-radius: 14px;
-    
-    text-align: center;
-
-    p{
-      font-size: 0.71rem;
-      font-weight: 500;
-      margin-bottom: 0.4rem;
-    }
-    h3 span{
-      font-weight: 800;
-      font-size: 1.5rem;
-      line-height: 24px;
-      letter-spacing: 0.5px;
-      margin: 0.1rem;
-      @include maxMedia(500px) {
-        font-size: 1.3rem;
-         line-height: 1.5rem;
-      }
-    }
-  }
+  
   
 }
 </style>
