@@ -9,14 +9,20 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
 import ShowQuestionTypeA from './Show Exam Questions/ShowQuestionTypeA.vue'
 import ShowQuestionTypeB from './Show Exam Questions/ShowQuestionTypeB.vue';
 import ShowQuestionTypeC from './Show Exam Questions/ShowQuestionTypeC.vue';
+import { useStore } from 'vuex';
 export default {
   name: "ShowAllExamQuestions",
   setup() {
-  const examAllQuestions = ref([
+    const store = useStore();
+
+    const examAllQuestionsD = computed(() => store.state.examPackState.examQuestions)
+    console.log(examAllQuestionsD.value)
+
+    const examAllQuestions = ref([
     {
       id: 1,
       questionNo: 1,

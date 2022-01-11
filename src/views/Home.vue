@@ -5,9 +5,8 @@
       </h2>
     </router-link> -->
 
-      <LoginRegister v-if="!isLoggedIn"/>
+      <LoginRegister v-if="!isAuthenticated"/>
 
-      <Dashboard v-else-if="isLoggedIn"/>
 </template>
 
 <script>
@@ -15,12 +14,21 @@ import { ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
 import LoginRegister from './LoginRegister.vue';
 import Dashboard from './Exam Management/Dashboard.vue';
+import { useStore } from 'vuex';
 export default {
   name: "Home",
   setup() {
-    const isLoggedIn = ref(false);
+    const store = useStore();
+    const router = useRouter();
+    const isAuthenticated = store.state.userState.user.isAuthenticated;
+    
+    if(isAuthenticated.value) {
+      router.push('/dashboard');
+    }
+    
+    
     return {
-        isLoggedIn
+        isAuthenticated
     };
   },
   components: { LoginRegister, Dashboard }

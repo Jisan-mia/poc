@@ -39,6 +39,7 @@ export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
   name: 'Register',
   setup() {
+    
     const store = useStore();
     const user = computed(() => store.state.userState.user)
     const notificationsState = computed(() => store.state.notifications.notifications)
@@ -51,15 +52,14 @@ export default {
       password: ''
     })
     const currentStep = ref('register')
-
-
+    
 
     const validate = () => {
-      if(!user.value.phone_number && !user.value.password) {
+      if(!user.value.phone_number && !user.value.password && !user.isAuthenticated) {
         // alert('User could not register');
         return;
       } 
-      currentStep.value = 'sendOtp';
+      currentStep.value = 'sendOtp'
     }
 
   
@@ -81,7 +81,6 @@ export default {
 
       } catch(err) {
         console.log(err.message);
-        
         error.value = err.message;
       }
       

@@ -1,5 +1,5 @@
 <template>
-  <AllExamPack @examPackClick="handleExamPackClick" />
+  <AllExamPack />
 </template>
 
 <script>
@@ -12,14 +12,8 @@ export default {
   name: 'Exam_Pack',
   setup() {
     const router = useRouter()
-    const handleExamPackClick = (examPack) => {
-      alert(JSON.stringify(examPack))
-      router.push('/exam-pack/pack-title')
-    }
-
 
     return {
-      handleExamPackClick
     }
   }
 }

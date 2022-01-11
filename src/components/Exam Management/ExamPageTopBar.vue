@@ -7,15 +7,41 @@
       <div class="timer">
         <p>Time Remaining</p>
         <h3>
-          <span>00</span><span>:</span><span>10</span><span>:</span><span>00</span>
+          <span>00</span><span>:</span><span>{{exam_total_time}}</span><span>:</span><span>00</span>
         </h3>
       </div>
   </header>
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex';
 export default {
-  name: 'ExamPageTopBar'
+  name: 'ExamPageTopBar',
+  setup() {
+    const route = useRoute();
+    const store = useStore();
+    const examPacks = computed(() => store.state.examPackState.examPacks)
+    const examLists = computed(() => store.state.examPackState.examLists)
+
+
+    console.log(examPacks.value,examLists.value )
+    const { id } = route.params;
+    console.log({id})
+    console.log(examLists.value)
+
+    const currentExam = computed(() => examLists.value.find(exam => exam.id == id))
+
+
+    // all we need in this component is totalTime
+    const {exam_total_time} = currentExam.value
+    console.log(exam_total_time)
+
+    return {
+      exam_total_time
+    }
+  }
 }
 </script>
 

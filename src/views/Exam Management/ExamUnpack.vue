@@ -6,31 +6,34 @@
       <th>Data & Time</th>
     </thead> -->
 
-    <tbody>
+    <span v-if="!exams.length">
+      This exam pack has no exam..
+    </span>
+
+    <tbody v-else>
       <tr>
         <th>Exam ID</th>
         <th>Subject</th>
         <th>Data & Time</th>
       </tr>
-      
 
       <tr v-for="exam in exams" :key="exam.id">
         <td class="id"> 
-          <router-link :to="{name: 'ExamPage', params: {examId: exam.examId}}">
+          <router-link :to="{name: 'ExamPage', params: {id: exam.id }}" target="_blank">
             <span>
-              #{{exam.examId}} 
+              #{{cutHash(exam.exam_id)}} 
             </span>
           </router-link>
            </td>
         <td class="subject">
           <span>
-            {{exam.subject}}
+            {{exam.Exam_name}}
           </span>
         </td>
         <td>
           <div class="date__time">
-            <span class="date">{{exam.date.date}}</span>
-            <span class="time">{{exam.date.time}}</span>
+            <span class="date">{{dateF(exam.Exam_start_date)}}</span>
+            <span class="time">{{exam.Exam_start_time}}</span>
           </div>
         </td>
       </tr>
@@ -39,13 +42,29 @@
 </template>
 
 <script>
-import { onMounted, ref } from '@vue/runtime-core';
-import { useRoute } from 'vue-router'
+import { computed, onMounted, ref } from '@vue/runtime-core';
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex';
+import dayjs from "dayjs";
 export default {
   name: 'ExamUnpack',
   setup() {
     const route = useRoute();
-    const exams = ref([
+    const store = useStore();
+    const examLists = computed(() => store.state.examPackState.examLists);
+    const { packId } = route.params;
+
+    const exams = computed(() =>  examLists.value.filter(exam => exam.exam_pack == packId))
+    console.log(packId, exams.value)
+    
+    const cutHash = computed(() => (id) => id.split('').filter(c => c == '#' ? false : c).join(''))
+    
+    const dateF = computed(() => (date) => {
+      return dayjs(date).format('DD/MM/YYYY');
+    });
+
+
+    const examsDemo = ref([
       {
         examId: 'HSC2022',
         subject: 'Physics 1st Paper',
@@ -183,8 +202,11 @@ export default {
     ])
     onMounted(() => {
     })
+
     return {
-      exams
+      exams,
+      cutHash,
+      dateF,
     }
   }
 }

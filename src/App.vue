@@ -9,11 +9,20 @@
 
 
 <script>
+import { useStore } from 'vuex';
 import NotificationContainer from "./components/ui/NotificationContainer.vue";
 
 
 export default {
-  components: { NotificationContainer }
+  components: { NotificationContainer },
+  setup() {
+    const store = useStore();
+    store.commit('userState/initializeStore')
+
+    return {
+
+    }
+  }
 }
 </script>
 

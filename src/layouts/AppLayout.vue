@@ -9,10 +9,34 @@
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
+import { useStore } from 'vuex'
 import Sidebar from '../components/sidebar/Sidebar.vue'
+import { watchEffect } from '@vue/runtime-core';
 export default {
   components: { Sidebar },
   name: 'AppLayout',
+   setup() {
+    const store = useStore(); 
+    const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
+
+    watchEffect(async () => {
+      if(isAuthenticated.value) {
+        try{
+          await store.dispatch('examPackState/loadExamPacks');
+          await store.dispatch('examPackState/loadExamLists');
+        }
+        catch(error) {
+          console.log(error)
+        }
+      }
+    })
+
+
+    return {
+      
+    }
+  }
 }
 </script>
 

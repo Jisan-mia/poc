@@ -36,8 +36,17 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
 export default {
   name: "EditProfile",
+  setup() {
+    const store = useStore();
+    console.log(store, 'from edit profile')
+
+    return {
+
+    }
+  }
   
 }
 </script>

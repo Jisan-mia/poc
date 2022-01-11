@@ -31,7 +31,7 @@ export default {
       let input = this.$refs.fileInput
       let file = input.files
       if (file && file[0]) {
-        let reader = new FileReader
+        let reader = new FileReader()
         reader.onload = e => {
           this.previewImage = e.target.result
           this.$emit('input', e.target.result)

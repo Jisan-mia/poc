@@ -1,11 +1,14 @@
 <template>
  
     <div class="img__container" :class="[outline ? 'notOutlined' : 'outlined']">
-      <img src="/images/placeholderImg.svg" alt="">
+      <img :src="'http://www.exam.poc.ac'+examPack.pack_image" alt="Exam Pack Image">
     </div>
     <div class="text">
-      <h3 @click="$emit('examPackClick', examPack)"> {{examPack.title}} </h3> 
-
+      <router-link :to="{name: 'ExamUnpack', params: {packId: examPack.id}}" >
+        <h3> 
+        {{examPack.ExamPack_name}} 
+      </h3> 
+      </router-link>
       <p>
         Batch {{examPack.batch}} 
       </p>
@@ -15,14 +18,20 @@
 <script>
 export default {
   name: "ExamPackCard",
-  props: ['examPack', 'outline', 'isExam'],
+  props: {
+    examPack: {
+      type: Object
+    },
+    outline: {
+      type: Boolean
+    }
+
+  },
   emits: ['examPackClick'],
   setup(props) {
-     const examPack = props.examPack
-    const titleToUrl = title => title.trim().toLowerCase().split(' ').join('-')
+    const examPack = props.examPack;
+    // console.log(examPack)
     return {
-      examPack,
-      titleToUrl
     }
   }
 }
@@ -43,9 +52,14 @@ export default {
     align-items: center;
     width: 100%;
     height: 180px;
+    overflow: hidden;
   }
   .img__container img{
-    max-width: 77px;
+    width: 100%;
+    height: 100%;
+    border-radius: 23px;
+    object-fit: cover;
+    background-position: center center;
   }
   .text{
     text-align: left;

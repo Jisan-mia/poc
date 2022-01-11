@@ -25,7 +25,7 @@ setup(props, ctx){
   const fadeOutClass = ref('')
 
   const notificationTypeClass = computed(() => `${props.notification.type} fade-in-down`);
-  console.log(notificationTypeClass.value)
+  // console.log(notificationTypeClass.value)
 
   const timeout = ref(null);
   onMounted(() => {

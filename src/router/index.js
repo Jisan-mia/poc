@@ -1,11 +1,12 @@
+import { computed } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router'
 import { useStore } from 'vuex';
 import AppLayout from '../layouts/AppLayout.vue'
 import AuthLayout from '../layouts/AuthLayout.vue'
+import store from '../store';
 const lazyLoadExam = (view) => () => import(`@/views/Exam Management/${view}.vue`);
 const lazyLoadLogin = (view) => () => import(`@/views/Login Register/${view}.vue`);
 
-const store = useStore()
 const routes = [
     // general routes
     {
@@ -61,7 +62,7 @@ const routes = [
         }
     },
     {
-        path: '/exam-pack/:packTitle',
+        path: '/exam-pack/:packId',
         name: 'ExamUnpack',
         component: lazyLoadExam('ExamUnpack'),
         props: true,
@@ -71,12 +72,11 @@ const routes = [
         }
     },
     {
-        path: '/exam/:examId',
+        path: '/exam/:id',
         name: 'ExamPage',
         component: lazyLoadExam('ExamPage'),
         props: true,
         meta: {
-            layout: AppLayout, 
             requireLogin: true
         }
     },
@@ -123,13 +123,14 @@ const router = createRouter({
 //     else next()
 // })
 
-// router.beforeEach((to, from, next) => {
-//     const isAuthenticated = computed(() => store.state.user.user.isAuthenticated)
-//     if (to.matched.some(record => record.meta.requireLogin) && !isAuthenticated) {
-//         next('/')
-//     } else {
-//         next()
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
+    
+    if (to.matched.some(record => record.meta.requireLogin) && !isAuthenticated.value) {
+        next('/')
+    } else {
+        next()
+    }
+})
 
 export default router

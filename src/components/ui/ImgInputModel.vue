@@ -10,7 +10,7 @@ export default {
       const input = event.target;
       let file = input.files
       if (file && file[0]) {
-        let reader = new FileReader
+        let reader = new FileReader();
         reader.onload = e => {
           ctx.emit('update:modelValue', e.target.result)
           console.log(e.target.result)

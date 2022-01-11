@@ -1,25 +1,20 @@
 <template>
 <div>
   <div class="container">
-    <div class="wrapper">
-      <CustomAdminBtn v-if="isAdmin"  type="info" icon="fas fa-plus" @onClick="this.$emit('handleAddExamPack')" >
-       <span> Add Exam Pack </span>
-      </CustomAdminBtn>
-    </div>
   <div class="pack_container">
     <div v-for="examPack in examPacks" :key="examPack.id"  class="card" >
-      <ExamPackCard :outline="isAdmin" @examPackClick="onExamPackClick" :examPack="examPack"/>
+      <ExamPackCard :examPack="examPack"/>
     </div>
     </div>
   </div>
 </div>
 </template>
 <script>
-import { ref } from '@vue/reactivity'
-import getExamList from '../../api/examPackApi'
+import { computed, ref } from '@vue/reactivity'
 import ExamPackCard from '../../components/Exam Management/ExamPackCard.vue'
 import { useRoute, useRouter } from 'vue-router'
 import CustomAdminBtn from '../ui/CustomAdminBtn.vue'
+import { useStore } from 'vuex'
 
 export default {
   name: "AllExamPack",
@@ -31,102 +26,47 @@ export default {
     CustomAdminBtn
 },
   setup(props, ctx) {
-      const examPacks = ref([
-        {
-          id: 1, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 2, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 3, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 4, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 5, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 6, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 7, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        },{
-          id: 8, 
-          title: 'Elite Exam Mania',
-          detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
-          label: 'HSC',
-          batch: '2021',
-          image: ''
-        }
-      ])
-      
-      const isAdmin = ref(false);
-      const route = useRoute();
-      const router = useRouter();
-      isAdmin.value = route.path.includes('admin');
+    const store = useStore();
+    const examPacks = computed(() => store.state.examPackState.examPacks);
+    console.log(examPacks.value)
 
-      const onExamPackClick = (examPack) => {
-        // console.log('clicked', examPack)
-        ctx.emit('examPackClick', examPack)
-      }
+    const examPackss = ref([
+      {
+        id: 1, 
+        ExamPack_name: 'Elite Exam Mania',
+        detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+        label: 'HSC',
+        batch: '2021',
+        image: '/images/placeholder.svg'
 
-      const {examList, error, loadExamList} = getExamList();
-      const url = "http://www.exam.poc.ac/api/list_examPack"
-      function apiFetch(){
-          fetch(url)
-          .then(res => res.json())
-          .then(data => {
-              console.log(data)
-          })
-      }
-      // apiFetch();
-      // onMounted(() => {
+      },{
+        id: 2, 
+        ExamPack_name: 'Elite Exam Mania',
+        detail: "lorem lorem ipsum lorem ipsum concetre lorem ipsum conscentre. these are dummy text. but these text seems meaningfull in first seen, later on we understand these words/sentence has no meaning. It's really funny, is'nt it? Yeah, I think so.",
+        label: 'HSC',
+        batch: '2021',
+        image: '/images/placeholder.svg'
+      },
+    ])
+    
+    const isAdmin = ref(false);
+    const route = useRoute();
+    const router = useRouter();
+    isAdmin.value = route.path.includes('admin');
 
-      // })
 
-      return {
-        examPacks,
-        isAdmin,
-        onExamPackClick
-      }
+    return {
+      examPacks,
+      isAdmin,
+    }
   }
 }
 
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/styles/config.scss';
 
 .container{
   display: flex;
@@ -141,12 +81,16 @@ export default {
 .pack_container{
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
   grid-template-rows: max-content;
   grid-auto-rows: max-content;
   grid-gap:2rem 1.2em;
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
+  @include maxMedia(980px) {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    justify-content: center
+  }
 }
 .pack_container::after{
   content: "";

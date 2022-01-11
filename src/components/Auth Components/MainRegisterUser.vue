@@ -7,7 +7,7 @@
 
       <span>
         <i class="fas fa-edit "></i>
-        <ImgInputModel v-model="userInputs.image" />
+        <ImgInputModel v-model="userInputs.image"/>
       </span>
     </div>
   
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
 import { watchEffect } from '@vue/runtime-core'
 import ImgInputModel from '../ui/ImgInputModel.vue'
@@ -64,8 +64,10 @@ export default {
     }
   },
   setup(props) {
+
     const router = useRouter();
     const store = useStore();
+    const userPhoneNum = computed(() => store.state.userState.user.phone_number)
     const imgFile = ref(null);
     const userInputs = ref({
       user:'',
@@ -77,21 +79,26 @@ export default {
       board:'',
       institution:''
     })
+
+    
+    
+    userInputs.value = {
+      ...userInputs.value,
+      user: userPhoneNum.value
+    }
         
     const levelOptions = ref(['JSC', 'SSC', 'HSC', 'O-Level', 'A-Level'])
     const batchOptions = ref(['2021', '2022', '2023'])
     const boardOptions = ref(['Dhaka', 'Shylet', 'Comilla'])
     const selectStyle = ref({
-          borderRadius: '1.1rem',
-          outline: 'none',
-          fontSize: '1.1rem',
-          padding: '1rem 1.1rem',
-          border: '1.5px solid #00D4FE'
-        })
-    watchEffect(() => {
-      console.log(imgFile);
-    });
-    const handleRegisterNewUser = () => {
+      borderRadius: '1.1rem',
+      outline: 'none',
+      fontSize: '1.1rem',
+      padding: '1rem 1.1rem',
+      border: '1.5px solid #00D4FE'
+    })
+   
+    const handleRegisterNewUser = async () => {
       const isError = ref(false)
       for(let key in userInputs.value) {
         if(userInputs.value[key] == '') {
@@ -128,12 +135,14 @@ export default {
         return;
       }
 
-      
-
-
-
-
-      
+      try {
+        await store.dispatch('userState/registerStudent', {
+          ...userInputs.value
+        })
+      } 
+      catch(err) {
+        console.log(err)
+      }
 
 
         // router.push("/dashboard");
@@ -149,7 +158,7 @@ export default {
       levelOptions,
       batchOptions,
       boardOptions,
-      selectStyle
+      selectStyle,
     };
   },
   components: { ImgInputModel, CustomSelect }
