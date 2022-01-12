@@ -46,16 +46,8 @@ export default {
     store.commit('setIsLoading', true)
 
 
-    const isEnded = ref(false)
-    onBeforeMount(() => {
-      if(isAuthenticated.value) {
-        // check if that exam has ended
-
-      } else {
-        router.push('/')
-        isEnded.value = true;
-      }
-    })
+    const isEnded = ref(false);
+    
     onMounted(async () => {
       if(isEnded.value) {
         return;
@@ -64,20 +56,29 @@ export default {
           try{
             await store.dispatch('examPackState/loadExamPacks');
             await store.dispatch('examPackState/loadExamLists');
-            await store.dispatch('examPackState/loadExamQuestions', id)
+            await store.dispatch('examPackState/loadExamQuestions', id);
+            store.commit('setIsLoading', false)
+
+            const examLists = computed(() => store.state.examPackState.examLists)
+
+            const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
+            
+
+            if(currentExam.value) {
+              if(currentExam.value.isNotYetStarted) {
+                console.log('not yet started')
+              } else if(currentExam.value.isExpired) {
+                console.log('exam time expired')
+              }
+            }
           }
           catch(error) {
             console.log(error)
           }
+        } else {
+          router.push('/')
         }
       }
-    console.log('mounted');
-      
-    store.commit('setIsLoading', false)
-
-    console.log(isLoading.value)
-
-      console.log(isAuthenticated.value)
     })
     
     

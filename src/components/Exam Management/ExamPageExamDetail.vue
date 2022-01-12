@@ -14,7 +14,7 @@
       <p>
         {{currentExam.details}}
       </p>
-      <p>{{timeF(currentExam.Exam_end_time, currentExam.Exam_end_date)}} | {{dayName}}, {{endDate}}</p>
+      <p>{{timeF(currentExam.Exam_end_date,currentExam.Exam_end_time)}} | {{dayName}}, {{endDate}}</p>
     </div>
 
     <div class="item3">
