@@ -7,7 +7,7 @@
 
         <div class="item1">
           <div class="exam__img">
-            <img :src="'http://www.exam.poc.ac'+currentExam.cover_photo" alt="">
+            <img :src="currentExam.cover_photo" alt="">
           </div>
         </div>
 
@@ -92,19 +92,21 @@
     </div>
 
     <div class="header__input">
-      <input v-model="phoneSearch" type="text" placeholder="Search With Phone Number" name="" id="">
-      <button :class="selectedFilter === 'highToLow' && 'selected' " @click="handleSelectFilter('highToLow')">
+      <input v-model="phoneSearch" type="text" placeholder="Search With Name" name="" id=""> <!--phone number was-->
+      <button :class="{selected: isActive}"  @click="handleSelectFilter('highToLow')">
         Filter High To Low
       </button>
-      <button :class="selectedFilter === 'lowToHigh' && 'selected' " @click="handleSelectFilter('lowToHigh')">
+      <button :class="{selected: isActive2}" @click="handleSelectFilter('lowToHigh')">
         Filter Low To High
       </button>
      
-     <button :class="selectedFilter === 'timestamp' && 'selected' " @click="handleSelectFilter('timestamp')"> 
+     <button :class="{selected: isActive3}" @click="handleSelectFilter('timestamp')"> 
         Timestamp
       </button>
 
       <select name="" id="" placeholder="Filter with Board" v-model="boardSelected">
+        <option selected disabled value="">Filter by Board</option>
+        <option value="all">All Board</option>
         <option value="dhaka">Dhaka</option>
         <option value="chittagong">Chittagong</option>
         <option value="sylhet">Sylhet</option>
@@ -207,16 +209,11 @@ export default {
 
     const examPacks = computed(() => store.state.examPackState.examPacks);
     const examLists = computed(() => store.state.reportingState.reportings);
-    const specificReports = computed(() => store.state.reportingState.specificReportings);
+    const specificReportsState = computed(() => store.state.reportingState.specificReportings);
     
     const { examId } = route.params;
     console.log({ examId });
-
-    const handleSelectFilter = (type) => {
-      selectedFilter.value = type
-    }
-
-
+    // search current exam by route examId
     const currentExam = computed(() => examLists.value.find(exam => exam.exam_id == `#${examId}`));
     watchEffect(async () => {
       try {
@@ -227,7 +224,74 @@ export default {
       }
     });
 
-    const currentExamPack = computed(() => examPacks.value.find(pack => pack.id == currentExam.value.id));
+    const specificReports = computed(() => {
+      if(phoneSearch.value || boardSelected.value || selectedFilter.value) {
+        let specificReportsMain = ref(specificReportsState.value);
+        if(phoneSearch.value) {
+           specificReportsMain.value = specificReportsMain.value.filter(report => {
+            return phoneSearch.value.toLowerCase().split(' ').every(v => report.name.toLowerCase().includes(v)) 
+          })
+        } 
+        if(selectedFilter.value) {
+          if(selectedFilter.value === 'highToLow') {
+            specificReportsMain.value.sort((a, b) => b.score - a.score);
+            
+          } else if(selectedFilter.value === 'lowToHigh') {
+            specificReportsMain.value.sort((a, b) => a.score - b.score)
+          } else if(selectedFilter.value === 'timestamp') {
+            specificReportsMain.value.sort((a, b) => b.timestamp - a.timestamp);
+          }
+        }
+        if(boardSelected.value) {
+            return specificReportsMain.value.filter(report => {
+              if(boardSelected.value == 'all') return report
+              return report.board.toLowerCase().includes(boardSelected.value.toLowerCase())
+          })
+        }
+        return specificReportsMain.value
+
+      } else {
+        return specificReportsState.value.sort((a,b) => a.rank - b.rank)
+      }
+    })
+
+
+
+    const isActive = ref(false)
+    const isActive2 = ref(false)
+    const isActive3 = ref(false)
+
+    // selected filter from 3 button
+    const handleSelectFilter = (type) => {
+      selectedFilter.value = type;
+      if(type == 'highToLow') {
+        isActive.value = !isActive.value;
+        isActive2.value = false
+        isActive3.value = false
+        if(!isActive.value) {
+          selectedFilter.value = ''
+        }
+      } else if(type === 'lowToHigh') {
+        isActive.value = false
+        isActive2.value = !isActive2.value
+        if(!isActive2.value) {
+          selectedFilter.value = ''
+        }
+        isActive3.value = false
+      } else if(type === 'timestamp')  {
+        isActive.value = false
+        isActive2.value = false
+        isActive3.value = !isActive3.value
+        if(!isActive3.value) {
+          selectedFilter.value = ''
+        }
+      }
+    }
+
+    // exam pack for current exam
+
+    const currentExamPack = computed(() => examPacks.value.find(pack => pack.id == currentExam.value.exam_pack));
+    console.log(currentExam.value)
     console.log(currentExamPack.value);
     const timeF = computed(() => (date, time) => {
       const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
@@ -258,7 +322,10 @@ export default {
       selectedFilter,
       handleSelectFilter,
       boardSelected,
-      phoneSearch
+      phoneSearch,
+      isActive,
+      isActive2,
+      isActive3
     };
   },
   components: { CustomAdminBtn }

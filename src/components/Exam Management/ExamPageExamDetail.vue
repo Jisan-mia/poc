@@ -3,7 +3,7 @@
 
     <div class="item1">
       <div class="exam__img">
-        <img :src="'http://www.exam.poc.ac'+currentExam.cover_photo" alt="">
+        <img :src="currentExam.cover_photo" alt="">
       </div>
     </div>
 
@@ -14,7 +14,7 @@
       <p>
         {{currentExam.details}}
       </p>
-      <p>{{endTime}} | {{dayName}}, {{endDate}}</p>
+      <p>{{timeF(currentExam.Exam_end_time, currentExam.Exam_end_date)}} | {{dayName}}, {{endDate}}</p>
     </div>
 
     <div class="item3">
@@ -107,16 +107,25 @@ export default {
 
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
 
-    const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.id));
+    // const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.id));
+    const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.exam_pack));
+
     console.log(currentExamPack.value)
 
     const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format('DD/MM/YYYY'))
     const endTime = currentExam.value.Exam_end_time;
-    
+  
     const days = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-    const dayNum = computed(() => dayjs(endDate.value).day())
+    const dayNum = computed(() => dayjs(currentExam.value.Exam_end_date.value).day())
+    console.log(dayNum.value)
 
 // days[dayNum.value]
+    const timeF = computed(() => (date, time) => {
+        const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
+        return dayjs(examDate).format("hh:mm A");
+    });
+
+
     console.log(dayNum.value)
     const dayName = days.value[dayNum.value]
     console.log(dayName)
@@ -128,6 +137,7 @@ export default {
       endDate,
       endTime,
       dayName,
+      timeF
 
     }
   }

@@ -1,4 +1,4 @@
-import { getNotification, setIsExpired } from "../../../api/common";
+import { getNotification, getDateDiff } from "../../../api/common";
 import examPackApi from "../../../api/examPackApi";
 import { examPackMutationTypes } from "./examPack.mutationTypes";
 
@@ -51,11 +51,15 @@ const actions = {
 
       const mainExam = data.map(exam => {
         console.log(exam)
-        console.log(setIsExpired(exam.Exam_end_date, exam.Exam_end_time))
-        if(setIsExpired(exam.Exam_end_date, exam.Exam_end_time)) {
+        if(getDateDiff(exam.Exam_end_date, exam.Exam_end_time)) {
           return {
             ...exam,
             isExpired: true
+          }
+        } else if (!getDateDiff(exam.Exam_start_date, exam.Exam_start_time)) {
+          return {
+            ...exam,
+            isNotYetStarted: true
           }
         } return exam
       })

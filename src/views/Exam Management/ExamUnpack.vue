@@ -40,11 +40,16 @@
         <td>
           <span>
             <div class="wrapper">
-              <CustomAdminBtn type="info" :rounded="true" v-if="!exam.isExpired" @onClick="handleStartExam(exam)">
-                Start Exam
+
+              <CustomAdminBtn type="primary" :rounded="true" :disabled="true" v-if="exam.isNotYetStarted">
+                Not Started
               </CustomAdminBtn>
 
-              <CustomAdminBtn type="warning" :rounded="true" :disabled="true" v-else>
+              <CustomAdminBtn type="info" :rounded="true" v-if="!exam.isExpired && !exam.isNotYetStarted" @onClick="handleStartExam(exam)">
+                Start Exam
+              </CustomAdminBtn>
+              
+              <CustomAdminBtn type="warning" :rounded="true" :disabled="true" v-if="exam.isExpired">
                 Expired
               </CustomAdminBtn>
             </div>
@@ -57,11 +62,12 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from '@vue/runtime-core';
+import { computed, onMounted, ref, watchEffect } from '@vue/runtime-core';
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex';
 import dayjs from "dayjs";
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
+import { getDateDiff } from '../../api/common';
 export default {
     name: "ExamUnpack",
     setup() {
@@ -81,16 +87,19 @@ export default {
 
         const timeF = computed(() => (date, time) => {
             const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
-            return dayjs(examDate).format("hh:mm:ss A");
+            return dayjs(examDate).format("hh:mm A");
         });
         
+
+
        
         const handleStartExam = (exam) => {
-          if(!exam.isExpired) {
+          if(!exam.isExpired && !getDateDiff(exam.Exam_end_date, exam.Exam_end_time)) {
             const routeData = router.resolve({
               name: 'ExamPage',
               params: { id: exam.id }
             })
+
             window.open(routeData.href, '_blank');
           } else return;
         }
