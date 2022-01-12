@@ -89,9 +89,7 @@ const registerStudentApi = async (data) => {
 
 const getAllStudentList = async () => {
   try{
-    const res = await axios.get(
-      `http://www.exam.poc.ac/api/student_info/`,
-    )
+    const res = await axios.get(`http://www.exam.poc.ac/api/student_info/`)
     console.log(res);
     if(res.data.code != 200) {
       throw Error('Error logging user')
@@ -103,9 +101,27 @@ const getAllStudentList = async () => {
   }
 }
 
+const updateUserProfile = async (data) => {
+  try{
+    const res = await axios.put(`http://www.exam.poc.ac/api/update_student/${data.id}`, 
+    {
+      ...data,
+    })
+    console.log(res);
+    if(res.data.status != 200) {
+      throw Error('Error updating profile')
+    }
+    return res.data;
+  } catch(error) {
+    console.log(error)
+    return "Couldn't update profile"
+  }
+}
+
 export default {
   registerUserByPhonePass,
   handleUserLogin,
   registerStudentApi,
-  getAllStudentList
+  getAllStudentList,
+  updateUserProfile
 }

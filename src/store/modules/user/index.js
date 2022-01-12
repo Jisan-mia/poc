@@ -19,6 +19,7 @@ const state = {
     token: '',
     isAuthenticated: false
   }, 
+  profile: null
 }
 
 const mutations = {
@@ -45,7 +46,10 @@ const mutations = {
     state.user.token = ''
     state.user.isAuthenticated = false
   },
-
+  setProfile(state, profile) {
+    state.profile = profile;
+    console.log(state.profile)
+  },
   [userMutationTypes.SET_USER](state, payload) {
     state.user = {...state.user, ...payload }
     console.log(state)
@@ -124,18 +128,12 @@ const actions = {
     const res = await userApi.getAllStudentList();
     console.log(res)
 
-
-    if(res.data) {
-      const allStudent = res.data;
+    const data = await res.data
+    if(data) {
       const userId = context.state.user.userId
-      console.log(context.state.user, userId)
+      const profile = data.find(profile => profile.user == userId)
+      context.commit('setProfile', profile)
 
-
-
-
-      context.commit(userMutationTypes.SET_USER, res.data)
-
-      
     } else {
       const notification = {
         type: 'error',
@@ -144,6 +142,24 @@ const actions = {
 
       context.dispatch('notifications/add', notification , {root: true})
       throw new Error('Error getting student profile')
+    }
+  },
+
+  async updateStudentProfile (context, profile) {
+    const res = await userApi.updateUserProfile(profile)
+    const data = await res.payload;
+
+    if(data) {
+      context.commit('setProfile', data)
+      context.dispatch('notifications/add', {type: 'success', message: 'Successfully Updated'} , {root: true})
+    }else {
+      const notification = {
+        type: 'error',
+        message: 'Error updating student profile'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+      throw new Error('Error updating student profile')
     }
   }
 

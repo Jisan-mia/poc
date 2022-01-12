@@ -4,12 +4,12 @@
     <div class="profile">
       <div class="profile__info">
         <div class="img__container1">
-          <img src="/images/profile1.jpeg" alt="">
+          <img :src="imageUrl(profile.Profile_image)" alt="">
         </div>
         <div class="profile__detail">
-          <p class="basic">Sylhet | HSC 2021 | Science</p>
-          <h3 class="name">Jisan Mia</h3>
-          <p class="institute">Singair Degree Collage</p>
+          <p class="basic">{{profile.board}} | {{profile.level}} {{profile.batch}} | Science</p>
+          <h3 class="name">{{profile.name}}</h3>
+          <p class="institute">{{profile.institution}}</p>
         </div>
       </div>
       <!-- upcoming exams -->
@@ -38,8 +38,9 @@
       </div>
     </div>
     <div class="detail">
-      <h3>Previous Exam</h3>
-      <table>
+      <h3 vi>Previous Exam</h3>
+      <p v-if="previousExam.length === 0">You didn't take any exam yet</p>
+      <table v-if="previousExam.length !== 0">
       <tbody>
         <tr>
           
@@ -77,26 +78,26 @@
           <td class="id" > 
             
             <span>
-              #{{exam.examId}}
+              {{exam.exam_id}}
             </span>
           
           </td>
           <td class="exam_name">
             
             <span>
-              {{strJoin(exam.exam_name)}}
+              {{strJoin(exam.Exam_name)}}
             </span>
           </td>
 
           <td class="scores">
             <span>
-              {{`${exam.scores.own}/${exam.scores.max}`}}
+              {{`${exam.score}/${exam.total_mark}`}}
             </span>
           </td>
 
           <td class="scores">
             <span>
-              {{exam.negative_mark}}
+              {{exam.negative_marking}}
             </span>
           </td>
 
@@ -117,6 +118,7 @@
 import { computed, ref } from '@vue/reactivity'
 import DashboardStatsCountCard from './DashboardStatsCountCard.vue'
 import UpcomingExamCard from './UpcomingExamCard.vue'
+import { useStore } from 'vuex'
 export default {
   components: {
     DashboardStatsCountCard,
@@ -124,7 +126,16 @@ export default {
   },
   name: 'StudentDashboard', 
   setup() {
-    const previousExam = ref([
+    const store = useStore();
+    const profile = computed(() => store.state.userState.profile);
+    const previousExamReport = computed(() => store.state.reportingState.reportings)
+
+    const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 1)))
+
+    const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
+
+
+    const previousExamDemo = ref([
       {
         scores: {own: 20, max: 30},
 negative_mark: -3,
@@ -188,6 +199,8 @@ examId: 'HSC2021',
       console.log(exam)
     }
 
+
+
     const strJoin = (str) => {
       return str.split(' ').join('-')
     }
@@ -195,7 +208,9 @@ examId: 'HSC2021',
       previousExam,
       upcomingExams,
       handleClickUpcomingExam,
-      strJoin
+      strJoin,
+      profile,
+      imageUrl
     }
   }
 }
@@ -251,6 +266,7 @@ examId: 'HSC2021',
     }
     .profile__detail {
       @include flexVertical;
+      align-items: flex-start;
       gap: 0.5rem;
       p{
         color: #000;
@@ -258,9 +274,10 @@ examId: 'HSC2021',
       }
       .name {
         color: #00A9DC;;
-        font-size: 2.5rem;
+        font-size: 1.8rem;
         line-height: 2.3rem;
         letter-spacing: 0.5px;
+        white-space: nowrap;
       }
     }
     
@@ -318,6 +335,7 @@ examId: 'HSC2021',
   justify-content: center;
   align-items: flex-start;
   gap: 0.3rem;
+  margin-bottom: 2rem;
   h3{
     color: #00A9DC;
     font-weight: 700;
