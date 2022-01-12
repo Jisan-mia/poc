@@ -17,6 +17,9 @@
         <h3>Upcoming Exams</h3>
         <div class="upcoming__exams-container">
           <!-- boxes will be iterated form upcoming apis -->
+          <p v-if="upcomingExams.length == 0">
+            There is no upcoming exams
+          </p>
           <div class="box" v-for="upcomingExam in upcomingExams" :key="upcomingExam.id">
             <UpcomingExamCard :upcomingExam="upcomingExam" @upcoming-exam="handleClickUpcomingExam" />
           </div>
@@ -119,6 +122,8 @@ import { computed, ref } from '@vue/reactivity'
 import DashboardStatsCountCard from './DashboardStatsCountCard.vue'
 import UpcomingExamCard from './UpcomingExamCard.vue'
 import { useStore } from 'vuex'
+import dayjs from 'dayjs';
+
 export default {
   components: {
     DashboardStatsCountCard,
@@ -128,62 +133,33 @@ export default {
   setup() {
     const store = useStore();
     const profile = computed(() => store.state.userState.profile);
-    const previousExamReport = computed(() => store.state.reportingState.reportings)
+    const previousExamReport = computed(() => store.state.reportingState.reportings);
+    const examLists = computed(() => store.state.examPackState.examLists);
+    console.log(examLists.value)
+    
+    const now = dayjs().format('YYYY-MM-DD hh:mm:ss A');
+
+    const filterUpcoming = computed(() => examLists.value.filter(exam => {
+      const examDate = dayjs(exam.Exam_start_date + exam.Exam_start_time).format('YYYY-MM-DD hh:mm:ss A')
+      console.log(examDate, now, dayjs(examDate).diff(now, 'hour'));
+      if(dayjs(examDate).diff(now, 'hour') > 0) {
+        return exam
+      } return false;
+    }))
+
+    const upcomingExams = computed(() => filterUpcoming.value.slice(Math.max(filterUpcoming.value.length-2, 1))) 
+    console.log(upcomingExams.value)
+
+    
+    
+    
 
     const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 1)))
 
     const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
 
 
-    const previousExamDemo = ref([
-      {
-        scores: {own: 20, max: 30},
-negative_mark: -3,
-examId: 'HSC2022',
-        exam_name: 'Physics 1st Paper',
-        date: {
-          date: '1/22',
-          time: '06:00 PM'
-        }
-      },{
-        scores: {own: 20, max: 30},
-negative_mark: -3,
-examId: 'HSC2020',
-        exam_name: 'Physics 2st Paper',
-        date: {
-          date: '2/22',
-          time: '06:00 PM'
-        }
-      },{
-        scores: {own: 20, max: 30},
-negative_mark: -3,
-examId: 'HSC2021',
-        exam_name: 'Chemistry 2st Paper',
-        date: {
-          date: '3/22',
-          time: '06:00 PM'
-        }
-      },{
-        scores: {own: 20, max: 30},
-negative_mark: -3,
-examId: 'HSC2022',
-        exam_name: 'Chemistry 1st Paper',
-        date: {
-          date: '4/22',
-          time: '06:00 PM'
-        }
-      },{
-        scores: {own: 20, max: 30},
-negative_mark: -3,
-examId: 'HSC2021',
-        exam_name: 'Higher Math 1st Paper',
-        date: {
-          date: '6/22',
-          time: '06:00 PM'
-        }
-      },
-    ])
-    const upcomingExams = ref([
+    const upcomingExamsD = ref([
       {
         id: 1,
         examName: 'Chemistry 1st Paper',
@@ -196,7 +172,7 @@ examId: 'HSC2021',
       }
     ])
     const handleClickUpcomingExam = (exam) => {
-      console.log(exam)
+      // console.log(exam)
     }
 
 

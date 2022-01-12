@@ -1,8 +1,8 @@
 <template>
   <header>
     <div class="header__input">
-      <input type="text" placeholder="Search With Exam ID" name="" id="">
-      <input type="datetime-local" name="" id="" placeholder="Date Range">
+      <input v-model="idSearch" type="text" placeholder="Search With Exam ID" name="" id="">
+      <!-- <input v-model="" type="datetime-local" name="" id="" placeholder="Date Range"> -->
     </div>
   </header>
   <table>
@@ -59,7 +59,9 @@
           <div class="date__time">
             <span class="date">{{dateF(report.Exam_end_date)}}</span>
             <span class="time">
-              {{report.Exam_end_time}}
+              <!-- {{report.Exam_end_time}} -->
+              {{timeF(report.Exam_start_date, report.Exam_start_time)}}
+
               </span>
           </div>
         </td>
@@ -80,7 +82,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from '@vue/runtime-core';
+import { computed, onMounted, ref, watchEffect } from '@vue/runtime-core';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import dayjs from "dayjs";
@@ -90,8 +92,13 @@ export default {
   setup() {
     const store = useStore();
     const isLoading = computed(() => store.state.isLoading);
+    const idSearch = ref('')
 
-    const reports = computed(() => store.state.reportingState.reportings)
+    const mainReport = computed(() => store.state.reportingState.reportings)
+
+
+
+
     const examLists = computed(() => store.state.examPackState.examLists);
 /*
     // const reportingExamIds = computed(() => {
@@ -128,189 +135,34 @@ export default {
       return dayjs(date).format('DD/MM/YYYY');
     });
 
+    const timeF = computed(() => (date, time) => {
+        const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
+        return dayjs(examDate).format("hh:mm:ss A");
+    });
 
 
-    const reportsd = ref([
-      {
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '1/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2020',
-        subject: 'Physics 2st Paper',
-        date: {
-          date: '2/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2021',
-        subject: 'Chemistry 2st Paper',
-        date: {
-          date: '3/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Chemistry 1st Paper',
-        date: {
-          date: '4/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2021',
-        subject: 'Higher Math 1st Paper',
-        date: {
-          date: '6/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Higher Math 2st Paper',
-        date: {
-          date: '7/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2023',
-        subject: 'Chemistry',
-        date: {
-          date: '8/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2020',
-        subject: 'Chemistry',
-        date: {
-          date: '9/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Physics',
-        date: {
-          date: '10/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2021',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '11/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2023',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '13/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2020',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '14/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2021',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '15/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2023',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '16/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '17/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2023',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '18/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '19/22',
-          time: '06:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2021',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '21/22',
-          time: '07:00 PM'
-        }
-      },{
-        highest_score: {own: 20, max: 30},
-average_mark: 55.33,
-examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '23/3',
-          time: '06:00 PM'
-        }
+    const reports = computed(() => {
+      if(idSearch.value) {
+        return mainReport.value.filter(report => {
+        // return report.exam_id.toLowerCase().indexOf(`#${idSearch.value.toLowerCase()}`) != -1 
+        return idSearch.value.toLowerCase().split(' ').every(v => report.exam_id.toLowerCase().includes(v))
+        })
+      } else {
+        return mainReport.value
       }
-    ])
-    onMounted(() => {
+      
     })
+    
+  watchEffect(() => console.log(reports.value))
+
+
     return {
       reports,
       isLoading,
       cutHash,
-      dateF
+      dateF,
+      timeF,
+      idSearch
     }
   }
 }

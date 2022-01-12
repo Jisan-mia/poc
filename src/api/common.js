@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const getAccessToken = async () => {
 	
 };
@@ -16,3 +18,9 @@ export const getNotification = (type, message) => {
 		message
 	}
 } 
+export const setIsExpired = (date, time) => {
+	const now = dayjs().format('YYYY-MM-DD hh:mm:ss A');
+	const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
+	// console.log(dayjs(examDate).diff(now, 'hour') > 0)
+	return dayjs(examDate).diff(now, 'hour') < 0
+}

@@ -76,9 +76,15 @@
             <p>Negative Marketing: {{currentExam.negative_marking}}</p>
           </div>
 
-          <button class="view__btn">
-            View Answer Sheet
-          </button>
+          <div class="view__btn">
+            <CustomAdminBtn type="warning" :style="{
+              fontSize: '12px',
+              fonWeight: '400',
+              padding: '7px 10px'
+            }">
+              View Answer Sheet
+            </CustomAdminBtn>
+          </div>
         </div>
 
       </div>
@@ -86,11 +92,19 @@
     </div>
 
     <div class="header__input">
-      <input type="text" placeholder="Search With Phone Number" name="" id="">
-      <input type="text" name="" id="" placeholder="Filter High To Low">
-      <input type="text" name="" id="" placeholder="Filter Low to High">
-      <input type="text" name="" id="" placeholder="Timestamp">
-      <select name="" id="" placeholder="Filter with Board">
+      <input v-model="phoneSearch" type="text" placeholder="Search With Phone Number" name="" id="">
+      <button :class="selectedFilter === 'highToLow' && 'selected' " @click="handleSelectFilter('highToLow')">
+        Filter High To Low
+      </button>
+      <button :class="selectedFilter === 'lowToHigh' && 'selected' " @click="handleSelectFilter('lowToHigh')">
+        Filter Low To High
+      </button>
+     
+     <button :class="selectedFilter === 'timestamp' && 'selected' " @click="handleSelectFilter('timestamp')"> 
+        Timestamp
+      </button>
+
+      <select name="" id="" placeholder="Filter with Board" v-model="boardSelected">
         <option value="dhaka">Dhaka</option>
         <option value="chittagong">Chittagong</option>
         <option value="sylhet">Sylhet</option>
@@ -181,245 +195,73 @@ import { computed, onBeforeMount, onMounted, ref, watchEffect } from '@vue/runti
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import dayjs from 'dayjs';
+import CustomAdminBtn from '../ui/CustomAdminBtn.vue';
 export default {
-  name: 'SpecificExamReportComp',
+  name: "SpecificExamReportComp",
   setup() {
     const route = useRoute();
     const store = useStore();
-    const examPacks = computed(() => store.state.examPackState.examPacks)
-    const examLists = computed(() => store.state.reportingState.reportings)
+    const selectedFilter = ref('') // 'highToLow', 'lowToHigh', 'timestamp'
+    const boardSelected = ref('')
+    const phoneSearch =ref('')
+
+    const examPacks = computed(() => store.state.examPackState.examPacks);
+    const examLists = computed(() => store.state.reportingState.reportings);
     const specificReports = computed(() => store.state.reportingState.specificReportings);
-
-
-    console.log(examPacks.value,examLists.value )
+    
     const { examId } = route.params;
-    console.log({examId})
+    console.log({ examId });
+
+    const handleSelectFilter = (type) => {
+      selectedFilter.value = type
+    }
 
 
     const currentExam = computed(() => examLists.value.find(exam => exam.exam_id == `#${examId}`));
-    
-    
-
     watchEffect(async () => {
-      try{
-        await store.dispatch('reportingState/loadSpecificReports', currentExam.value.Exam_name);
+      try {
+          await store.dispatch("reportingState/loadSpecificReports", currentExam.value.Exam_name);
+      }
+      catch (error) {
+          console.log(error);
+      }
+    });
 
-      }
-      catch(error) {
-        console.log(error)
-      }
-    })
-    console.log(specificReports.value)
+    const currentExamPack = computed(() => examPacks.value.find(pack => pack.id == currentExam.value.id));
+    console.log(currentExamPack.value);
+    const timeF = computed(() => (date, time) => {
+      const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
+      return dayjs(examDate).format("hh:mm:ss A");
+    });
+
+
+    const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format("DD/MM/YYYY"));
+    // const endTime = currentExam.value.Exam_end_time;
+    const endTime = computed(() => {
+      const examDate = dayjs(currentExam.value.Exam_end_date + currentExam.value.Exam_end_time).format("YYYY-MM-DD hh:mm:ss A");
+      return dayjs(examDate).format("hh:mm:ss A");
+    });
+
+    const days = ref(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]);
+    const dayNum = computed(() => dayjs(endDate.value).day());
+   
+    const dayName = days.value[dayNum.value];
     
-
-    const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.id));
-    console.log(currentExamPack.value)
-
-
-
-    const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format('DD/MM/YYYY'))
-    const endTime = currentExam.value.Exam_end_time;
-    
-    const days = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-    const dayNum = computed(() => dayjs(endDate.value).day())
-
-// days[dayNum.value]
-    console.log(dayNum.value)
-    const dayName = days.value[dayNum.value]
-    console.log(dayName)
-
-
-    const specificExamReports = ref([
-      {
-        scores: {own: 25, max: 30},
-        rank: 1,
-        student_image: '',  
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-
-      },{
-        scores: {own: 25, max: 30},
-        rank: 2,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-
-      },{
-        scores: {own: 25, max: 30},
-        rank: 3,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3
-        
-      },{
-        scores: {own: 25, max: 30},
-        rank: 4,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 5,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-
-      },{
-        scores: {own: 25, max: 30},
-        rank: 6,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-
-      },{
-        scores: {own: 25, max: 30},
-        rank: 7,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 8,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 9,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 10,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 11,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 12,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 13,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 14,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 15,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-        
-      },{
-        scores: {own: 25, max: 30},
-        rank: 16,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 17,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 18,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      },{
-        scores: {own: 25, max: 30},
-        rank: 19,
-        student_image: '',
-        student_name: "Md. Ahmed",
-        institute: "Chittagong College, Chittagong",
-        board: "Dhaka",
-        time_stamp: "10:20:30 Pm",
-        negative_mark: -3,
-      }
-    ])
     
     return {
-      specificExamReports,
       currentExam,
       currentExamPack,
       endDate,
       endTime,
       dayName,
       specificReports,
-    }
-  }
+      selectedFilter,
+      handleSelectFilter,
+      boardSelected,
+      phoneSearch
+    };
+  },
+  components: { CustomAdminBtn }
 }
 </script>
 
@@ -534,8 +376,9 @@ table {
   align-content: center;
   gap: 0.85rem;
   margin-bottom: 0.3rem;
+  
 
-  input, select {
+  input, select, button {
     border: 1px solid #FF6F00;
     box-sizing: border-box;
     border-radius: 8px;
@@ -545,10 +388,16 @@ table {
     outline: none;
     padding: 0.7rem 1rem;
     text-align: center;
+    transition: all 0.3s;
+    
     &::placeholder{
       color: #696969;
     }
-  
+  }
+  button {
+    @extend input;
+    cursor: pointer;
+    background: #fff;
   }
   select{
     text-align: left;
@@ -557,9 +406,16 @@ table {
   //   min-width: 15%;
   //   width: 25%;
   // }
+
+  button.selected {
+    background: #FF6F00;
+    transition: all 0.3s ease;
+    color: #fff;
+  }
   
   
 }
+
 
 .header {
   @include flexVertical;
@@ -707,12 +563,12 @@ table {
       .view__btn {
         border: none;
         outline: none;
-        background: #FF6F00;
-        color: #fff;
-        padding: 7px 10px;
+        // background: #FF6F00;
+        // color: #fff;
+        // padding: 7px 10px;
         cursor: pointer;
-        font-size: 13px;
-        font-weight: 14px;
+        // font-size: 13px;
+        // font-weight: 14px;
       }
     }
     

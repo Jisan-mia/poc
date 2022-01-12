@@ -15,15 +15,14 @@
         <th>Exam ID</th>
         <th>Subject</th>
         <th>Data & Time</th>
+        <th>Status</th> 
       </tr>
 
       <tr v-for="exam in exams" :key="exam.id">
         <td class="id"> 
-          <router-link :to="{name: 'ExamPage', params: {id: exam.id }}" target="_blank">
-            <span>
+            <span @click="handleStartExam(exam)">
               #{{cutHash(exam.exam_id)}} 
             </span>
-          </router-link>
            </td>
         <td class="subject">
           <span>
@@ -33,8 +32,24 @@
         <td>
           <div class="date__time">
             <span class="date">{{dateF(exam.Exam_start_date)}}</span>
-            <span class="time">{{exam.Exam_start_time}}</span>
+            <span class="time">
+              {{timeF(exam.Exam_start_date, exam.Exam_start_time)}}
+            </span>
           </div>
+        </td>
+        <td>
+          <span>
+            <div class="wrapper">
+              <CustomAdminBtn type="info" :rounded="true" v-if="!exam.isExpired" @onClick="handleStartExam(exam)">
+                Start Exam
+              </CustomAdminBtn>
+
+              <CustomAdminBtn type="warning" :rounded="true" :disabled="true" v-else>
+                Expired
+              </CustomAdminBtn>
+            </div>
+          </span>
+    
         </td>
       </tr>
     </tbody>
@@ -46,169 +61,48 @@ import { computed, onMounted, ref } from '@vue/runtime-core';
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex';
 import dayjs from "dayjs";
+import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
 export default {
-  name: 'ExamUnpack',
-  setup() {
-    const route = useRoute();
-    const store = useStore();
-    const examLists = computed(() => store.state.examPackState.examLists);
-    const { packId } = route.params;
+    name: "ExamUnpack",
+    setup() {
+        const route = useRoute();
+        const router = useRouter();
+        const store = useStore();
+        const examLists = computed(() => store.state.examPackState.examLists);
+        const { packId } = route.params;
 
-    const exams = computed(() =>  examLists.value.filter(exam => exam.exam_pack == packId))
-    console.log(packId, exams.value)
-    
-    const cutHash = computed(() => (id) => id.split('').filter(c => c == '#' ? false : c).join(''))
-    
-    const dateF = computed(() => (date) => {
-      return dayjs(date).format('DD/MM/YYYY');
-    });
+        const exams = computed(() => examLists.value.filter(exam => exam.exam_pack == packId));
+        console.log(packId, exams.value);
 
+        const cutHash = computed(() => (id) => id.split("").filter(c => c == "#" ? false : c).join(""));
+        const dateF = computed(() => (date) => {
+            return dayjs(date).format("DD/MM/YYYY");
+        });
 
-    const examsDemo = ref([
-      {
-        examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '1/22',
-          time: '06:00 PM'
+        const timeF = computed(() => (date, time) => {
+            const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
+            return dayjs(examDate).format("hh:mm:ss A");
+        });
+        
+       
+        const handleStartExam = (exam) => {
+          if(!exam.isExpired) {
+            const routeData = router.resolve({
+              name: 'ExamPage',
+              params: { id: exam.id }
+            })
+            window.open(routeData.href, '_blank');
+          } else return;
         }
-      },{
-        examId: 'HSC2020',
-        subject: 'Physics 2st Paper',
-        date: {
-          date: '2/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2021',
-        subject: 'Chemistry 2st Paper',
-        date: {
-          date: '3/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2022',
-        subject: 'Chemistry 1st Paper',
-        date: {
-          date: '4/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2021',
-        subject: 'Higher Math 1st Paper',
-        date: {
-          date: '6/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2022',
-        subject: 'Higher Math 2st Paper',
-        date: {
-          date: '7/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2023',
-        subject: 'Chemistry',
-        date: {
-          date: '8/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2020',
-        subject: 'Chemistry',
-        date: {
-          date: '9/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2022',
-        subject: 'Physics',
-        date: {
-          date: '10/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2021',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '11/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2023',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '13/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2020',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '14/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2021',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '15/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2023',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '16/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '17/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2023',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '18/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '19/22',
-          time: '06:00 PM'
-        }
-      },{
-        examId: 'HSC2021',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '21/22',
-          time: '07:00 PM'
-        }
-      },{
-        examId: 'HSC2022',
-        subject: 'Physics 1st Paper',
-        date: {
-          date: '23/3',
-          time: '06:00 PM'
-        }
-      }
-    ])
-    onMounted(() => {
-    })
-
-    return {
-      exams,
-      cutHash,
-      dateF,
-    }
-  }
+        return {
+            exams,
+            cutHash,
+            dateF,
+            timeF,
+            handleStartExam
+        };
+    },
+    components: { CustomAdminBtn }
 }
 </script>
 
@@ -248,6 +142,10 @@ table {
     }
     .subject span{
       color: #000;
+    }
+    .wrapper {
+      max-width: 120px;
+      min-width: 80px;
     }
     .date__time{
       @include flexVertical;

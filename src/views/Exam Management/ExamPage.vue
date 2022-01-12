@@ -1,12 +1,20 @@
 <template>
   <div class="main__container">
     <span v-if="isLoading">
-      ...
+      Get ready for your exam...
     </span>
     <span v-else>
       <ExamPageTopBar />
       <ExamPageExamDetail />
       <ShowAllExamQuestions />
+      
+      <div class="btn__cont">
+        <div class="wrapper">
+          <CustomAdminBtn type="gradient" :rounded="true"> 
+            Submit
+          </CustomAdminBtn>
+        </div>
+      </div>
 
     </span>
   </div>
@@ -19,8 +27,9 @@ import ExamPageTopBar from '../../components/Exam Management/ExamPageTopBar.vue'
 import ExamPageExamDetail from '../../components/Exam Management/ExamPageExamDetail.vue';
 import ShowAllExamQuestions from '../../components/Exam Management/ShowAllExamQuestions.vue';
 import { useStore } from 'vuex';
+import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
 export default {
-  components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions },
+  components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn },
   name: 'ExamPage',
   setup(props) {
     const route = useRoute();
@@ -33,6 +42,7 @@ export default {
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const isLoading = computed(() => store.state.isLoading);
     console.log(isLoading.value)
+
     store.commit('setIsLoading', true)
 
 
@@ -40,6 +50,7 @@ export default {
     onBeforeMount(() => {
       if(isAuthenticated.value) {
         // check if that exam has ended
+
       } else {
         router.push('/')
         isEnded.value = true;
@@ -89,6 +100,18 @@ export default {
 
   @include maxMedia(768px) {
     max-width: 100%;
+  }
+
+  .btn__cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+
+    .wrapper {
+      min-width: 120px;
+      width: 300px;
+    }
   }
 }
 </style>

@@ -4,24 +4,43 @@
       <img src="/images/placeholderImg.svg" alt="">
     </div>
     <div class="text">
-        <h3 @click="$emit('upcoming-exam', upcomingExam)"> {{upcomingExam.examName}} </h3> 
+        <h3 @click="$emit('upcoming-exam', upcomingExam)"> {{upcomingExam.Exam_name}} </h3> 
       <p>
-        {{upcomingExam.date}}
+        {{startTime}} | {{dayName}}, {{startDate}}
     </p>
     </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import { computed, ref } from '@vue/reactivity'
 export default {
   name: "UpcomingExamCard",
   props: ['upcomingExam'],
   emits: ['upcoming-exam'],
   setup(props) {
     const upcomingExam = props.upcomingExam
+    
+    const startDate = computed(() => dayjs(upcomingExam.Exam_start_date).format('DD/MM/YYYY'))
+    const examDate = dayjs(upcomingExam.Exam_start_date + upcomingExam.Exam_start_time).format('YYYY-MM-DD hh:mm:ss A')
+
+    const startTime = dayjs(examDate).format('hh:mm:ss A')
+    
+    const days = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+    const dayNum = computed(() => dayjs(startDate.value).day())
+
+    console.log(dayNum.value)
+    const dayName = days.value[dayNum.value]
+    console.log(dayName)
+
+
     const titleToUrl = title => title.trim().toLowerCase().split(' ').join('-')
     return {
       upcomingExam,
-      titleToUrl
+      titleToUrl,
+      startDate,
+      dayName,
+      startTime
     }
   }
 }

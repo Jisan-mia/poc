@@ -1,5 +1,5 @@
 <template>
-  <button :disabled="disabled" :class="[type, rounded && 'round']" @click="$emit('onClick')">
+  <button v-bind="$attrs" :disabled="disabled" :class="[type, rounded && 'round']" @click="$emit('onClick')">
     <i v-if="icon" class="icon" :class="icon" />
     <span class="text">
       <slot />
@@ -83,6 +83,15 @@ button {
   }
   &.info {
     background-color: #00A9DC;
+    color: #fff;
+  }
+  &.warning {
+    background-color: #febc22;
+    color: #fff;
+  }
+  &.gradient {
+    background-color: none;
+    background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
     color: #fff;
   }
  

@@ -1,4 +1,4 @@
-import { getNotification } from "../../../api/common";
+import { getNotification, setIsExpired } from "../../../api/common";
 import examPackApi from "../../../api/examPackApi";
 import { examPackMutationTypes } from "./examPack.mutationTypes";
 
@@ -48,7 +48,23 @@ const actions = {
     const data = await res.data;
 
     if(data) {
-      context.commit(examPackMutationTypes.SET_EXAM_LIST, data)
+
+      const mainExam = data.map(exam => {
+        console.log(exam)
+        console.log(setIsExpired(exam.Exam_end_date, exam.Exam_end_time))
+        if(setIsExpired(exam.Exam_end_date, exam.Exam_end_time)) {
+          return {
+            ...exam,
+            isExpired: true
+          }
+        } return exam
+      })
+      console.log(mainExam)
+
+
+
+
+      context.commit(examPackMutationTypes.SET_EXAM_LIST, mainExam)
     } else {
       const notification = {
         type: 'error',
