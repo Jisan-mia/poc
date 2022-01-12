@@ -133,7 +133,7 @@
       </tr>
       
 
-      <tr class="main_row" v-for="report in specificExamReports" :key="report.examId">
+      <tr class="main_row" v-for="report in specificReports" :key="report.id">
         <td> 
           <span>
             {{report.rank}}
@@ -145,8 +145,8 @@
               <img src="/images/profile1.jpeg" alt="">
             </div>
             <div class="info">
-              <h4> {{report.student_name}} </h4>
-              <p> {{report.institute}} </p>
+              <h4> {{report.name}} </h4>
+              <p> Student Institute </p>
             </div>
           </div>
         </td>
@@ -158,17 +158,17 @@
 
         <td>
           <span>
-            {{report.time_stamp}}
+            {{report.timestamp}}
           </span>
         </td>
         <td>
           <span>
-            {{`${report.scores.own}/${report.scores.max}`}}
+            {{`${report.score}/${100}`}}
           </span>
         </td>
         <td>
           <span>
-            {{report.negative_mark}}
+            {{report.negative_marking}}
           </span>
         </td>
       </tr>
@@ -177,7 +177,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watchEffect } from '@vue/runtime-core';
+import { computed, onBeforeMount, onMounted, ref, watchEffect } from '@vue/runtime-core';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import dayjs from 'dayjs';
@@ -188,6 +188,7 @@ export default {
     const store = useStore();
     const examPacks = computed(() => store.state.examPackState.examPacks)
     const examLists = computed(() => store.state.reportingState.reportings)
+    const specificReports = computed(() => store.state.reportingState.specificReportings);
 
 
     console.log(examPacks.value,examLists.value )
@@ -196,14 +197,20 @@ export default {
 
 
     const currentExam = computed(() => examLists.value.find(exam => exam.exam_id == `#${examId}`));
+    
+    
 
     watchEffect(async () => {
       try{
         await store.dispatch('reportingState/loadSpecificReports', currentExam.value.Exam_name);
-      } catch(err) {
-        console.log(err)
+
+      }
+      catch(error) {
+        console.log(error)
       }
     })
+    console.log(specificReports.value)
+    
 
     const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.id));
     console.log(currentExamPack.value)
@@ -402,8 +409,7 @@ export default {
         negative_mark: -3,
       }
     ])
-    onMounted(() => {
-    })
+    
     return {
       specificExamReports,
       currentExam,
@@ -411,7 +417,7 @@ export default {
       endDate,
       endTime,
       dayName,
-
+      specificReports,
     }
   }
 }

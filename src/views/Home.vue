@@ -21,8 +21,9 @@ export default {
     const store = useStore();
     const router = useRouter();
     const isAuthenticated = store.state.userState.user.isAuthenticated;
-    
-    if(isAuthenticated.value) {
+    console.log("homie", isAuthenticated)
+    if(isAuthenticated) {
+      console.log('home to dashboard')
       router.push('/dashboard');
     }
     

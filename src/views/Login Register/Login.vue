@@ -6,8 +6,8 @@
     </h3>
 
     <form @submit.prevent="handleUserLogin">
-      <CustomPhoneInput v-model="userAuthInput.phoneNumber" placeholder="Enter your phone number" />
-      <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" type="text"/>
+      <CustomPhoneInput v-model="userInputs.phone_number" placeholder="Enter your phone number" />
+      <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" type="text"/>
 
       <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
@@ -28,16 +28,21 @@ import CustomPhoneInput from '../../components/Auth Components/CustomPhoneInput.
 import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.vue'
 import SendOtp from '../../components/Auth Components/SendOtp.vue'
 import { useStore } from 'vuex'
+import { getNotification } from '../../api/common'
+import { watchEffect } from '@vue/runtime-core'
+import { useRouter } from 'vue-router'
+
 export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp },
   name: 'Login',
   setup() {
     const store = useStore();
+    const router = useRouter()
     // const user = computed(() => store.state.userState.user)
    
 
-    const userAuthInput = ref({
-      phoneNumber: '',
+    const userInputs = ref({
+      phone_number: '',
       password: ''
     })
     const loginSteps = ref(['login', 'sendOtp']);
@@ -47,13 +52,41 @@ export default {
       currentStep.value = 'sendOtp'
     }
 
+    const error = ref(null)
 
-    const handleUserLogin = () => {
-      console.log('handle user login func called')
+
+    watchEffect(() => {
+      console.log(userInputs.value)
+    })
+
+
+  
+    
+
+    const handleUserLogin = async () => {
+      if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userInputs.value.phone_number)){
+        store.dispatch('notifications/add', getNotification('warning', 'Please enter a valid phone number'))
+        return;
+      } else if(userInputs.value.password.length < 5 ) {
+        store.dispatch('notifications/add', getNotification('warning', 'Password must be at least 5 character'))
+        return;
+      } 
+      try {
+        await store.dispatch('userState/userLogin', {
+          ...userInputs.value
+        })
+        router.push('/')
+      } catch(err) {
+        console.log(err.message);
+        error.value = err.message;
+      }
+      
     }
 
+
+    
     return {
-      userAuthInput,
+      userInputs,
       handleUserLogin,
       handleForgotStep,
       currentStep

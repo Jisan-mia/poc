@@ -32,7 +32,10 @@ export default {
         try{
           await store.dispatch('examPackState/loadExamPacks');
           await store.dispatch('examPackState/loadExamLists');
-          await store.dispatch('reportingState/loadStudentReporting')
+          await store.dispatch('reportingState/loadStudentReporting');
+          await store.dispatch('userState/loadUserProfile');
+
+          
           store.commit('setIsLoading', false)
 
         }

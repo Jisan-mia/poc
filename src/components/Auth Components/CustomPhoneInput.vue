@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     <span>+880</span>
-    <input min="0" type="number" :value="modelValue" @input="updateValue" :placeholder="placeholder">
+    <input 
+      min="0" 
+      type="number" 
+      :value="modelValue" 
+      @input="updateValue" 
+      :placeholder="placeholder"
+      v-bind="$attrs" >
   </div>
 </template>
 
@@ -9,8 +15,12 @@
 export default {  
   name: 'CustomPhoneInput',
   props: {
-    modelValue: Number,
-    placeholder: String
+    modelValue: {
+      type: [Number, String]
+    },
+    placeholder: {
+      type: String
+    }
   },
   setup(props, cxt) {
     const updateValue = (e) => {

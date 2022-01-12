@@ -14,7 +14,7 @@ export default {
       default: () => 'label'
     },
     outline: {
-      type: String,
+      type: Boolean,
       default: () => false
     }
   }

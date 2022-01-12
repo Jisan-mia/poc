@@ -6,7 +6,7 @@ const state = {
   user: {
     phone_number: '',
     password: '',
-    id: 0,
+    userId: 0,
 
     user:'', // same as phone_number
     image: '',
@@ -18,7 +18,7 @@ const state = {
     institution:'',
     token: '',
     isAuthenticated: false
-  }
+  }, 
 }
 
 const mutations = {
@@ -26,16 +26,16 @@ const mutations = {
     if(localStorage.getItem('token')) {
       state.user.token = localStorage.getItem('token');
       state.user.isAuthenticated = true;
-      state.user.id = localStorage.getItem('userId');
+      state.user.userId = localStorage.getItem('userId');
     } else {
       state.user.token = ''
       state.user.isAuthenticated = false
-      state.user.user_id = 0;
+      state.user.userId = 0;
 
     }
   },
-  setUserId(state, id) {
-    state.user.id = id
+  setUserId(state, userId) {
+    state.user.userId = userId
   },
   setToken(state, token) {
     state.user.token = token
@@ -85,8 +85,13 @@ const actions = {
 
     if(res.data) {
       const token = res.data.access_token;
+      const userId = res.data.user_id
       context.commit('setToken', token);
+      context.commit('setUserId', userId);
+
       localStorage.setItem('token', token)
+      localStorage.setItem('userId', userId)
+
     } else {
       const notification = {
         type: 'error',
@@ -114,7 +119,33 @@ const actions = {
       context.dispatch('notifications/add', notification , {root: true})
       throw new Error('Error registering user profile')
     }
-  }   
+  },
+  async loadUserProfile(context) {
+    const res = await userApi.getAllStudentList();
+    console.log(res)
+
+
+    if(res.data) {
+      const allStudent = res.data;
+      const userId = context.state.user.userId
+      console.log(context.state.user, userId)
+
+
+
+
+      context.commit(userMutationTypes.SET_USER, res.data)
+
+      
+    } else {
+      const notification = {
+        type: 'error',
+        message: 'Error getting student profile'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+      throw new Error('Error getting student profile')
+    }
+  }
 
 }
 

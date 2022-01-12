@@ -66,6 +66,7 @@ export default {
     
 
     const handleUserRegister = async () => {
+      console.log(userAuthInput.value)
       // currentStep.value = 'SendOtp'
       if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userAuthInput.value.phone_number)){
         store.dispatch('notifications/add', getNotification('warning', 'Please enter a valid phone number'))

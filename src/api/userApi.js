@@ -86,8 +86,26 @@ const registerStudentApi = async (data) => {
   }
 }
 
+
+const getAllStudentList = async () => {
+  try{
+    const res = await axios.get(
+      `http://www.exam.poc.ac/api/student_info/`,
+    )
+    console.log(res);
+    if(res.data.code != 200) {
+      throw Error('Error logging user')
+    }
+    return res.data;
+  } catch(error) {
+    console.log(error)
+    return "Couldn't login user"
+  }
+}
+
 export default {
   registerUserByPhonePass,
   handleUserLogin,
-  registerStudentApi
+  registerStudentApi,
+  getAllStudentList
 }
