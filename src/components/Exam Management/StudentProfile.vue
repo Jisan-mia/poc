@@ -211,6 +211,8 @@ export default {
   align-content: center;
   @include maxMedia(768px) {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
 
 
@@ -254,6 +256,10 @@ export default {
         line-height: 2.3rem;
         letter-spacing: 0.5px;
         white-space: nowrap;
+        @include maxMedia(768px) {
+          white-space: normal;
+          text-align: left;
+        }
       }
     }
     
@@ -298,6 +304,10 @@ export default {
     width: 100%;
     background: #eae7f7;
     padding: 0.5rem;
+    min-height: 200px;
+    @include maxMedia(768px) {
+      padding: 0;
+    }
   }
   &__cards {
     display: grid;
@@ -312,6 +322,10 @@ export default {
   align-items: flex-start;
   gap: 0.3rem;
   margin-bottom: 2rem;
+  width: 100%;
+  @include maxMedia(768px) {
+    overflow-x: scroll;
+  }
   h3{
     color: #00A9DC;
     font-weight: 700;
@@ -330,6 +344,9 @@ table {
     // @include maxMedia(968px) {
     //   display: inherit;
     // }
+    @include maxMedia(768px) {
+      grid-template-columns: repeat(5, 200px);
+    }
 
     &:first-child span{
       font-weight: 600;

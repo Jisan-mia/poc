@@ -1,7 +1,7 @@
 <template>
-  <div class="main__container">
-    <span v-if="isLoading">
-      Get ready for your exam...
+  <div class="main__container" v-if="!isNotYetStarted && !isEnded">
+    <span v-if="isLoading && !isNotYetStarted && !isEnded">
+      ...
     </span>
     <span v-else>
       <ExamPageTopBar />
@@ -47,37 +47,40 @@ export default {
 
 
     const isEnded = ref(false);
+    const isNotYetStarted = ref(false);
     
-    onMounted(async () => {
-      if(isEnded.value) {
-        return;
-      } else {
-        if(isAuthenticated.value) {
-          try{
-            await store.dispatch('examPackState/loadExamPacks');
-            await store.dispatch('examPackState/loadExamLists');
-            await store.dispatch('examPackState/loadExamQuestions', id);
-            store.commit('setIsLoading', false)
+    onBeforeMount(async () => {
+      if(isAuthenticated.value) {
+        try{
+          await store.dispatch('examPackState/loadExamPacks');
+          await store.dispatch('examPackState/loadExamLists');
+          await store.dispatch('examPackState/loadExamQuestions', id);
+          store.commit('setIsLoading', false)
 
-            const examLists = computed(() => store.state.examPackState.examLists)
+          const examLists = computed(() => store.state.examPackState.examLists)
 
-            const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
-            
+          const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
+          
 
-            if(currentExam.value) {
-              if(currentExam.value.isNotYetStarted) {
-                console.log('not yet started')
-              } else if(currentExam.value.isExpired) {
-                console.log('exam time expired')
-              }
+          if(currentExam.value) {
+            if(currentExam.value.isNotYetStarted) {
+              alert('Exam Not Yet Started')
+              router.push('/')
+              isNotYetStarted.value = true;
+            } else if(currentExam.value.isExpired) {
+              alert('The Exam has already Expired')
+              router.push('/')
+              console.log('exam time expired');
+              isEnded.value  = true
             }
           }
-          catch(error) {
-            console.log(error)
-          }
-        } else {
-          router.push('/')
         }
+        catch(error) {
+          console.log(error)
+        }
+      
+      } else {
+        router.push('/')
       }
     })
     
@@ -85,7 +88,9 @@ export default {
 
 
     return {
-      isLoading
+      isLoading,
+      isEnded,
+      isNotYetStarted
     }
   }
 }

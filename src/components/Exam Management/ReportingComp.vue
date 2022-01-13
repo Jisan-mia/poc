@@ -5,6 +5,7 @@
       <!-- <input v-model="" type="datetime-local" name="" id="" placeholder="Date Range"> -->
     </div>
   </header>
+  <div class="table_main">
   <table>
     <tbody>
       <tr>
@@ -79,6 +80,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>
@@ -170,6 +172,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
+.table_main {
+  overflow-x:auto;
+}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -181,6 +186,9 @@ table {
     // @include maxMedia(968px) {
     //   display: inherit;
     // }
+    @include maxMedia(768px) {
+       grid-template-columns: repeat(5, 200px);
+    }
 
     &:first-child{
       border: none;
@@ -264,6 +272,9 @@ table {
   input[type='text'] {
     min-width: 15%;
     width: 25%;
+    @include maxMedia(768px) {
+      width: 100%;
+    }
   }
   input[type='datetime-local'] {
     min-width: 15%;

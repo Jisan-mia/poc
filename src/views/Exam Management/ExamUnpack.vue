@@ -1,4 +1,6 @@
 <template>
+  <div class="table_main">
+
   <table>
     <!-- <thead>
       <th>Exam ID</th>
@@ -59,6 +61,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>
@@ -117,6 +120,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
+
+.table_main {
+  width: 100%;
+  @include maxMedia(768px) {
+    overflow-x: scroll;
+  }
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -126,10 +137,11 @@ table {
     border-bottom: 1px solid #CDCDCD;
     display: grid;
     grid-template-columns: 1.5fr 2fr 1.5fr 1.5fr;
-    
-    @include maxMedia(968px) {
-      display: inherit;
+
+    @include maxMedia(768px) {
+      grid-template-columns: repeat(4, 180px)
     }
+    
 
     &:first-child{
       border: none;
@@ -177,6 +189,7 @@ table {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    white-space: none;
     @include maxMedia(968px) {
       padding: 0.5rem 0.9rem;
     }

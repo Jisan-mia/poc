@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+@import '@/styles/config.scss';
   
   .img__container{
     background: #CFCFCF;
@@ -56,7 +56,12 @@ export default {
     align-items: center;
     width: 100%;
     height: 130px;
-    max-width: 180px
+    max-width: 180px;
+    overflow: hidden;
+    @include maxMedia(768px) {
+      max-width: 100%;
+      height: 200px;
+    }
   }
   .img__container img{
     width: 100%;

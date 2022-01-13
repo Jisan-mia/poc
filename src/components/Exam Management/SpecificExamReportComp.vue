@@ -113,6 +113,8 @@
       </select>
     </div>
   </header>
+  <div class="table_main">
+ 
   <table>
     <tbody>
       <tr>
@@ -158,11 +160,11 @@
         <td>
           <div class="student__info">
             <div class="img__container">
-              <img src="/images/profile1.jpeg" alt="">
+              <img :src="imageUrl(report.Profile_image)" alt="">
             </div>
             <div class="info">
               <h4> {{report.name}} </h4>
-              <p> Student Institute </p>
+              <p> {{report.institution}} </p>
             </div>
           </div>
         </td>
@@ -190,6 +192,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>
@@ -224,6 +227,12 @@ export default {
       }
     });
 
+    const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
+
+
+
+
+
     const specificReports = computed(() => {
       if(phoneSearch.value || boardSelected.value || selectedFilter.value) {
         let specificReportsMain = ref(specificReportsState.value);
@@ -243,10 +252,10 @@ export default {
           }
         }
         if(boardSelected.value) {
-            return specificReportsMain.value.filter(report => {
+            specificReportsMain.value = specificReportsMain.value.filter(report => {
               if(boardSelected.value == 'all') return report
               return report.board.toLowerCase().includes(boardSelected.value.toLowerCase())
-          })
+            })
         }
         return specificReportsMain.value
 
@@ -325,7 +334,8 @@ export default {
       phoneSearch,
       isActive,
       isActive2,
-      isActive3
+      isActive3,
+      imageUrl
     };
   },
   components: { CustomAdminBtn }
@@ -334,6 +344,13 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
+.table_main{
+  width: 100%;
+  margin-bottom: 2rem;
+  @include maxMedia(768px) {
+    overflow-x: scroll;
+  }
+}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -414,12 +431,14 @@ table {
         line-height: 20px;
         letter-spacing: 0.2px;
         color: #000;
+        text-transform: capitalize;
       }
       P{
         font-size: 0.8rem;
         line-height: 20px;
         letter-spacing: 0.2px;
         color: #454545;
+        text-transform: capitalize;
       }
     }
 
@@ -443,6 +462,13 @@ table {
   align-content: center;
   gap: 0.85rem;
   margin-bottom: 0.3rem;
+
+  @include maxMedia(768px) {
+      display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
   
 
   input, select, button {

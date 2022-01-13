@@ -93,10 +93,37 @@ const actions = {
         for(let i in question_data[key]) {
           allQuestion.push({
             ...question_data[key][i],
-            type: key
+            type: key,
           })
         }
       }
+
+      
+      const setQuestionOption = async (question) => {
+        
+        const optionRes = await examPackApi.getQuestionOptions(question.question_name);
+        const optionData = await optionRes.option_data;
+        let mainOptions = []
+        if(optionData) {
+          console.log(optionData)
+          
+          for(let optionKey in optionData) {
+            if(optionData[optionKey].length) {
+              mainOptions = [...optionData[optionKey]]
+            }
+          }
+          // console.log(mainOptions)
+          
+        }
+        console.log({...question, options: mainOptions})
+        return {...question, options: mainOptions}
+      }
+
+      const allQuestionWithOptions =await Promise.all(allQuestion.map(setQuestionOption))
+      
+      console.log(allQuestionWithOptions)
+
+      // console.log(allQuestion)
       context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, allQuestion)
     } else {
       const notification = {

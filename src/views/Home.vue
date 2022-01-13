@@ -26,8 +26,6 @@ export default {
       console.log('home to dashboard')
       router.push('/dashboard');
     }
-    
-    
     return {
         isAuthenticated
     };

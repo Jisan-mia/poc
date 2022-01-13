@@ -2,16 +2,22 @@
   <div class="container">
     <h2>Edit Profile</h2>
 
-    <div class="img__container">
-      <img :src="imageUrl(profile.Profile_image)" alt="">
-      <span><i class="fas fa-edit "></i></span>
-    </div>
+    
   
 
     <form class="form__area" @submit.prevent="handleEditProfile">
-      <input v-model="profile.name" placeholder="Your name" type="text" class="input__field">
+      <div class="img__div">
+        <div class="img__container">
+          <img :src="imageUrl(profile.Profile_image)" alt="">
+          <span><i class="fas fa-edit "></i>
+          <input class="img_input" type="file" accept="image/*" name="Profile_image" id="">
+          </span>
+        </div>
+      </div>
+    
+      <input name="name" v-model="profile.name" placeholder="Your name" type="text" class="input__field">
 
-      <input v-model="profile.email" placeholder="Your Email" type="email" class="input__field">
+      <input name="email" v-model="profile.email" placeholder="Your Email" type="email" class="input__field">
 
       
 
@@ -21,7 +27,7 @@
         <option value="O-level">O-Level</option>
       </select>
 
-      <select name="batch" id="batch" v-model="profile.batch">
+      <select  name="batch" id="batch" v-model="profile.batch">
         <option value="2023">2023</option>
         <option value="2022">2022</option>
         <option value="2021">2021</option>
@@ -31,9 +37,9 @@
 
       
 
-      <input v-model="profile.institution" placeholder="institution" type="text" class="input__field">
+      <input name="institution" v-model="profile.institution" placeholder="institution" type="text" class="input__field">
 
-      <select name="division" id="division" v-model="profile.board">
+      <select name="board" id="board" v-model="profile.board">
         <option value="Dhaka">Dhaka</option>
         <option value="Chittagong">Chittagong</option>
         <option value="Comilla">Comilla</option>
@@ -42,7 +48,8 @@
 
       </select>
 
-      <button class="edit__btn" >Edit</button>
+      <input class="edit__btn" type="submit" value="Edit">
+      
 
     </form>
 
@@ -67,6 +74,7 @@ export default {
       console.log(profile.value)
     })
 
+    
     const handleEditProfile = async () => {
       const isError = ref(false)
       for(let key in profile.value) {
@@ -147,6 +155,12 @@ h2{
   margin: 0;
 }
 
+.img__div {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .img__container{
   height: 180px;
   width: 180px;
@@ -162,7 +176,14 @@ h2{
   background-position: center center;
   
 }
-
+.img__container .img_input {
+  position: absolute;
+  display: inline;
+  opacity: 0;
+  width: 100%;
+  inset: 0;
+  border-radius: 50%;
+}
 .img__container span{
   font-size: 1.2rem;
   position: absolute;

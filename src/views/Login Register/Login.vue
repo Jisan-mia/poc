@@ -39,7 +39,11 @@ export default {
     const store = useStore();
     const router = useRouter()
     // const user = computed(() => store.state.userState.user)
+    const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
    
+   if(isAuthenticated.value) {
+     router.push('/dashboard')
+   }
 
     const userInputs = ref({
       phone_number: '',

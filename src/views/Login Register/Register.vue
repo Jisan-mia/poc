@@ -34,18 +34,24 @@ import MainRegisterUser from '../../components/Auth Components/MainRegisterUser.
 import { useStore } from 'vuex'
 import { watchEffect } from '@vue/runtime-core'
 import { getNotification } from '../../api/common'
+import router from '../../router'
+import { useRouter } from 'vue-router'
 
 export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
   name: 'Register',
   setup() {
-    
+    const router = useRouter()
     const store = useStore();
     const user = computed(() => store.state.userState.user)
     const notificationsState = computed(() => store.state.notifications.notifications)
     const error = ref(null)
+    const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
 
     // console.log(user.value, notificationsState.value)
+    if(isAuthenticated.value) {
+      router.push('/dashboard')
+    }
 
     const userAuthInput = ref({
       phone_number: '',

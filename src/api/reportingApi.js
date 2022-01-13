@@ -1,13 +1,13 @@
 import { getAuthorizationHeader } from "./common";
 import axios from 'axios'
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQyNDM5MTkzLCJqdGkiOiIxMTBmMmFjMzVlMmI0ODMyOGViNzNjN2NmMTVlNGJlYiIsInVzZXJfaWQiOjgzfQ.GSIoNDRsYQftQFnfcGVAvDy7C0n7j-upao776bFT0ms'
+const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQyNjk4NzQzLCJqdGkiOiJjMTQ3NDgyZWRhMDI0NjU4ODNkZmNmNWFhYWM4ODRmOSIsInVzZXJfaWQiOjg4fQ.Kz2vQS6LfP-wfghrkRC6ufa-_1pKeHAOXLr-c_2E4Dc'
 
 const getStudentReporting = async () => {
     try{
       const res = await axios.get('http://www.exam.poc.ac/api/get_student_report/',
       {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         }
       }
       );
@@ -27,7 +27,7 @@ const getSpecificReporting = async (exam_name) => {
     const res = await axios.get(`http://www.exam.poc.ac/api/get_result_specific_sub/${exam_name}`,
       {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         }
       }
     );

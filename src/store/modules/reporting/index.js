@@ -68,7 +68,33 @@ const actions = {
     const data = await res.data;
 
     if(data) {
-      context.commit(reportingMutationsTypes.LOAD_SPECIFIC_REPORTING, data)
+      const specificReportsData = data;
+      const allStudentList = context.rootState.userState.allStudentList;
+      
+      
+      if(context.rootState.userState.allStudentList.length !== 0 && specificReportsData.length !== 0) {
+        
+        console.log(specificReportsData, allStudentList)
+
+        const specificReportsUserIds = specificReportsData.map(s => s.student);
+
+        const specificReports = allStudentList.map(student => {
+          if(specificReportsUserIds.indexOf(student.user) != -1) {
+            const sReport = specificReportsData.filter(sR => sR.student == student.user);
+            const mainSReport = Object.assign({}, sReport)[0];
+            delete mainSReport.id;
+            return {
+              ...student,
+              ...mainSReport
+            }
+            
+          } else {
+            return false
+          }
+        }).filter(Boolean)
+        context.commit(reportingMutationsTypes.LOAD_SPECIFIC_REPORTING, specificReports)
+      }
+
     } else {
       const notification = {
         type: 'error',

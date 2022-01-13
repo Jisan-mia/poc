@@ -46,32 +46,20 @@ const registerStudentApi = async (data) => {
   const content_type = 'multipart/form-data';
   
 
-  // const getFormData = object => Object.keys(object).reduce((formData, key) => {
-  //   formData.append(key, object[key]);
-  //   return formData;
-  // }, 
-  // new FormData());
+  const getFormData = object => Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+  }, new FormData());
   try{
-    // const res = await axios.post(
-    //   `http://www.exam.poc.ac/api/Student_Register/`,
-    //   {
-    //     ...data
-    //   },
-    //   {
-    //    headers: {
-		//     'Authorization': `Bearer ${localStorage.getItem('token')}`,
-
-    //    }
-    //   }
-    // )
+  
     
     const res = await axios({
       method: 'POST',
       url: 'http://www.exam.poc.ac/api/Student_Register/',
-      data: data,
+      data: getFormData(data),
       headers: {
 		    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
        }
     });
 

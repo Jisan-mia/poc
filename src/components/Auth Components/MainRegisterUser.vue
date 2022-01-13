@@ -7,7 +7,7 @@
 
       <span>
         <i class="fas fa-edit "></i>
-        <ImgInputModel v-model="userInputs.image"/>
+        <ImgInputModel v-model="userInputs.Profile_image"/>
       </span>
     </div>
   
@@ -71,7 +71,7 @@ export default {
     const imgFile = ref(null);
     const userInputs = ref({
       user:'',
-      image: '',
+      Profile_image: '',
       name:"",
       email:'',
       level:'',
@@ -139,6 +139,7 @@ export default {
         await store.dispatch('userState/registerStudent', {
           ...userInputs.value
         })
+        router.push('/dashboard')
       } 
       catch(err) {
         console.log(err)

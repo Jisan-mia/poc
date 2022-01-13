@@ -19,7 +19,8 @@ const state = {
     token: '',
     isAuthenticated: false
   }, 
-  profile: null
+  profile: null,
+  allStudentList: null,
 }
 
 const mutations = {
@@ -49,6 +50,9 @@ const mutations = {
   setProfile(state, profile) {
     state.profile = profile;
     console.log(state.profile)
+  },
+  setAllStudent(state, allStudent) {
+    state.allStudentList = allStudent;
   },
   [userMutationTypes.SET_USER](state, payload) {
     state.user = {...state.user, ...payload }
@@ -130,6 +134,7 @@ const actions = {
 
     const data = await res.data
     if(data) {
+      context.commit('setAllStudent', data)
       const userId = context.state.user.userId
       const profile = data.find(profile => profile.user == userId)
       context.commit('setProfile', profile)
