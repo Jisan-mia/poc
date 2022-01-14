@@ -300,8 +300,8 @@ export default {
     // exam pack for current exam
 
     const currentExamPack = computed(() => examPacks.value.find(pack => pack.id == currentExam.value.exam_pack));
-    console.log(currentExam.value)
-    console.log(currentExamPack.value);
+    //console.log(currentExam.value)
+    //console.log(currentExamPack.value);
     const timeF = computed(() => (date, time) => {
       const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
       return dayjs(examDate).format("hh:mm:ss A");

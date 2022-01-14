@@ -9,13 +9,13 @@ const registerUserByPhonePass = async (data) => {
         ...data
       },
     )
-    console.log(res);
+    //console.log(res);
     if(res.data.code != 200) {
       throw Error('Error registering user')
     }
     return res.data;
   } catch(error) {
-    console.log(error)
+    //console.log(error)
     return "Couldn't register user"
   }
 }
@@ -28,13 +28,13 @@ const handleUserLogin = async (data) => {
         ...data,
       },
     )
-    console.log(res);
+    //console.log(res);
     if(res.status != 200) {
       throw Error('Error logging user')
     }
     return res;
   } catch(error) {
-    console.log(error)
+    //console.log(error)
     return "Couldn't login user"
   }
 }
@@ -64,7 +64,7 @@ const registerStudentApi = async (data) => {
     });
 
 
-    console.log(res)
+    //console.log(res)
     if(res.data.code !== 200) {
       throw Error('Error student register')
     }
@@ -78,13 +78,13 @@ const registerStudentApi = async (data) => {
 const getAllStudentList = async () => {
   try{
     const res = await axios.get(`http://www.exam.poc.ac/api/student_info/`)
-    console.log(res);
+    //console.log(res);
     if(res.data.code != 200) {
       throw Error('Error logging user')
     }
     return res.data;
   } catch(error) {
-    console.log(error)
+    //console.log(error)
     return "Couldn't login user"
   }
 }
@@ -95,13 +95,13 @@ const updateUserProfile = async (data) => {
     {
       ...data,
     })
-    console.log(res);
+    //console.log(res);
     if(res.data.status != 200) {
       throw Error('Error updating profile')
     }
     return res.data;
   } catch(error) {
-    console.log(error)
+    //console.log(error)
     return "Couldn't update profile"
   }
 }

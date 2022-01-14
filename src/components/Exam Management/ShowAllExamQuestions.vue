@@ -1,9 +1,9 @@
 <template>
   <div class="question__container">
-    <div class="question__card" v-for="examQuestion in examAllQuestions" :key="examQuestion.id">
-      <ShowQuestionTypeA :examQuestion="examQuestion"  v-if="examQuestion.type == 'A'"/>
-      <ShowQuestionTypeB :examQuestion="examQuestion" v-else-if="examQuestion.type == 'B'" />
-      <ShowQuestionTypeC :examQuestionC="examQuestion" v-else />
+    <div class="question__card" v-for="(examQuestion, index) in examAllQuestions" :key="examQuestion.id">
+      <ShowQuestionTypeA :examQuestion="examQuestion" :index="index+1"  v-if="examQuestion.type == 'data_one'"/>
+      <ShowQuestionTypeB :examQuestion="examQuestion" :index="index+1" v-else-if="examQuestion.type == 'data_two'" />
+      <!-- <ShowQuestionTypeC :examQuestionC="examQuestion" v-else /> -->
     </div>
   </div>
 </template>
@@ -19,14 +19,14 @@ export default {
   setup() {
     const store = useStore();
 
-    const examAllQuestionsD = computed(() => store.state.examPackState.examQuestions)
-    console.log(examAllQuestionsD.value)
+    const examAllQuestions = computed(() => store.state.examPackState.examQuestions)
+    //console.log(examAllQuestions.value)
 
-    const examAllQuestions = ref([
+    const examAllQuestionsD = ref([
     {
       id: 1,
       questionNo: 1,
-      type: "A",
+      type: "data_one",
       question: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
       options: [
           "Option1",
@@ -38,7 +38,7 @@ export default {
     
     {
       id: 2,
-      type: "B",
+      type: "data_two",
       paragraph: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
       questionNo: 2,
       hintsHeader: "Follow below information",

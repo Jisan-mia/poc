@@ -2,12 +2,34 @@
 import SidebarLink from './SidebarLink'
 import { ref } from 'vue'
 import { isActive, toggleActive } from './state'
+import axios from 'axios'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   props: {},
   components: { SidebarLink },
   setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    const handleLogout = async () => {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      store.commit('userState/initializeStore')
+      router.push('/logout')
+      
+      try {
+        const res = axios.get('http://www.exam.poc.ac/api/LogOut/',
+        {
+          headers: `Bearer ${localStorage.getItem('token')}`
+        })
+
+      } catch(err){
+        console.log(err)
+      }
+    }
   
-    return {toggleActive, isActive }
+    return {toggleActive, isActive, handleLogout }
   }
 }
 </script>
@@ -43,7 +65,7 @@ export default {
     </span>
 
 
-    <span class="logout">
+    <span class="logout" @click="handleLogout">
       <SidebarLink to="/logout" icon="fas fa-sign-out-alt">Logout</SidebarLink>
     </span>
 

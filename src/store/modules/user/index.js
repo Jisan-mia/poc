@@ -49,21 +49,21 @@ const mutations = {
   },
   setProfile(state, profile) {
     state.profile = profile;
-    console.log(state.profile)
+    //console.log(state.profile)
   },
   setAllStudent(state, allStudent) {
     state.allStudentList = allStudent;
   },
   [userMutationTypes.SET_USER](state, payload) {
     state.user = {...state.user, ...payload }
-    console.log(state)
+    //console.log(state)
   }
 }
 
 const actions = {
   async registerByPhonePass(context, payload) {
     const res = await userApi.registerUserByPhonePass(payload);
-    console.log(res)
+    //console.log(res)
     const data = await res.data;
     if(data) {
       context.commit(userMutationTypes.SET_USER , data)
@@ -112,11 +112,11 @@ const actions = {
   },
   async registerStudent(context, payload) {
     const res = await userApi.registerStudentApi(payload);
-    console.log(res)
+    //console.log(res)
 
 
     if(res.data) {
-      console.log(res.data)
+      //console.log(res.data)
       context.dispatch('notifications/add', getNotification('success', 'Successfully Registered'), {root: true})
     } else {
       const notification = {
@@ -130,7 +130,7 @@ const actions = {
   },
   async loadUserProfile(context) {
     const res = await userApi.getAllStudentList();
-    console.log(res)
+    //console.log(res)
 
     const data = await res.data
     if(data) {

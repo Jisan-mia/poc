@@ -100,9 +100,9 @@ export default {
     const examLists = computed(() => store.state.examPackState.examLists)
 
 
-    console.log(examPacks.value,examLists.value )
+    //console.log(examPacks.value,examLists.value )
     const { id } = route.params;
-    console.log({id})
+    //console.log({id})
 
 
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
@@ -110,14 +110,14 @@ export default {
     // const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.id));
     const currentExamPack = computed(() =>  examPacks.value.find(pack => pack.id == currentExam.value.exam_pack));
 
-    console.log(currentExamPack.value)
+    //console.log(currentExamPack.value)
 
     const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format('DD/MM/YYYY'))
     const endTime = currentExam.value.Exam_end_time;
   
     const days = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
     const dayNum = computed(() => dayjs(currentExam.value.Exam_end_date.value).day())
-    console.log(dayNum.value)
+    //console.log(dayNum.value)
 
 // days[dayNum.value]
     const timeF = computed(() => (date, time) => {
@@ -126,9 +126,9 @@ export default {
     });
 
 
-    console.log(dayNum.value)
+    //console.log(dayNum.value)
     const dayName = days.value[dayNum.value]
-    console.log(dayName)
+    //console.log(dayName)
 
 
     return {

@@ -29,14 +29,14 @@ export default {
     const store = useStore();
     const examPacks = computed(() => store.state.examPackState.examPacks);
     const examLists = computed(() => store.state.examPackState.examLists);
-    console.log(examPacks.value, examLists.value);
+    //console.log(examPacks.value, examLists.value);
     const { id } = route.params;
-    console.log({ id });
-    console.log(examLists.value);
+    //console.log({ id });
+    //console.log(examLists.value);
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
     // all we need in this component is totalTime
     const { exam_total_time } = currentExam.value;
-    console.log(exam_total_time);
+    //console.log(exam_total_time);
 
     return {
         exam_total_time,

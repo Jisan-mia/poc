@@ -23,3 +23,5 @@ export const getDateDiff = (date, time) => {
 	const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
 	return dayjs(examDate).diff(now, 'second') < 0
 }
+
+export const shuffleArray = (arr) => arr.sort(() => Math.random() - 0.5)

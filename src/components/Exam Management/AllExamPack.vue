@@ -28,7 +28,7 @@ export default {
   setup(props, ctx) {
     const store = useStore();
     const examPacks = computed(() => store.state.examPackState.examPacks);
-    console.log(examPacks.value)
+    //console.log(examPacks.value)
 
     const examPackss = ref([
       {

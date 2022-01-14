@@ -11,13 +11,13 @@ const getStudentReporting = async () => {
         }
       }
       );
-      console.log(res)
+      //console.log(res)
       if(res.data.code !== 200) {
         throw Error('Could not get student reporting')
       }
       return res.data;
     } catch (err) {
-      console.log(err.message)
+      //console.log(err.message)
       return 'Error getting student reporting'
     }
 }
@@ -31,13 +31,13 @@ const getSpecificReporting = async (exam_name) => {
         }
       }
     );
-    console.log(res)
+    //console.log(res)
     if(res.data.code !== 200) {
       throw Error('Could not get student specific reporting');
     }
     return res.data;
   } catch (err) {
-    console.log(err.message)
+    //console.log(err.message)
     return 'Error getting student specific reporting'
   }
 }

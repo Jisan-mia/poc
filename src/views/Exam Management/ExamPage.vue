@@ -10,7 +10,7 @@
       
       <div class="btn__cont">
         <div class="wrapper">
-          <CustomAdminBtn type="gradient" :rounded="true"> 
+          <CustomAdminBtn type="gradient" :rounded="true" @onClick="handleSubmitExam"> 
             Submit
           </CustomAdminBtn>
         </div>
@@ -28,6 +28,9 @@ import ExamPageExamDetail from '../../components/Exam Management/ExamPageExamDet
 import ShowAllExamQuestions from '../../components/Exam Management/ShowAllExamQuestions.vue';
 import { useStore } from 'vuex';
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
+
+import dayjs from 'dayjs'
+
 export default {
   components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn },
   name: 'ExamPage',
@@ -37,11 +40,10 @@ export default {
     const store = useStore(); 
 
     const {id} = route.params;
-    console.log(route.params, 'left params')
 
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const isLoading = computed(() => store.state.isLoading);
-    console.log(isLoading.value)
+
 
     store.commit('setIsLoading', true)
 
@@ -83,6 +85,14 @@ export default {
         router.push('/')
       }
     })
+
+    const handleSubmitExam = async () => {
+      try{
+        await store.dispatch('examResult/submitExamResult')
+      } catch(err) {
+        console.log(err)
+      }
+    }
     
     
 
@@ -90,7 +100,8 @@ export default {
     return {
       isLoading,
       isEnded,
-      isNotYetStarted
+      isNotYetStarted,
+      handleSubmitExam
     }
   }
 }

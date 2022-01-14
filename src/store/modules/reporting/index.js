@@ -9,22 +9,22 @@ const state = {
 const mutations = {
   [reportingMutationsTypes.LOAD_STUDENT_REPORTING](state, payload) {
     state.reportings = payload
-    console.log(state)
+    //console.log(state)
   },
   [reportingMutationsTypes.LOAD_SPECIFIC_REPORTING](state, payload) {
     state.specificReportings = payload;
-    console.log(state)
+    //console.log(state)
   }
 }
 
 const actions = {
   async loadStudentReporting(context) {
     const res = await reportingApi.getStudentReporting();
-    console.log(res)
+    //console.log(res)
     const data = await res.data;
 
     if(data) {
-      console.log(context.rootState.examPackState.examLists, data)
+      //console.log(context.rootState.examPackState.examLists, data)
 
       const reportings = data;
       const examLists = context.rootState.examPackState.examLists;
@@ -64,7 +64,7 @@ const actions = {
   async loadSpecificReports(context, exam_name) {
     console.log(exam_name)
     const res = await reportingApi.getSpecificReporting(exam_name);
-    console.log(res);
+    //console.log(res);
     const data = await res.data;
 
     if(data) {
@@ -74,7 +74,7 @@ const actions = {
       
       if(context.rootState.userState.allStudentList.length !== 0 && specificReportsData.length !== 0) {
         
-        console.log(specificReportsData, allStudentList)
+        //console.log(specificReportsData, allStudentList)
 
         const specificReportsUserIds = specificReportsData.map(s => s.student);
 

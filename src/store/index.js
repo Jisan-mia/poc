@@ -5,7 +5,7 @@ import { user } from './modules/user';
 import { notifications } from './modules/notifications'
 import { examPack } from './modules/examPack'
 import { reporting } from './modules/reporting'
-
+import {examResult} from './modules/examResult'
 export default createStore({
   state: {
     isLoading: false
@@ -21,6 +21,7 @@ export default createStore({
     userState: user,
     notifications: notifications,
     examPackState: examPack,
-    reportingState: reporting
+    reportingState: reporting,
+    examResult: examResult
   }
 })

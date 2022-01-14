@@ -1,22 +1,27 @@
 <template>
+<div class="two_main">
+    <div class="img__container" v-if="examQuestion.Q_image">
+      <img :src="imageUrl(examQuestion.Q_image)" alt="">
+    </div>
+    <!-- {{JSON.stringify(imageUrl(examQuestion.Q_image))}} -->
   <div class="question__cont">
-    <div class="paragraph" v-if="examQuestion?.paragraph">
-      {{examQuestion.paragraph}}
+    <div class="paragraph" v-if="examQuestion?.description">
+      {{examQuestion.description}}
     </div>
     <div class="hints">
       <p class="hints__header">
-        <span>{{examQuestion.questionNo}}.</span>
+        <span>{{index}}.</span>
         <span>
-          {{examQuestion.hintsHeader}}
+          {{examQuestion.question_name}}
         </span>
       </p>
       <div class="hints__option">
-        <p v-for="key in Object.keys(examQuestion.hintsOption)" :key="key">
-          <span>
+        <p v-for="key in Object.keys(allHints)" :key="key">
+          <span v-if="allHints[key]">
             {{key}}.
           </span>
-          <span>
-            {{examQuestion.hintsOption[key]}}
+          <span v-if="allHints[key]">
+            {{allHints[key]}}
           </span>
         </p>
       </div>
@@ -24,45 +29,79 @@
 
     <div class="options">
       <p class="options__header">
-        {{examQuestion.optionsHeader}}
+        নিচের কোনটি সঠিক/Which one is correct?
       </p>
 
       <div class="item__cont">
         <CustomRadioButton
           v-for="option in examQuestion.options"
-          :key="option"
-          :option="option"
-          :name='questionNo'
+          :key="option.id"
+          :option="option.ans"
+          :name='option.id'
           v-model="selectedOption"
         />
       </div>
     </div>
+  </div>
   </div>
 </template>
 
 <script>
 import { computed, ref } from '@vue/reactivity';
 import CustomRadioButton from "../../ui/CustomRadioButton.vue"
-import { watchEffect } from '@vue/runtime-core';
+import { watch, watchEffect } from '@vue/runtime-core';
+import { useStore } from 'vuex';
 export default {
   name: "ShowQuestionTypeB",
   components: { CustomRadioButton },
   props: {
     examQuestion: {
-        type: Object
+      type: Object
+    },
+    index: {
+      type: Number
     }
   },
   setup(props) {
-    const questionNo = computed(() => {
-        return props.examQuestion.questionNo
+    const store = useStore();
+    const examQuestion = props.examQuestion;
+    const allSelectedAns = computed(() => store.state.examResult.allSelectedAns)
+
+
+
+    const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
+
+
+    const allHints = computed(() => {
+      return {
+        'i': examQuestion?.data_one,
+        'ii': examQuestion?.data_two,
+        'iii': examQuestion?.data_three,
+        'iv': examQuestion?.data_four
+      }
     })
+    
     const selectedOption = ref('')
-    watchEffect(() => {
-      console.log('selected', selectedOption.value)
+
+    watch(selectedOption, () => {
+      //console.log('selected', selectedOption.value)
+      const optionObj = computed(() => examQuestion.options.find(o => o.ans === selectedOption.value))
+      if(optionObj.value) {
+        store.dispatch('examResult/selectedAnsHandle', {...optionObj.value})
+
+      }
+      //console.log(optionObj.value)
     })
+
+    watchEffect(() => {
+      //console.log(allSelectedAns.value)
+    })
+
+
     return {
       selectedOption,
-      questionNo
+      allHints,
+      imageUrl
     };
   },
 }
@@ -70,6 +109,35 @@ export default {
 
 <style scoped lang="scss">
 @import '@/styles/config.scss';
+
+
+.img__container{
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 190px;
+  max-width: 400px;
+  overflow: hidden;
+  display: block;
+  align-self: center;
+  @include maxMedia(768px) {
+    max-width: 100%;
+    height: 200px;
+  }
+}
+.img__container img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center center;
+  border-radius: 5px;
+}
+
+.two_main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 .pDefault {
   font-size: 1rem;
   color: rgb(0 0 0 / 70%);

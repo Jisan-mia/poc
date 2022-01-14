@@ -135,20 +135,20 @@ export default {
     const profile = computed(() => store.state.userState.profile);
     const previousExamReport = computed(() => store.state.reportingState.reportings);
     const examLists = computed(() => store.state.examPackState.examLists);
-    console.log(examLists.value)
+    //console.log(examLists.value)
     
     const now = dayjs().format('YYYY-MM-DD hh:mm:ss A');
 
     const filterUpcoming = computed(() => examLists.value.filter(exam => {
       const examDate = dayjs(exam.Exam_start_date + exam.Exam_start_time).format('YYYY-MM-DD hh:mm:ss A')
-      console.log(examDate, now, dayjs(examDate).diff(now, 'hour'));
+      //console.log(examDate, now, dayjs(examDate).diff(now, 'hour'));
       if(dayjs(examDate).diff(now, 'hour') > 0) {
         return exam
       } return false;
     }))
 
     const upcomingExams = computed(() => filterUpcoming.value.slice(Math.max(filterUpcoming.value.length-2, 1))) 
-    console.log(upcomingExams.value)
+    //console.log(upcomingExams.value)
 
     
     
@@ -172,7 +172,7 @@ export default {
       }
     ])
     const handleClickUpcomingExam = (exam) => {
-      // console.log(exam)
+      // //console.log(exam)
     }
 
 

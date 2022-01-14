@@ -1,4 +1,4 @@
-import { getNotification, getDateDiff } from "../../../api/common";
+import { getNotification, getDateDiff, shuffleArray } from "../../../api/common";
 import examPackApi from "../../../api/examPackApi";
 import { examPackMutationTypes } from "./examPack.mutationTypes";
 
@@ -12,11 +12,11 @@ const state = {
 const mutations = {
   [examPackMutationTypes.SET_EXAM_PACK](state, payload) {
     state.examPacks = payload
-    console.log(state)
+    //console.log(state)
   },
   [examPackMutationTypes.SET_EXAM_LIST](state, payload) {
     state.examLists = payload
-    console.log(state)
+    //console.log(state)
   },
   [examPackMutationTypes.SET_EXAM_QUESTIONS](state, payload) {
     state.examQuestions = payload
@@ -26,7 +26,7 @@ const mutations = {
 const actions = {
   async loadExamPacks(context) {
     const res = await examPackApi.getExamPackList();
-    console.log(res)
+    //console.log(res)
     const data = await res.data;
 
     if(data) {
@@ -44,13 +44,13 @@ const actions = {
   },
   async loadExamLists(context) {
     const res = await examPackApi.getExamLists();
-    console.log(res);
+    //console.log(res);
     const data = await res.data;
 
     if(data) {
 
       const mainExam = data.map(exam => {
-        console.log(exam)
+        //console.log(exam)
         if(getDateDiff(exam.Exam_end_date, exam.Exam_end_time)) {
           return {
             ...exam,
@@ -63,7 +63,7 @@ const actions = {
           }
         } return exam
       })
-      console.log(mainExam)
+      //console.log(mainExam)
 
 
 
@@ -82,8 +82,16 @@ const actions = {
   },
 
   async loadExamQuestions(context, id) {
+    const examLists = context.state.examLists;
+    
+    const currentExam = examLists.find(exam => exam.id == id);
+
+    const {isRandomized, mark_per_question, amount_per_mistake, isNegativeMarking} = currentExam;
+    //console.log(isRandomized);
+    
+
     const res = await examPackApi.getExamQuestions(id);
-    console.log(res);
+    //console.log(res);
     const question_data = await res.question_data;
 
     if(question_data) {
@@ -91,40 +99,44 @@ const actions = {
 
       for(let key in question_data) {
         for(let i in question_data[key]) {
-          allQuestion.push({
-            ...question_data[key][i],
-            type: key,
-          })
+          if(key !== "data_three") {
+            allQuestion.push({
+              ...question_data[key][i],
+              type: key,
+              mark_per_question,
+              isNegativeMarking,
+              amount_per_mistake
+            })
+          }
+          
         }
       }
 
-      
       const setQuestionOption = async (question) => {
         
         const optionRes = await examPackApi.getQuestionOptions(question.question_name);
-        const optionData = await optionRes.option_data;
+        const optionData = await optionRes.data;
         let mainOptions = []
         if(optionData) {
-          console.log(optionData)
+          //console.log(optionData)
           
-          for(let optionKey in optionData) {
-            if(optionData[optionKey].length) {
-              mainOptions = [...optionData[optionKey]]
-            }
-          }
-          // console.log(mainOptions)
+          return {...question, options: optionData}
+          // for(let optionKey in optionData) {
+          //   if(optionData[optionKey].length) {
+          //     mainOptions = [...optionData[optionKey]]
+          //   }
+          // }
           
         }
-        console.log({...question, options: mainOptions})
-        return {...question, options: mainOptions}
+        // //console.log({...question, options: mainOptions})
       }
 
       const allQuestionWithOptions =await Promise.all(allQuestion.map(setQuestionOption))
       
-      console.log(allQuestionWithOptions)
 
-      // console.log(allQuestion)
-      context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, allQuestion)
+      const finalQuestions = isRandomized ? shuffleArray(allQuestionWithOptions) : [...allQuestionWithOptions]
+
+      context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, finalQuestions)
     } else {
       const notification = {
         type: 'error',
