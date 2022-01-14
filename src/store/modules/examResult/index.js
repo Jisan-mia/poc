@@ -1,9 +1,11 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
+import examApi from '../../../api/examApi'
 const state = {
   allSelectedAns: [],
   score: 0,
-  negative_marking: 0
+  negative_marking: 0,
+  isExamSubmitted: false
 }
 const mutations = {
   setSelectedAns(state, payload) {
@@ -15,6 +17,9 @@ const mutations = {
   },
   negativeMarkCalculation(state, payload) {
     state.negative_marking = payload
+  },
+  setExamIsSubmitted(state, payload) {
+    state.isExamSubmitted = payload
   }
 }
 
@@ -46,6 +51,7 @@ const actions = {
   handleScoreCalculation(context) {
     const allSelectedAns = context.state.allSelectedAns;
     const examQuestions = context.rootState.examPackState.examQuestions;
+    console.log(examQuestions)
     if(allSelectedAns.length !== 0 && examQuestions.length !== 0) {
       const { mark_per_question, amount_per_mistake, isNegativeMarking} = examQuestions[0];
       //console.log(mark_per_question, amount_per_mistake, isNegativeMarking)
@@ -76,11 +82,46 @@ const actions = {
   },
 
   async submitExamResult(context) {
+    const examQuestions = context.rootState.examPackState.examQuestions;
+    const {exam_name} = examQuestions[0]
+
+    const student = context.rootState.userState.user.userId;
+
     const score = context.state.score;
     const negative_marking = context.state.negative_marking;
-    const timestamp = dayjs(new Date()).format('hh:mm:ss A');
+    const timestamp = dayjs(new Date()).format('HH:mm:ss');
 
-    //console.log(score, negative_marking, timestamp)
+    console.log(score, negative_marking, timestamp, exam_name, student)
+
+    const dataToSend = {
+      score,
+      negative_marking,
+      timestamp,
+      exam_name,
+      student
+    }
+
+    const res = await examApi.submitResultToApi(dataToSend)
+
+    const data = await res.data
+    if(data) {
+      const notification = {
+        type: 'success',
+        message: 'Your answer has been submitted'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+
+      context.commit('setExamIsSubmitted', true)
+
+    } else {
+      const notification = {
+        type: 'error',
+        message: 'Error submitting you answer'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+    }
 
 
     

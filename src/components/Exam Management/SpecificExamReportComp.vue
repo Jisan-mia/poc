@@ -72,7 +72,7 @@
 
           <div class="infos">
             <p>Score: {{currentExam.score}}/{{currentExam.total_mark}}</p>
-            <p>Timestamp: {{currentExam.timestamp}}</p>
+            <p>Timestamp: {{timeStampF(currentExam.timestamp)}}</p>
             <p>Negative Marketing: {{currentExam.negative_marking}}</p>
           </div>
 
@@ -214,6 +214,8 @@ export default {
     const examLists = computed(() => store.state.reportingState.reportings);
     const specificReportsState = computed(() => store.state.reportingState.specificReportings);
     
+    
+
     const { examId } = route.params;
     console.log({ examId });
     // search current exam by route examId
@@ -228,7 +230,6 @@ export default {
     });
 
     const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
-
 
 
 
@@ -307,6 +308,12 @@ export default {
       return dayjs(examDate).format("hh:mm:ss A");
     });
 
+    const timeStampF = computed(() => time => {
+      return dayjs(currentExam.value.Exam_end_date,time).format('hh:mm:ss A')
+    })
+
+    console.log(currentExam.value.timestamp, dayjs(currentExam.value.timestamp).format('hh:mm:ss A'))
+
 
     const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format("DD/MM/YYYY"));
     // const endTime = currentExam.value.Exam_end_time;
@@ -335,7 +342,8 @@ export default {
       isActive,
       isActive2,
       isActive3,
-      imageUrl
+      imageUrl,
+      timeStampF
     };
   },
   components: { CustomAdminBtn }

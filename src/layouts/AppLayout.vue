@@ -31,9 +31,9 @@ export default {
       if(isAuthenticated.value) {
         try{
           await store.dispatch('examPackState/loadExamPacks');
-          await store.dispatch('examPackState/loadExamLists');
           await store.dispatch('reportingState/loadStudentReporting');
           await store.dispatch('userState/loadUserProfile');
+          await store.dispatch('examPackState/loadExamLists');
 
           
           store.commit('setIsLoading', false)

@@ -47,13 +47,18 @@
                 Not Started
               </CustomAdminBtn>
 
-              <CustomAdminBtn type="info" :rounded="true" v-if="!exam.isExpired && !exam.isNotYetStarted" @onClick="handleStartExam(exam)">
+              <CustomAdminBtn type="info" :rounded="true" v-if="!exam.isExpired && !exam.isNotYetStarted && !exam.hasExamAlreadyGiven" @onClick="handleStartExam(exam)">
                 Start Exam
               </CustomAdminBtn>
-              
+
               <CustomAdminBtn type="warning" :rounded="true" :disabled="true" v-if="exam.isExpired">
                 Expired
               </CustomAdminBtn>
+
+              <CustomAdminBtn type="primary" :rounded="true" :disabled="true" v-if="exam.hasExamAlreadyGiven">
+                Completed
+              </CustomAdminBtn>
+              
             </div>
           </span>
     
@@ -78,6 +83,7 @@ export default {
         const router = useRouter();
         const store = useStore();
         const examLists = computed(() => store.state.examPackState.examLists);
+
         const { packId } = route.params;
 
         const exams = computed(() => examLists.value.filter(exam => exam.exam_pack == packId));

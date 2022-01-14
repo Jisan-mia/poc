@@ -43,6 +43,8 @@ export default {
 
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const isLoading = computed(() => store.state.isLoading);
+    const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
+    
 
 
     store.commit('setIsLoading', true)
@@ -89,6 +91,10 @@ export default {
     const handleSubmitExam = async () => {
       try{
         await store.dispatch('examResult/submitExamResult')
+        if(isExamSubmitted.value) {
+          store.commit('examResult/setExamIsSubmitted', false);
+          router.push('/dashboard')
+        }
       } catch(err) {
         console.log(err)
       }

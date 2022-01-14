@@ -81,19 +81,6 @@ const getQuestionOptions = async (questionName) => {
       data: data
 
     })
-
-
-    // const res = await axios.get(`http://exam.poc.ac/api/all_option_get/`,
-    // {
-    //   ...data
-    // },
-    // {
-    //   headers: {
-    //     'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //   }
-    // }
-    // );
-    //console.log(res)
     if(res.data.code !== 200) {
       throw Error('Error getting question options')
     }

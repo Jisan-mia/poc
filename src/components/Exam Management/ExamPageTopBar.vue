@@ -5,13 +5,11 @@
     </div>
 
     <Counter
-      :year="2022"
-      :month="0"
-      :date="11"
-      :hour="20"
-      :minute="0"
-      :second="0"
-      :millisecond="0"
+      :year="year"
+      :month="month"
+      :date="date"
+      :hour="hour"
+      :minute="minute"
      />
       
   </header>
@@ -22,6 +20,7 @@ import { computed, ref } from '@vue/reactivity';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import Counter from '../ui/Counter.vue';
+import dayjs from 'dayjs'
 export default {
   name: "ExamPageTopBar",
   setup() {
@@ -35,11 +34,35 @@ export default {
     //console.log(examLists.value);
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
     // all we need in this component is totalTime
-    const { exam_total_time } = currentExam.value;
-    //console.log(exam_total_time);
+    const { exam_total_time, Exam_end_date, Exam_end_time} = currentExam.value;
+    console.log(exam_total_time);
+    console.log(currentExam.value, Exam_end_date, Exam_end_time);
+
+
+    const endTime = computed(() => {
+      const now = dayjs().format('YYYY-MM-DD HH:mm:ss A');
+	    const examDate = dayjs(Exam_end_date + Exam_end_time).format("YYYY-MM-DD HH:mm:ss");
+      return examDate
+      
+    })
+    console.log(endTime.value ,'\n', dayjs(endTime.value).get('year'), dayjs(endTime.value).get('month')+1,dayjs(endTime.value).get('date'), dayjs(endTime.value).get('hour'), dayjs(endTime.value).get('minute'), dayjs(endTime.value).get('second'))
+
+    const year = computed(() => dayjs(endTime.value).get('year'))
+    const month = computed(() => dayjs(endTime.value).get('month'))
+    const date = computed(() => dayjs(endTime.value).get('date'))
+    const hour = computed(() => dayjs(endTime.value).get('hour'))
+    const minute = computed(() => dayjs(endTime.value).get('minute'))
+    const second = computed(() => dayjs(endTime.value).get('second'))
+
+    
 
     return {
         exam_total_time,
+        year,
+        month,
+        date,
+        hour,
+        minute
     };
   },
   components: { Counter }

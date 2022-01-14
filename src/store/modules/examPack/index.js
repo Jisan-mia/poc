@@ -48,6 +48,14 @@ const actions = {
     const data = await res.data;
 
     if(data) {
+      const userId = context.rootState.userState.user.userId;
+      const reportings = context.rootState.reportingState.reportings;
+
+      let hasExamAlreadyGiven = reportings.filter(report => report.student == userId);
+
+      hasExamAlreadyGiven = hasExamAlreadyGiven.length !== 0
+
+      console.log(userId, reportings, hasExamAlreadyGiven)
 
       const mainExam = data.map(exam => {
         //console.log(exam)
@@ -60,6 +68,11 @@ const actions = {
           return {
             ...exam,
             isNotYetStarted: true
+          }
+        } else if(hasExamAlreadyGiven) {
+          return {
+            ...exam,
+            hasExamAlreadyGiven
           }
         } return exam
       })

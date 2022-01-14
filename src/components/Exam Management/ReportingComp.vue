@@ -139,7 +139,7 @@ export default {
 
     const timeF = computed(() => (date, time) => {
         const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
-        return dayjs(examDate).format("hh:mm:ss A");
+        return dayjs(examDate).format("hh:mm A");
     });
 
 

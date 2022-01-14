@@ -17,7 +17,32 @@ import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 export default {
   name: 'Counter',
-  props: ['year', 'month','date','hour', 'minute', 'second', 'millisecond' ],
+  // props: ['year', 'month','date','hour', 'minute', 'second', 'millisecond' ],
+  props: {
+    year: {
+      type: Number
+    },
+    month: {
+      type: Number,
+    },
+    date: {
+      type: Number,
+    },
+    hour: {
+      type: Number,
+    },
+    minute: {
+      type: Number,
+    },
+    second: {
+      type: Number,
+      default: () => 0
+    },
+    millisecond: {
+      type: Number,
+      default: () => 0
+    },
+  },
   setup(props) {
     const loaded = ref(false);
     const expired = ref(false)
@@ -47,6 +72,7 @@ export default {
     // formate num
     const formatNum = num => num < 10 ? '0'+num : num
 
+    console.log(endP.value, new Date())
 
     const showRemaining = () => {
       const timer = setInterval(() => {
