@@ -40,10 +40,10 @@ export default {
     const router = useRouter()
     // const user = computed(() => store.state.userState.user)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
-    const userId = computed(() => store.state.userState.user.userId)
+    const profile = computed(() => store.state.userState.user.profile)
 
-
-   if(isAuthenticated.value && userId.value) {
+    console.log(profile.value)
+   if(isAuthenticated.value && profile.value) {
      router.push('/dashboard')
    }
 

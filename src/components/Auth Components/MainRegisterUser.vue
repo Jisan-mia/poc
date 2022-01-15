@@ -102,7 +102,7 @@ export default {
       const isError = ref(false)
       for(let key in userInputs.value) {
         if(userInputs.value[key] == '') {
-          if(key == 'email' || key == 'user') {
+          if(key == 'email' || key == 'user' || key == 'Profile_image') {
             continue;
           }
           isError.value = true

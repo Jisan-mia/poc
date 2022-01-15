@@ -47,10 +47,10 @@ export default {
     const notificationsState = computed(() => store.state.notifications.notifications)
     const error = ref(null)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
-    const profile = computed(() => store.state.userState)
+    const profile = computed(() => store.state.userState.profile)
     console.log(profile.value)
     // console.log(user.value, notificationsState.value)
-    if(isAuthenticated.value) {
+    if(isAuthenticated.value && profile.value) {
       router.push('/dashboard')
     }
 
