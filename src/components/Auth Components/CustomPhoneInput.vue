@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <span>+880</span>
+    <span>+88</span>
     <input 
       min="0" 
       type="number" 

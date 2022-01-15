@@ -35,22 +35,18 @@
       </select>
 
 
-
-      
-
-      <input name="institution" v-model="profile.institution" placeholder="institution" type="text" class="input__field">
-
       <select name="board" id="board" v-model="profile.board">
         <option value="Dhaka">Dhaka</option>
         <option value="Chittagong">Chittagong</option>
         <option value="Comilla">Comilla</option>
         <option value="Sylhet">Sylhet</option>
         <option value=" Mymensingh"> Mymensingh</option>
-
       </select>
 
+      <input name="institution" v-model="profile.institution" placeholder="institution" type="text" class="input__field">
+
       <input class="edit__btn" type="submit" value="Edit">
-      
+
       </div>
 
     </form>
@@ -149,7 +145,8 @@ export default {
       profile,
       imageUrl,
       handleEditProfile,
-      handleIInput
+      handleIInput,
+      previewImage
     };
   },
   components: { ImgInputModel }
