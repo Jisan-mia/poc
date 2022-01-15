@@ -98,7 +98,12 @@ const actions = {
       negative_marking,
       timestamp,
       exam_name,
-      student
+      student,
+      // todo
+      /* add to extra fields
+        1. passed: true/false 
+        2. failed: true/false
+      */
     }
 
     const res = await examApi.submitResultToApi(dataToSend)

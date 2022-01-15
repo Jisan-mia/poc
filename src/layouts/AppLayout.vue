@@ -23,6 +23,7 @@ export default {
     const store = useStore(); 
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const isLoading = computed(() => store.state.isLoading);
+    const profile = computed(() => store.state.userState.profile)
 
 
     store.commit('setIsLoading', true)
@@ -30,13 +31,18 @@ export default {
     watchEffect(async () => {
       if(isAuthenticated.value) {
         try{
-          await store.dispatch('examPackState/loadExamPacks');
           await store.dispatch('userState/loadUserProfile');
-          await store.dispatch('examPackState/loadExamLists');
-          await store.dispatch('reportingState/loadStudentReporting');
-
-          
-          store.commit('setIsLoading', false)
+          if(profile.value) {
+            await store.dispatch('examPackState/loadExamPacks');
+            await store.dispatch('examPackState/loadExamLists');
+            await store.dispatch('reportingState/loadStudentReporting');
+            store.commit('setIsLoading', false)
+          } else {
+            localStorage.removeItem('token')
+            localStorage.removeItem('userId')
+            store.commit('userState/setProfile', null);
+            store.commit('userState/initializeStore')
+          }
 
         }
         catch(error) {

@@ -130,12 +130,13 @@ const actions = {
   },
   async loadUserProfile(context) {
     const res = await userApi.getAllStudentList();
-    //console.log(res)
+    console.log(res)
 
     const data = await res.data
     if(data) {
       context.commit('setAllStudent', data)
       const userId = context.state.user.userId
+      console.log(userId)
       const profile = data.find(profile => profile.user == userId)
       context.commit('setProfile', profile)
 
