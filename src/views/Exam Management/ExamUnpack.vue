@@ -17,7 +17,7 @@
         <th>Exam ID</th>
         <th>Subject</th>
         <th>Data & Time</th>
-        <th>Status</th> 
+        <th class="status_header">Status</th> 
       </tr>
 
       <tr v-for="exam in exams" :key="exam.id">
@@ -39,7 +39,7 @@
             </span>
           </div>
         </td>
-        <td>
+        <td class="status__column">
           <span>
             <div class="wrapper">
 
@@ -199,6 +199,9 @@ table {
     @include maxMedia(968px) {
       padding: 0.5rem 0.9rem;
     }
+  }
+  .status__column , .status_header{
+    justify-self: center;
   }
 
 }

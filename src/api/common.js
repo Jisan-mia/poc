@@ -25,3 +25,21 @@ export const getDateDiff = (date, time) => {
 }
 
 export const shuffleArray = (arr) => arr.sort(() => Math.random() - 0.5)
+
+
+// new counter system
+export const  getTimeRemaining = (endtime) => {
+	const total = Date.parse(endtime) - Date.parse(new Date());
+	const seconds = Math.floor((total / 1000) % 60);
+	const minutes = Math.floor((total / 1000 / 60) % 60);
+	const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+	const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+	return {
+		total,
+		days,
+		hours,
+		minutes,
+		seconds
+	};
+}

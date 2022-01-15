@@ -96,9 +96,9 @@ export default {
     const isLoading = computed(() => store.state.isLoading);
     const idSearch = ref('')
 
-    const mainReport = computed(() => store.state.reportingState.reportings)
+    const mainReportD = computed(() => store.state.reportingState.reportings)
 
-
+    const mainReport = computed(() => mainReportD.value.filter(r => r.isExpired === true))
 
 
     const examLists = computed(() => store.state.examPackState.examLists);

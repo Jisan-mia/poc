@@ -20,7 +20,7 @@ const mutations = {
 const actions = {
   async loadStudentReporting(context) {
     const res = await reportingApi.getStudentReporting();
-    //console.log(res)
+    console.log(res)
     const data = await res.data;
 
     if(data) {

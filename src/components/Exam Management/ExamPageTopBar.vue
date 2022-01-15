@@ -2,15 +2,28 @@
   <header>
     <div class="img__container">
       <img src="@/assets/poc_logo.svg" alt="">
-    </div>
+      <div>
 
+      </div>
+    </div>
     <Counter
       :year="year"
       :month="month"
       :date="date"
       :hour="hour"
       :minute="minute"
+      :notVisible="true"
      />
+
+    <Counter
+      :year="tYear"
+      :month="tMonth"
+      :date="tDate"
+      :hour="tHour"
+      :minute="tMinute"
+     />
+
+     
       
   </header>
 </template>
@@ -21,6 +34,7 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import Counter from '../ui/Counter.vue';
 import dayjs from 'dayjs'
+import { getTimeRemaining } from '../../api/common';
 export default {
   name: "ExamPageTopBar",
   setup() {
@@ -38,7 +52,7 @@ export default {
     console.log(exam_total_time);
     console.log(currentExam.value, Exam_end_date, Exam_end_time);
 
-
+// exam end time
     const endTime = computed(() => {
       const now = dayjs().format('YYYY-MM-DD HH:mm:ss A');
 	    const examDate = dayjs(Exam_end_date + Exam_end_time).format("YYYY-MM-DD HH:mm:ss");
@@ -46,6 +60,7 @@ export default {
       
     })
     console.log(endTime.value ,'\n', dayjs(endTime.value).get('year'), dayjs(endTime.value).get('month')+1,dayjs(endTime.value).get('date'), dayjs(endTime.value).get('hour'), dayjs(endTime.value).get('minute'), dayjs(endTime.value).get('second'))
+    
 
     const year = computed(() => dayjs(endTime.value).get('year'))
     const month = computed(() => dayjs(endTime.value).get('month'))
@@ -54,7 +69,31 @@ export default {
     const minute = computed(() => dayjs(endTime.value).get('minute'))
     const second = computed(() => dayjs(endTime.value).get('second'))
 
+
+    // for total end time
+    const timeInMinutes = currentExam.value.exam_total_time;
+    const currentTime = Date.parse(new Date())
+
+    const deadline = new Date(currentTime + timeInMinutes*60*1000);
+    console.log(dayjs(deadline).format(("YYYY-MM-DD HH:mm:ss")));
     
+    const totalExamTimeEndTime = computed(() => dayjs(deadline).format(("YYYY-MM-DD HH:mm:ss")));
+
+    const tYear = computed(() => dayjs(totalExamTimeEndTime.value).get('year'))
+    const tMonth = computed(() => dayjs(totalExamTimeEndTime.value).get('month'))
+    const tDate = computed(() => dayjs(totalExamTimeEndTime.value).get('date'))
+    const tHour = computed(() => dayjs(totalExamTimeEndTime.value).get('hour'))
+    const tMinute = computed(() => dayjs(totalExamTimeEndTime.value).get('minute'))
+    
+
+
+
+
+
+
+
+   
+
 
     return {
         exam_total_time,
@@ -62,7 +101,12 @@ export default {
         month,
         date,
         hour,
-        minute
+        minute,
+        tYear,
+        tMonth,
+        tDate,
+        tHour,
+        tMinute
     };
   },
   components: { Counter }

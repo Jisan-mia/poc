@@ -5,7 +5,7 @@
     
   
 
-    <form class="form__area" @submit.prevent="handleEditProfile">
+    <form class="main_form" @submit.prevent="handleEditProfile">
       <div class="img__div">
         <div class="img__container">
           <img :src="imageUrl(profile.Profile_image)" alt="">
@@ -15,7 +15,8 @@
         </div>
       </div>
     
-      <input name="name" v-model="profile.name" placeholder="Your name" type="text" class="input__field">
+      <div class="form__area">
+        <input name="name" v-model="profile.name" placeholder="Your name" type="text" class="input__field">
 
       <input name="email" v-model="profile.email" placeholder="Your Email" type="email" class="input__field">
 
@@ -50,6 +51,7 @@
 
       <input class="edit__btn" type="submit" value="Edit">
       
+      </div>
 
     </form>
 
@@ -133,7 +135,11 @@ export default {
 </script>
 
 <style>
-
+.main_form {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
 .container{
   width: 100%;
   height: 100%;
@@ -213,6 +219,7 @@ h2{
   grid-gap:2rem 1.2em;
   flex: 1;
   justify-content: center;
+  margin: 2rem auto;
 }
 .form__area::after{
   content: "";

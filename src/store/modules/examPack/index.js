@@ -1,5 +1,6 @@
 import { getNotification, getDateDiff, shuffleArray } from "../../../api/common";
 import examPackApi from "../../../api/examPackApi";
+import reportingApi from "../../../api/reportingApi";
 import { examPackMutationTypes } from "./examPack.mutationTypes";
 
 
@@ -44,18 +45,22 @@ const actions = {
   },
   async loadExamLists(context) {
     const res = await examPackApi.getExamLists();
-    //console.log(res);
+    const resReporting = await reportingApi.getStudentReporting();
+    
+    
     const data = await res.data;
+    const reportingData = await resReporting.data
+    console.log(reportingData)
 
-    if(data) {
+
+    if(data && reportingData) {
       const userId = context.rootState.userState.user.userId;
-      const reportings = context.rootState.reportingState.reportings;
 
-      let hasExamAlreadyGiven = reportings.filter(report => report.student == userId);
+      let hasExamAlreadyGiven = reportingData.find(report => data.findIndex(exam => exam.id == report.exam_name) !== -1);
 
-      hasExamAlreadyGiven = hasExamAlreadyGiven.length !== 0
+      // hasExamAlreadyGiven = hasExamAlreadyGiven
 
-      console.log(userId, reportings, hasExamAlreadyGiven)
+      console.log(userId, reportingData, hasExamAlreadyGiven, data)
 
       const mainExam = data.map(exam => {
         //console.log(exam)
@@ -72,7 +77,7 @@ const actions = {
         } else if(hasExamAlreadyGiven) {
           return {
             ...exam,
-            hasExamAlreadyGiven
+            hasExamAlreadyGiven: true
           }
         } return exam
       })

@@ -176,7 +176,7 @@
 
         <td>
           <span>
-            {{report.timestamp}}
+            {{timeStampF(report.timestamp)}}
           </span>
         </td>
         <td>
@@ -308,12 +308,12 @@ export default {
       return dayjs(examDate).format("hh:mm:ss A");
     });
 
-    const timeStampF = computed(() => time => {
-      return dayjs(currentExam.value.Exam_end_date,time).format('hh:mm:ss A')
+    const timeStampF = computed(() => (time)=>  {
+      const fullDate =  dayjs(currentExam.value.Exam_end_date+time).format('YYYY-MM-DD hh:mm:ss A');
+      console.log(fullDate)
+      return dayjs(fullDate).format("hh:mm:ss A")
     })
-
-    console.log(currentExam.value.timestamp, dayjs(currentExam.value.timestamp).format('hh:mm:ss A'))
-
+    console.log(timeStampF.value)
 
     const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format("DD/MM/YYYY"));
     // const endTime = currentExam.value.Exam_end_time;

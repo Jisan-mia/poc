@@ -29,7 +29,9 @@ import ShowAllExamQuestions from '../../components/Exam Management/ShowAllExamQu
 import { useStore } from 'vuex';
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
 
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
+import SuperTokensLock from "browser-tabs-lock";
+
 
 export default {
   components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn },
@@ -57,6 +59,9 @@ export default {
       if(isAuthenticated.value) {
         try{
           await store.dispatch('examPackState/loadExamPacks');
+          await store.dispatch('userState/loadUserProfile');
+          await store.dispatch('reportingState/loadStudentReporting');
+
           await store.dispatch('examPackState/loadExamLists');
           await store.dispatch('examPackState/loadExamQuestions', id);
           store.commit('setIsLoading', false)
@@ -64,18 +69,26 @@ export default {
           const examLists = computed(() => store.state.examPackState.examLists)
 
           const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
+
+          console.log(currentExam.value)
           
 
           if(currentExam.value) {
             if(currentExam.value.isNotYetStarted) {
-              alert('Exam Not Yet Started')
+              store.dispatch('notifications/add', {type: 'warning', message: 'The Exam Not Yet Started'})
               router.push('/')
               isNotYetStarted.value = true;
             } else if(currentExam.value.isExpired) {
-              alert('The Exam has already Expired')
+
+              store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
+
               router.push('/')
               console.log('exam time expired');
               isEnded.value  = true
+            } else if(currentExam.value.hasExamAlreadyGiven) {
+              store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
+
+              router.push('/')
             }
           }
         }
@@ -89,20 +102,42 @@ export default {
     })
 
     const handleSubmitExam = async () => {
+      
+
       try{
         await store.dispatch('examResult/submitExamResult')
         if(isExamSubmitted.value) {
           store.commit('examResult/setExamIsSubmitted', false);
-          router.push('/dashboard')
+          const routeData = router.resolve({
+            path: '/dashboard',
+          })
+
+          window.open(routeData.href, '_blank');
+          window.close()
         }
       } catch(err) {
         console.log(err)
       }
     }
-    
-    
 
 
+let superTokensLock = new SuperTokensLock()
+async function lockingIsFun() {
+	if (await superTokensLock.acquireLock("hello", 150000)) {
+		// lock has been acquired... we can do anything we want now.
+		// ...
+    console.log('anythinglock')
+		// await superTokensLock.releaseLock("hello");
+	} else {
+		// failed to acquire lock after trying for 5 seconds. 
+    console.log('not')
+	}
+}
+
+
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+})
     return {
       isLoading,
       isEnded,

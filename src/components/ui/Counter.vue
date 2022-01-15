@@ -1,9 +1,9 @@
 <template>
-  <div class="timer" v-if="loaded">
+  <div class="timer" :class="[notVisible ? 'notVisible': '']" v-if="loaded">
     <p  v-if="!expired">Time Remaining</p>
     <p v-else-if="expired">Time Expired</p>
     <h3>
-      <span v-if="displayDays">{{displayDays}}</span> <span v-if="displayDays">: </span>
+      <!-- <span v-if="displayDays">{{displayDays}}</span> <span v-if="displayDays">: </span> -->
       <span>{{displayHours}}</span><span>: </span>
       <span>{{displayMinutes}}</span> <span>:</span>
       <span>{{displaySeconds}}</span>
@@ -15,6 +15,8 @@
 <script>
 import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
 export default {
   name: 'Counter',
   // props: ['year', 'month','date','hour', 'minute', 'second', 'millisecond' ],
@@ -42,10 +44,18 @@ export default {
       type: Number,
       default: () => 0
     },
+    notVisible: {
+      type: Boolean,
+      default: () => false
+    }
   },
   setup(props) {
     const loaded = ref(false);
-    const expired = ref(false)
+    const expired = ref(false);
+    const store = useStore();
+    const router = useRouter();
+    const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
+
 
     const endP = computed(() => {
       return new Date(
@@ -75,7 +85,7 @@ export default {
     console.log(endP.value, new Date())
 
     const showRemaining = () => {
-      const timer = setInterval(() => {
+      const timer = setInterval(async () => {
         const now = new Date();
         // const end = new Date(2022, 0, 12, 10, 10, 10, 10)
 
@@ -85,6 +95,27 @@ export default {
           clearInterval(timer);
           expired.value = true;
           loaded.value = true;
+
+
+          try{
+            await store.dispatch('examResult/submitExamResult')
+            if(isExamSubmitted.value) {
+              store.commit('examResult/setExamIsSubmitted', false);
+              const routeData = router.resolve({
+                path: '/dashboard',
+              })
+
+              window.open(routeData.href, '_blank');
+              window.close()
+            }
+          } catch(err) {
+            console.log(err)
+          }
+
+
+
+
+
           return
         }
 
@@ -127,6 +158,13 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
+
+.timer.notVisible {
+  position: relative;
+  bottom: 200px;
+  height: 100%;
+   width: 50%;
+}
 .timer {
   background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
   color: #fff;
