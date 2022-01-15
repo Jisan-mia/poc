@@ -15,21 +15,41 @@ import { useRouter } from 'vue-router';
 import LoginRegister from './LoginRegister.vue';
 import Dashboard from './Exam Management/Dashboard.vue';
 import { useStore } from 'vuex';
+import { watchEffect } from '@vue/runtime-core';
 export default {
   name: "Home",
   setup() {
     const store = useStore();
     const router = useRouter();
-    const isAuthenticated = store.state.userState.user.isAuthenticated;
+    const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated);
     console.log("homie", isAuthenticated)
-    const userId = computed(() => store.state.userState.user.userId)
+    const profile = computed(() => store.state.userState.profile)
+    const user = computed(() => store.state.userState)
+    console.log(profile.value, user.value)
     
-    if(isAuthenticated && userId.value) {
-      console.log('home to dashboard')
-      router.push('/dashboard');
-    }
+   
+
+    watchEffect(async () => {
+      if(isAuthenticated.value) {
+        try{
+          await store.dispatch('userState/loadUserProfile');
+          if(profile.value) {
+            router.push('/dashboard')
+          } else {
+            localStorage.removeItem('token')
+            localStorage.removeItem('userId')
+            store.commit('userState/initializeStore')
+          }
+        } catch(err) {
+          console.log(err)
+        }
+      }
+    })
+
+
+
     return {
-        isAuthenticated
+        isAuthenticated,
     };
   },
   components: { LoginRegister, Dashboard }

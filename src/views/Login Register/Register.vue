@@ -50,9 +50,19 @@ export default {
     const profile = computed(() => store.state.userState.profile)
     console.log(profile.value)
     // console.log(user.value, notificationsState.value)
-    if(isAuthenticated.value && profile.value) {
-      router.push('/dashboard')
-    }
+    
+    watchEffect(async () => {
+      if(isAuthenticated.value) {
+        try{
+          await store.dispatch('userState/loadUserProfile');
+          if(profile.value) {
+            router.push('/dashboard')
+          }
+        } catch(err) {
+          console.log(err)
+        }
+      }
+    })
 
     const userAuthInput = ref({
       phone_number: '',

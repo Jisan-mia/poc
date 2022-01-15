@@ -34,10 +34,10 @@
       </div>
 
       <div class="stats__cards">
-        <DashboardStatsCountCard label="Completed Exams" value="25"/>
-        <DashboardStatsCountCard label="Average Mark" value="66.67%"/>
-        <DashboardStatsCountCard label="Passed" value="75%"/>
-        <DashboardStatsCountCard label="Failed" value="25%"/>
+        <DashboardStatsCountCard label="Completed Exams" :value="`${completedExams}`"/>
+        <DashboardStatsCountCard label="Average Mark" :value="`${averageMark}%`"/>
+        <DashboardStatsCountCard label="Passed" :value="`${passedPercentage}%`"/>
+        <DashboardStatsCountCard label="Failed" :value="`${failedPercentage}%`"/>
       </div>
     </div>
     <div class="detail">
@@ -150,14 +150,18 @@ export default {
     const upcomingExams = computed(() => filterUpcoming.value.slice(Math.max(filterUpcoming.value.length-2, 1))) 
     //console.log(upcomingExams.value)
 
-    
-    
-    
-
     const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 1)))
 
     const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
 
+
+
+
+    const completedExams = computed(() => store.state.reportingState.reportings.length)
+    // const completedExams = ref(0);
+    const averageMark = ref(0);
+    const passedPercentage = ref(0);
+    const failedPercentage = ref(0);
 
     const upcomingExamsD = ref([
       {
@@ -186,7 +190,11 @@ export default {
       handleClickUpcomingExam,
       strJoin,
       profile,
-      imageUrl
+      imageUrl,
+      completedExams,
+      averageMark,
+      passedPercentage,
+      failedPercentage
     }
   }
 }

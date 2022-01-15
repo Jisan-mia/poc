@@ -40,12 +40,24 @@ export default {
     const router = useRouter()
     // const user = computed(() => store.state.userState.user)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
-    const profile = computed(() => store.state.userState.user.profile)
-
+    const profile = computed(() => store.state.userState.profile)
     console.log(profile.value)
-   if(isAuthenticated.value && profile.value) {
-     router.push('/dashboard')
-   }
+
+   
+    watchEffect(async () => {
+      if(isAuthenticated.value) {
+        try{
+          await store.dispatch('userState/loadUserProfile');
+          console.log(profile.value)
+          if(profile.value) {
+            router.push('/dashboard')
+          }
+        } catch(err) {
+          console.log(err)
+        }
+      }
+    })
+    
 
     const userInputs = ref({
       phone_number: '',

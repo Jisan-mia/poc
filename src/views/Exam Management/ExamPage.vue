@@ -57,41 +57,44 @@ export default {
     const isNotYetStarted = ref(false);
     
     onBeforeMount(async () => {
-      if(isAuthenticated.value && profile.value) {
+      if(isAuthenticated.value) {
         try{
-          await store.dispatch('examPackState/loadExamPacks');
           await store.dispatch('userState/loadUserProfile');
-          await store.dispatch('reportingState/loadStudentReporting');
-
-          await store.dispatch('examPackState/loadExamLists');
-          await store.dispatch('examPackState/loadExamQuestions', id);
-          store.commit('setIsLoading', false)
-
-          const examLists = computed(() => store.state.examPackState.examLists)
-
-          const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
-
-          //console.log(currentExam.value)
-          
-
-          if(currentExam.value) {
-            if(currentExam.value.isNotYetStarted) {
-              store.dispatch('notifications/add', {type: 'warning', message: 'The Exam Not Yet Started'})
-              router.push('/')
-              isNotYetStarted.value = true;
-            } else if(currentExam.value.isExpired) {
-
-              store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
-
-              router.push('/')
-              //console.log('exam time expired');
-              isEnded.value  = true
-            } else if(currentExam.value.hasExamAlreadyGiven) {
-              store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
-
-              router.push('/')
+          if(profile.value) {
+            
+            await store.dispatch('examPackState/loadExamPacks');
+            await store.dispatch('reportingState/loadStudentReporting');
+  
+            await store.dispatch('examPackState/loadExamLists');
+            await store.dispatch('examPackState/loadExamQuestions', id);
+            store.commit('setIsLoading', false)
+  
+            const examLists = computed(() => store.state.examPackState.examLists)
+  
+            const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
+  
+            //console.log(currentExam.value)
+            
+  
+            if(currentExam.value) {
+              if(currentExam.value.isNotYetStarted) {
+                store.dispatch('notifications/add', {type: 'warning', message: 'The Exam Not Yet Started'})
+                router.push('/')
+                isNotYetStarted.value = true;
+              } else if(currentExam.value.isExpired) {
+  
+                store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
+  
+                router.push('/')
+                //console.log('exam time expired');
+                isEnded.value  = true
+              } else if(currentExam.value.hasExamAlreadyGiven) {
+                store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
+  
+                router.push('/')
+              }
             }
-          }
+          } else { router.push('/')}
         }
         catch(error) {
           //console.log(error)
