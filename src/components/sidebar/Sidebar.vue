@@ -13,10 +13,7 @@ export default {
     const router = useRouter();
     const profile = computed(() => store.state.userState.profile)
     console.log(profile.value)
-    if(!profile.value.name) {
-      handleLogout();
-    }
-
+    
     const handleLogout = async () => {
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
