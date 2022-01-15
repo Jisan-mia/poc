@@ -3,11 +3,11 @@
     <h2 class="title"> Complete Your Profile</h2>
 
     <div class="img__container">
-      <img :src="userInputs.image || '/images/placeholderImg2.svg'" alt="">
+      <img :src="previewImage || '/images/placeholderImg2.svg'" alt="">
 
       <span>
         <i class="fas fa-edit "></i>
-        <ImgInputModel v-model="userInputs.Profile_image"/>
+        <ImgInputModel v-model="userInputs.Profile_image" @imagInput="handleIInput"/>
       </span>
     </div>
   
@@ -50,7 +50,7 @@
 <script>
 import { computed, ref } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
-import { watchEffect } from '@vue/runtime-core'
+import { watch, watchEffect } from '@vue/runtime-core'
 import ImgInputModel from '../ui/ImgInputModel.vue'
 import CustomSelect from '../ui/CustomSelect.vue'
 import { getNotification } from '../../api/common'
@@ -148,8 +148,13 @@ export default {
 
         // router.push("/dashboard");
     };
-    
 
+    const previewImage = ref(null)
+   
+    const handleIInput = (e) => {
+      console.log(e)
+      previewImage.value = e;
+    }
 
 
     return {
@@ -160,6 +165,8 @@ export default {
       batchOptions,
       boardOptions,
       selectStyle,
+      handleIInput,
+      previewImage
     };
   },
   components: { ImgInputModel, CustomSelect }

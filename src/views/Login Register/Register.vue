@@ -17,10 +17,10 @@
     </form>
   </div>
   <!-- its main -->
-  <SendOtp isRegistrationPage="true" v-else/> 
+  <!-- <SendOtp isRegistrationPage="true" v-else/>  -->
 
   <!-- it's temporary -->
-  <!-- <MainRegisterUser v-else /> -->
+  <MainRegisterUser v-else />
 
 </template>
 
@@ -47,7 +47,8 @@ export default {
     const notificationsState = computed(() => store.state.notifications.notifications)
     const error = ref(null)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
-
+    const profile = computed(() => store.state.userState)
+    console.log(profile.value)
     // console.log(user.value, notificationsState.value)
     if(isAuthenticated.value) {
       router.push('/dashboard')
@@ -65,7 +66,7 @@ export default {
         // alert('User could not register');
         return;
       } 
-      currentStep.value = 'sendOtp'
+      currentStep.value = 'mainRegister'
     }
 
   

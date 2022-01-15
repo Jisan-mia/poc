@@ -47,6 +47,7 @@ export default {
     const isLoading = computed(() => store.state.isLoading);
     const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
     
+    const profile = computed(() => store.state.userState.profile)
 
 
     store.commit('setIsLoading', true)
@@ -56,7 +57,7 @@ export default {
     const isNotYetStarted = ref(false);
     
     onBeforeMount(async () => {
-      if(isAuthenticated.value) {
+      if(isAuthenticated.value && profile.value) {
         try{
           await store.dispatch('examPackState/loadExamPacks');
           await store.dispatch('userState/loadUserProfile');

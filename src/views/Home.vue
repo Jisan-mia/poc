@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { computed, ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
 import LoginRegister from './LoginRegister.vue';
 import Dashboard from './Exam Management/Dashboard.vue';
@@ -22,7 +22,9 @@ export default {
     const router = useRouter();
     const isAuthenticated = store.state.userState.user.isAuthenticated;
     console.log("homie", isAuthenticated)
-    if(isAuthenticated) {
+    const userId = computed(() => store.state.userState.user.userId)
+    
+    if(isAuthenticated && userId.value) {
       console.log('home to dashboard')
       router.push('/dashboard');
     }

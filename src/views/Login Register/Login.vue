@@ -12,7 +12,7 @@
       <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
         <br />
-        <span @click="handleForgotStep" class="special"> Forgot Password</span>
+        <!-- <span @click="handleForgotStep" class="special"> Forgot Password</span> -->
       </p>
 
       <CustomLoginRegisterBtn  buttonText="Login" />
@@ -40,8 +40,10 @@ export default {
     const router = useRouter()
     // const user = computed(() => store.state.userState.user)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
-   
-   if(isAuthenticated.value) {
+    const userId = computed(() => store.state.userState.user.userId)
+
+
+   if(isAuthenticated.value && userId.value) {
      router.push('/dashboard')
    }
 

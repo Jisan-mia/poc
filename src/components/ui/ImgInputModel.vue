@@ -14,6 +14,7 @@ export default {
         reader.onload = e => {
           // ctx.emit('update:modelValue', e.target.result)
           console.log(e.target.result)
+          ctx.emit('imagInput', e.target.result)
         }
         
         reader.readAsDataURL(file[0])

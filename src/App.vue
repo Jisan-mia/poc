@@ -2,7 +2,7 @@
   <div id="app">
     <NotificationContainer />
      <component :is="this.$route.meta.layout || 'div'">
-       <transition name="slide" mode="out-in">
+       <transition name="route" mode="out-in">
         <router-view />
       </transition>
     </component>
