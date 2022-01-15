@@ -13,7 +13,7 @@ export default {
         let reader = new FileReader();
         reader.onload = e => {
           // ctx.emit('update:modelValue', e.target.result)
-          console.log(e.target.result)
+          // console.log(e.target.result)
           ctx.emit('imagInput', e.target.result)
         }
         

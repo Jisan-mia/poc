@@ -2,15 +2,15 @@
   <div class="container">
     <h2>Edit Profile</h2>
 
-    
-  
-
     <form class="main_form" @submit.prevent="handleEditProfile">
       <div class="img__div">
         <div class="img__container">
-          <img :src="imageUrl(profile.Profile_image)" alt="">
-          <span><i class="fas fa-edit "></i>
-          <input class="img_input" type="file" accept="image/*" name="Profile_image" id="">
+          <img :src="previewImage || imageUrl(profile.Profile_image)" alt="">
+
+          <span>
+            <i class="fas fa-edit "></i>
+            <ImgInputModel v-model="profile.Profile_image" @imagInput="handleIInput"/>
+          
           </span>
         </div>
       </div>
@@ -62,83 +62,102 @@
 <script>
 import { computed, ref } from '@vue/reactivity';
 import { useStore } from 'vuex'
-import { watchEffect } from '@vue/runtime-core';
+import { watch, watchEffect } from '@vue/runtime-core';
+import ImgInputModel from '../../components/ui/ImgInputModel.vue';
 export default {
   name: "EditProfile",
   setup() {
     const store = useStore();
-    const profileFields = computed(() => store.state.userState.profile)
-    console.log(profileFields.value)
+    const profileFields = computed(() => store.state.userState.profile);
+    console.log(profileFields.value);
     const profile = ref({
-      ...profileFields.value
+      Profile_image: profileFields.value.Profile_image,
+      batch: profileFields.value.batch,
+      board: profileFields.value.board,
+      email: profileFields.value.email,
+      institution: profileFields.value.institution,
+      level: profileFields.value.level,
+      name: profileFields.value.name,
+  });
+    const imageUrl = computed(() => (img) => img.includes("http://www.exam.poc.ac") ? img : `http://www.exam.poc.ac${img}`);
+
+    watch(profileFields, () => {
+      profile.value = {
+        Profile_image: profileFields.value.Profile_image,
+        batch: profileFields.value.batch,
+        board: profileFields.value.board,
+        email: profileFields.value.email,
+        institution: profileFields.value.institution,
+        level: profileFields.value.level,
+        name: profileFields.value.name,
+    }
     })
-    console.log(profile.value)    
-
-    const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
-
-    watchEffect(() => {
-      console.log(profile.value)
-    })
-
-    
     const handleEditProfile = async () => {
-      const isError = ref(false)
-      for(let key in profile.value) {
-        if(profile.value[key] == '') {
-          if(key == 'email') {
-            continue;
+      const isError = ref(false);
+      for (let key in profile.value) {
+        if (profile.value[key] == "") {
+          if (key == "email") {
+              continue;
           }
-          isError.value = true
-          store.dispatch('notifications/add',getNotification('warning', `${key} is empty`))
-          break; 
-        }
-        else if (key == 'name' && profile.value.name.length < 3) {
-          store.dispatch('notifications/add',getNotification('warning', 'Student name must be at least 3 character'))
-
-          isError.value = true
+          isError.value = true;
+          store.dispatch("notifications/add", getNotification("warning", `${key} is empty`));
           break;
         }
-        else if(key == 'email' && !/\S+@\S+\.\S+/.test(profile.value['email'])) {
-          store.dispatch('notifications/add',getNotification('warning', 'Please enter valid email'))
-          
-          isError.value = true
+        else if (key == "name" && profile.value.name.length < 3) {
+          store.dispatch("notifications/add", getNotification("warning", "Student name must be at least 3 character"));
+          isError.value = true;
           break;
-        } else if(key == 'institution' && profile.value.institution.length < 4) {
-          store.dispatch('notifications/add',getNotification('warning', 'Institution must be at least 4 character'))
-
-          isError.value = true
-          break
-        } else {
-
+        }
+        else if (key == "email" && !/\S+@\S+\.\S+/.test(profile.value["email"])) {
+          store.dispatch("notifications/add", getNotification("warning", "Please enter valid email"));
+          isError.value = true;
+          break;
+        }
+        else if (key == "institution" && profile.value.institution.length < 4) {
+          store.dispatch("notifications/add", getNotification("warning", "Institution must be at least 4 character"));
+          isError.value = true;
+          break;
+        }
+        else {
           isError.value = false;
         }
       }
-
-      if(isError.value) {
+      if (isError.value) {
         return;
       }
-
       try {
-        await store.dispatch('userState/updateStudentProfile', {
-          ...profile.value
-        })
-      } 
-      catch(err) {
-        console.log(err)
+        await store.dispatch("userState/updateStudentProfile", {
+            ...profile.value,
+            id: profileFields.value.id
+        });
+        
       }
+      catch (err) {
+        console.log(err);
+      }
+    };
+
+
+    const previewImage = ref(null)
+
+    const handleIInput = (e) => {
+      console.log(e)
+      previewImage.value = e;
     }
 
     return {
       profile,
       imageUrl,
-      handleEditProfile
-    }
-  }
-  
+      handleEditProfile,
+      handleIInput
+    };
+  },
+  components: { ImgInputModel }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/styles/config.scss';
 .main_form {
   width: 100%;
   height: 100%;
@@ -208,6 +227,15 @@ h2{
   color: rgb(255, 255, 255);
   background: #00A9DC;
   cursor: pointer;
+
+  input {
+    position: absolute;
+    /* top: 0; */
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    cursor: pointer;
+  }
 }
 
 
