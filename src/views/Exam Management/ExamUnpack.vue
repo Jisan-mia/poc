@@ -87,7 +87,7 @@ export default {
         const { packId } = route.params;
 
         const exams = computed(() => examLists.value.filter(exam => exam.exam_pack == packId));
-        console.log(packId, exams.value);
+        // console.log(packId, exams.value);
 
         const cutHash = computed(() => (id) => id.split("").filter(c => c == "#" ? false : c).join(""));
         const dateF = computed(() => (date) => {

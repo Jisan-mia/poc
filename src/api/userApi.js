@@ -90,11 +90,29 @@ const getAllStudentList = async () => {
 }
 
 const updateUserProfile = async (data) => {
+  
+  const getFormData = object => Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+  }, new FormData());
+  
   try{
-    const res = await axios.put(`http://www.exam.poc.ac/api/update_student/${data.id}`, 
-    {
-      ...data,
-    })
+
+    const res = await axios({
+      method: 'PUT',
+      url: `http://www.exam.poc.ac/api/update_student/${data.id}`,
+      data: getFormData(data),
+      headers: {
+		    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+       }
+    });
+
+
+    // const res = await axios.put(`http://www.exam.poc.ac/api/update_student/${data.id}`, 
+    // {
+    //   ...data,
+    // })
     //console.log(res);
     if(res.data.status != 200) {
       throw Error('Error updating profile')

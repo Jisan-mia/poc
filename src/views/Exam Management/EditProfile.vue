@@ -67,8 +67,12 @@ export default {
   name: "EditProfile",
   setup() {
     const store = useStore();
-    const profile = computed(() => store.state.userState.profile)
-    console.log(profile.value)
+    const profileFields = computed(() => store.state.userState.profile)
+    console.log(profileFields.value)
+    const profile = ref({
+      ...profileFields.value
+    })
+    console.log(profile.value)    
 
     const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
 

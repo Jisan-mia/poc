@@ -71,7 +71,7 @@ export default {
 
           const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
 
-          console.log(currentExam.value)
+          //console.log(currentExam.value)
           
 
           if(currentExam.value) {
@@ -84,7 +84,7 @@ export default {
               store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
 
               router.push('/')
-              console.log('exam time expired');
+              //console.log('exam time expired');
               isEnded.value  = true
             } else if(currentExam.value.hasExamAlreadyGiven) {
               store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
@@ -94,7 +94,7 @@ export default {
           }
         }
         catch(error) {
-          console.log(error)
+          //console.log(error)
         }
       
       } else {
@@ -117,7 +117,7 @@ export default {
           window.close()
         }
       } catch(err) {
-        console.log(err)
+        //console.log(err)
       }
     }
 
@@ -127,11 +127,11 @@ async function lockingIsFun() {
 	if (await superTokensLock.acquireLock("hello", 150000)) {
 		// lock has been acquired... we can do anything we want now.
 		// ...
-    console.log('anythinglock')
+    //console.log('anythinglock')
 		// await superTokensLock.releaseLock("hello");
 	} else {
 		// failed to acquire lock after trying for 5 seconds. 
-    console.log('not')
+    //console.log('not')
 	}
 }
 
