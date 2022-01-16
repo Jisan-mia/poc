@@ -5,7 +5,7 @@
     <form class="main_form" @submit.prevent="handleEditProfile">
       <div class="img__div">
         <div class="img__container">
-          <img :src="previewImage || imageUrl(profile.Profile_image)" alt="">
+          <img :src="previewImage || imageUrl(profile?.Profile_image) || '/images/placeholder2.svg'" alt="">
 
           <span>
             <i class="fas fa-edit "></i>

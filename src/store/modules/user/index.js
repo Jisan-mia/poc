@@ -1,6 +1,8 @@
 import { getNotification } from "../../../api/common";
 import userApi from "../../../api/userApi";
 import { userMutationTypes } from "./user.mutationTypes";
+// import firebase from 'firebase'
+
 
 const state = {
   user: {
@@ -21,6 +23,8 @@ const state = {
   }, 
   profile: null,
   allStudentList: null,
+  isOtpSent: false,
+  isOtpVerified: false
 }
 
 const mutations = {
@@ -42,6 +46,12 @@ const mutations = {
   setToken(state, token) {
     state.user.token = token
     state.user.isAuthenticated = true
+  },
+  setIsOtpSent(state, payload) {
+    state.isOtpSent = payload
+  },
+  setIsOtpVerified(state, payload) {
+    state.isOtpVerified = payload
   },
   removeToken(state) {
     state.user.token = ''
@@ -68,11 +78,11 @@ const actions = {
     if(data) {
       context.commit(userMutationTypes.SET_USER , data)
       
-      try{
-        await context.dispatch('userLogin', data)
-      } catch(err) {
-        throw Error(err);
-      }
+      // try{
+      //   await context.dispatch('userLogin', data)
+      // } catch(err) {
+      //   throw Error(err);
+      // }
     } else {
       context.commit(userMutationTypes.SET_USER , {
         phone_number: '',
@@ -88,6 +98,52 @@ const actions = {
       throw new Error('could not complete register')
     }
   },
+
+  async handleSendOtp(context, payload){
+    const phoneNumber = '+88'+payload.phoneNumber;
+    const appVerifier = payload.appVerifier;
+    console.log(payload)
+    try{
+      firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+        .then(function (confirmationResult) {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          window.confirmationResult = confirmationResult;
+          //
+          context.commit('setIsOtpSent', true)
+          alert('SMS sent')
+        }).catch(function (error) {
+        // Error; SMS not sent
+        // ...
+        alert('Error ! SMS not sent')
+        throw Error('error sending sms')
+      })
+    } catch(err) {
+      console.log(err)
+    }
+  },
+  async verifyOtp(context, code) {
+    try{
+      window.confirmationResult.confirm(code).then(function (result) {
+        // User signed in successfully.
+        const user = result.user;
+        // ...
+        //route to set password !
+        console.log(user)
+        context.commit('setIsOtpVerified',true )
+      }).catch(function (error) {
+        // User couldn't sign in (bad verification code?)
+        // ...
+        throw Error(error)
+      });
+    } catch(err) {
+      console.log9err
+    }
+  },
+
+
+
+
   async userLogin(context, payload) {
     const res = await userApi.handleUserLogin(payload);
 
@@ -110,6 +166,8 @@ const actions = {
       throw new Error('could not login user')
     }
   },
+
+
   async registerStudent(context, payload) {
     const res = await userApi.registerStudentApi(payload);
     //console.log(res)

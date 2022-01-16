@@ -6,7 +6,7 @@
 
     <form  v-on:submit.prevent :class="isRegistrationPage && 'mt-4'">
       <CustomPhoneInput v-model="userPhoneNumber" placeholder="Enter your phone number" />
-
+      <div id="recaptcha-container"></div><br>
       <CustomLoginRegisterBtn @click="handleSendOtp" buttonText="Send OTP" />
     </form>
   </div>
@@ -18,6 +18,9 @@ import { ref } from '@vue/reactivity'
 import CustomPhoneInput from './CustomPhoneInput.vue'
 import CustomLoginRegisterBtn from '../ui/CustomLoginRegisterBtn.vue'
 import SubmitOtp from './SubmitOtp.vue'
+import { useStore } from 'vuex'
+import { onMounted } from '@vue/runtime-core'
+import firebase from 'firebase'
 export default {
   components: { CustomPhoneInput, CustomLoginRegisterBtn, SubmitOtp },
   name: 'SendOtp',
@@ -28,18 +31,66 @@ export default {
     }
   }, 
   setup(props) {
-    const userPhoneNumber = ref('')
+    const store = useStore();
+    const userPhoneNumber = ref('');
+    const appVerifier = ref(null);
     console.log(props.isRegistrationPage)
 
-    const loginSteps = ref(['sendOtp', 'submitOtp']);
+    // const loginSteps = ref(['sendOtp', 'submitOtp']);
     const currentStep = ref('sendOtp')
-    const handleSendOtp = () => {
-      currentStep.value = 'submitOtp'
-      if(props.isRegistrationPage) {
-        console.log('send otp from resister page');
+
+    const initReCaptcha = () => {
+      setTimeout(()=>{
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          'size': 'invisible',
+          'callback': function(response) {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            // ...
+          },
+          'expired-callback': function() {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            // ...
+          }
+        });
+        //
+        appVerifier.value =  window.recaptchaVerifier
+      },1000)
+    }
+    onMounted(() => {
+      initReCaptcha()
+    })
+
+
+    const handleSendOtp = async () => {
+      
+      if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userPhoneNumber.value)){
+        store.dispatch('notifications/add', getNotification('warning', 'Please enter a valid phone number'))
         return;
       }
-      console.log('send otp from login page')
+      // currentStep.value = 'submitOtp'
+
+      if(props.isRegistrationPage) {
+        console.log('send otp from resister page');
+        try{
+
+          await store.dispatch('userState/handleSendOtp', {
+            phoneNumber: userPhoneNumber.value,
+            appVerifier: appVerifier
+          })
+
+        } catch(err) {
+          console.log(err)
+        }
+
+        return;
+      } else {
+        try{
+
+        } catch(err) {
+          console.log(err)
+        }
+        console.log('send otp from login page')
+      }
     }
 
     return {

@@ -17,10 +17,10 @@
     </form>
   </div>
   <!-- its main -->
-  <!-- <SendOtp isRegistrationPage="true" v-else/>  -->
+  <SendOtp isRegistrationPage="true" v-else/> 
 
   <!-- it's temporary -->
-  <MainRegisterUser v-else />
+  <!-- <MainRegisterUser v-else /> -->
 
 </template>
 
@@ -72,11 +72,11 @@ export default {
     
 
     const validate = () => {
-      if(!user.value.phone_number && !user.value.password && !user.isAuthenticated) {
+      if(!user.value.phone_number && !user.value.password) {
         // alert('User could not register');
         return;
       } 
-      currentStep.value = 'mainRegister'
+      currentStep.value = 'sendOtp'
     }
 
   
