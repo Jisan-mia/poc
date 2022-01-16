@@ -4,7 +4,7 @@ import { getAuthorizationHeader } from './common';
 const registerUserByPhonePass = async (data) => {
   try{
     const res = await axios.post(
-      `http://www.exam.poc.ac/api/register/`,
+      `https://www.exam.poc.ac/api/register/`,
       {
         ...data
       },
@@ -23,7 +23,7 @@ const registerUserByPhonePass = async (data) => {
 const handleUserLogin = async (data) => {
   try{
     const res = await axios.post(
-      `http://www.exam.poc.ac/api/token/`,
+      `https://www.exam.poc.ac/api/token/`,
       {
         ...data,
       },
@@ -55,7 +55,7 @@ const registerStudentApi = async (data) => {
     
     const res = await axios({
       method: 'POST',
-      url: 'http://www.exam.poc.ac/api/Student_Register/',
+      url: 'https://www.exam.poc.ac/api/Student_Register/',
       data: getFormData(data),
       headers: {
 		    'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -77,7 +77,7 @@ const registerStudentApi = async (data) => {
 
 const getAllStudentList = async () => {
   try{
-    const res = await axios.get(`http://www.exam.poc.ac/api/student_info/`)
+    const res = await axios.get(`https://www.exam.poc.ac/api/student_info/`)
     //console.log(res);
     if(res.data.code != 200) {
       throw Error('Error logging user')
@@ -100,7 +100,7 @@ const updateUserProfile = async (data) => {
 
     const res = await axios({
       method: 'PUT',
-      url: `http://www.exam.poc.ac/api/update_student/${data.id}`,
+      url: `https://www.exam.poc.ac/api/update_student/${data.id}`,
       data: getFormData(data),
       headers: {
 		    'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -109,7 +109,7 @@ const updateUserProfile = async (data) => {
     });
 
 
-    // const res = await axios.put(`http://www.exam.poc.ac/api/update_student/${data.id}`, 
+    // const res = await axios.put(`https://www.exam.poc.ac/api/update_student/${data.id}`, 
     // {
     //   ...data,
     // })

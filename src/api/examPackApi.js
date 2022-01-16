@@ -4,7 +4,7 @@ const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNz
 const getExamPackList = async () => {
   const headers = getAuthorizationHeader()
     try{
-      const res = await axios.get('http://www.exam.poc.ac/api/get_student_exam_pack',
+      const res = await axios.get('https://www.exam.poc.ac/api/get_student_exam_pack',
       {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -25,7 +25,7 @@ const getExamPackList = async () => {
 
 const getExamLists = async () => {
   try{
-    const res = await axios.get('http://www.exam.poc.ac/api/student_exam_list/',
+    const res = await axios.get('https://www.exam.poc.ac/api/student_exam_list/',
     {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -45,7 +45,7 @@ const getExamLists = async () => {
 
 const getExamQuestions = async (id) => {
   try{
-    const res = await axios.get(`http://www.exam.poc.ac/api/get_question/${id}`,
+    const res = await axios.get(`https://www.exam.poc.ac/api/get_question/${id}`,
     {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

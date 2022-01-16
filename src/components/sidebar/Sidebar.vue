@@ -21,7 +21,7 @@ export default {
       router.push('/logout')
       
       try {
-        const res = axios.get('http://www.exam.poc.ac/api/LogOut/',
+        const res = axios.get('https://www.exam.poc.ac/api/LogOut/',
         {
           headers: `Bearer ${localStorage.getItem('token')}`
         })

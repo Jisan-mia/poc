@@ -17,7 +17,7 @@ const submitResultToApi = async (data) => {
     
     const res = await axios({
       method: 'POST',
-      url: 'http://www.exam.poc.ac/api/show_all_report/',
+      url: 'https://www.exam.poc.ac/api/show_all_report/',
       data: getFormData(data),
       headers: {
 		    'Authorization': `Bearer ${localStorage.getItem('token')}`,

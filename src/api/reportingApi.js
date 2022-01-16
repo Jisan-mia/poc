@@ -4,7 +4,7 @@ const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNz
 
 const getStudentReporting = async () => {
     try{
-      const res = await axios.get('http://www.exam.poc.ac/api/get_student_report/',
+      const res = await axios.get('https://www.exam.poc.ac/api/get_student_report/',
       {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -24,7 +24,7 @@ const getStudentReporting = async () => {
 
 const getSpecificReporting = async (exam_name) => {
   try{
-    const res = await axios.get(`http://www.exam.poc.ac/api/get_result_specific_sub/${exam_name}`,
+    const res = await axios.get(`https://www.exam.poc.ac/api/get_result_specific_sub/${exam_name}`,
       {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
