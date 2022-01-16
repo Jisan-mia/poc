@@ -124,20 +124,14 @@ export default {
       }
     }
 
+window.addEventListener("beforeunload", function (e) {
+  var confirmationMessage = "\o/";
 
-let superTokensLock = new SuperTokensLock()
-async function lockingIsFun() {
-	if (await superTokensLock.acquireLock("hello", 150000)) {
-		// lock has been acquired... we can do anything we want now.
-		// ...
-    //console.log('anythinglock')
-		// await superTokensLock.releaseLock("hello");
-	} else {
-		// failed to acquire lock after trying for 5 seconds. 
-    //console.log('not')
-	}
-}
-
+  (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+  return confirmationMessage;     //Webkit, Safari, Chrome
+  //  e.preventDefault();
+  //   e.returnValue = '';                       
+});
 
 document.addEventListener('contextmenu', function (e) {
   e.preventDefault();

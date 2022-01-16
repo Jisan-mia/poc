@@ -22,9 +22,6 @@
       :hour="tHour"
       :minute="tMinute"
      />
-
-     
-      
   </header>
 </template>
 
