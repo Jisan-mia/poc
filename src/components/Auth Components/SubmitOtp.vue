@@ -7,8 +7,8 @@
       <CustomLoginRegisterBtn @click="handleOtpSubmit" buttonText="Submit" />
     </form>
   </div>
-  <NewPassword v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
-  <MainRegisterUser :isRegistrationPage="isRegistrationPage" v-else-if="isRegistrationPage && currentStep !== 'newPass' " />
+  <!-- <NewPassword v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
+  <MainRegisterUser :isRegistrationPage="isRegistrationPage" v-else-if="isRegistrationPage && currentStep !== 'newPass' " /> -->
 </template>
 
 <script>
@@ -17,6 +17,8 @@ import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.v
 import NewPassword from './NewPassword.vue'
 import CustomAuthInput from './CustomAuthInput.vue'
 import MainRegisterUser from './MainRegisterUser.vue'
+import { useStore } from 'vuex'
+import { getNotification } from '../../api/common'
 export default {
   components: { CustomLoginRegisterBtn, NewPassword, CustomAuthInput, MainRegisterUser },
   name: 'submitOtp',
@@ -26,20 +28,25 @@ export default {
       default: () => false
     }
   },
-  setup(props) {
+  setup(props, context) {
+    const store= useStore()
     const userOtpInput = ref('')
     console.log(props.isRegistrationPage)
 
     const loginSteps = ref(['submitOtp', 'newPass', 'mainRegister']);
     const currentStep = ref('submitOtp')
     const handleOtpSubmit = () => {
-      if(props.isRegistrationPage) {
-        currentStep.value = 'mainRegister'
-        console.log('submit otp from register page')
-        return;
+
+      if(userOtpInput.value.length < 4) {
+        store.dispatch('notifications/add', {type: 'warning', message: 'Otp code must be at least 4 char '})
+        return
       }
-      console.log('submit otp from login page')
-      currentStep.value = 'newPass'
+      console.log('submit otp from register page')
+      context.emit('verifyOtp',userOtpInput.value)
+        
+     
+      // console.log('submit otp from login page')
+      // currentStep.value = 'newPass'
     }
 
     return {

@@ -124,10 +124,33 @@ const updateUserProfile = async (data) => {
   }
 }
 
+const setNewPassword = async (data) => {
+  try{
+    const res = await axios({
+      method: 'POST',
+      url: `https://www.exam.poc.ac/api/change-password`,
+      data: data,
+      // headers: {
+		  //   'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      //   'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+      //  }
+    });
+
+    if(res.data.code !== 200) {
+      throw Error('Error changing password')
+    }
+    return res.data
+
+  } catch(err) {
+    return "Couldn't change password"
+  }
+}
+
 export default {
   registerUserByPhonePass,
   handleUserLogin,
   registerStudentApi,
   getAllStudentList,
-  updateUserProfile
+  updateUserProfile,
+  setNewPassword
 }

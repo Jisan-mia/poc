@@ -12,7 +12,7 @@
       <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
         <br />
-        <!-- <span @click="handleForgotStep" class="special"> Forgot Password</span> -->
+        <span @click="handleForgotStep" class="special"> Forgot Password</span>
       </p>
 
       <CustomLoginRegisterBtn  buttonText="Login" />

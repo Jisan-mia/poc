@@ -165,7 +165,22 @@ const actions = {
       }
 
       context.dispatch('notifications/add', notification , {root: true})
-      throw new Error('Error updating student profile')
+    }
+  },
+
+  async setNewPassword(context, payload){
+    const res = await userApi.setNewPassword(payload)
+    if(res.data) {
+      context.dispatch('notifications/add', {type: 'success', message: 'Successfully Password Changed'} , {root: true})
+    } else {
+      const notification = {
+        type: 'error',
+        message: 'Error updating changing password'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+      throw new Error('Error changing password')
+
     }
   }
 

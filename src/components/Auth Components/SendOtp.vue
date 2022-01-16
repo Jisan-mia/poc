@@ -6,11 +6,16 @@
 
     <form  v-on:submit.prevent :class="isRegistrationPage && 'mt-4'">
       <CustomPhoneInput v-model="userPhoneNumber" placeholder="Enter your phone number" />
-
-      <CustomLoginRegisterBtn @click="handleSendOtp" buttonText="Send OTP" />
+      <div class="recaptcha-container" id="recaptcha-container"></div>
+      <CustomLoginRegisterBtn @click="handleSendOtp" buttonText="Send OTP" id="log-in"/>
     </form>
   </div>
-  <SubmitOtp :isRegistrationPage="isRegistrationPage"  v-else />
+
+  <SubmitOtp :isRegistrationPage="isRegistrationPage" @verifyOtp="verifyOtpCode" v-else-if="currentStep == 'submitOtp'" />
+  <MainRegisterUser :isRegistrationPage="isRegistrationPage" v-else-if="currentStep == 'mainRegister'" />
+  <NewPassword v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
+
+
 </template>
 
 <script>
@@ -18,8 +23,17 @@ import { ref } from '@vue/reactivity'
 import CustomPhoneInput from './CustomPhoneInput.vue'
 import CustomLoginRegisterBtn from '../ui/CustomLoginRegisterBtn.vue'
 import SubmitOtp from './SubmitOtp.vue'
+import { auth } from '../../firebase'
+import {RecaptchaVerifier, signInWithPhoneNumber} from 'firebase/auth'
+import { onMounted } from '@vue/runtime-core'
+import {firebase} from 'firebase/app'
+import NewPassword from './NewPassword.vue'
+import MainRegisterUser from './MainRegisterUser.vue'
+import { useStore } from 'vuex'
+import { getNotification } from '../../api/common'
+
 export default {
-  components: { CustomPhoneInput, CustomLoginRegisterBtn, SubmitOtp },
+  components: { CustomPhoneInput, CustomLoginRegisterBtn, SubmitOtp, NewPassword, MainRegisterUser },
   name: 'SendOtp',
   props: {
     isRegistrationPage: {
@@ -28,24 +42,95 @@ export default {
     }
   }, 
   setup(props) {
-    const userPhoneNumber = ref('')
-    console.log(props.isRegistrationPage)
+    console.log(props.isRegistrationPage);
+    const store = useStore();
 
-    const loginSteps = ref(['sendOtp', 'submitOtp']);
-    const currentStep = ref('sendOtp')
+    // const loginSteps = ref(['sendOtp', 'submitOtp']);
+    const currentStep = ref('sendOtp');
+    const userPhoneNumber = ref('')
+    const recaptchaVerifier = ref(null);
+    const confirmationResult = ref(null);
+    const confirmResult = ref(null);
+    const recaptchaWidgetId = ref(null);
+    const smsSent = ref(false)
+    const smsVerified = ref(false)
+
+    onMounted(() => {
+      // auth().useDeviceLanguage()
+      recaptchaVerifier.value = new RecaptchaVerifier('log-in', {
+        'size': 'invisible',
+        'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+          onSignInSubmit();
+        }
+      }, auth);
+    })
+
+
     const handleSendOtp = () => {
-      currentStep.value = 'submitOtp'
-      if(props.isRegistrationPage) {
-        console.log('send otp from resister page');
+      // currentStep.value = 'submitOtp'
+      if(!/^(?:\+88|01)?(?:\d{11}|\d{13})$/.test(userPhoneNumber.value)){
+        store.dispatch('notifications/add', getNotification('warning', 'Please enter a valid phone number'))
         return;
       }
-      console.log('send otp from login page')
+
+      console.log('send otp from resister page');
+      // const phoneNumber = '+88'+userPhoneNumber.value;
+
+      recaptchaVerifier.value =new RecaptchaVerifier('recaptcha-container', {}, auth);
+      recaptchaVerifier.value.render().then((widgetId)=>{
+        recaptchaWidgetId.value = widgetId    
+      })
+        
+      const phoneNumber = '+88'+userPhoneNumber.value;
+
+      signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier.value)
+        .then((confirmationResult) => {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          confirmResult.value  = confirmationResult;
+          smsSent.value=true
+          console.log(confirmResult.value)
+          console.log('sms sent!')
+          currentStep.value = 'submitOtp'
+          // ...
+        }).catch((error) => {
+          // Error; SMS not sent
+          console.log('sms not sent', error.message)
+          // ...
+        });
+      
+    
+      console.log('send otp from login page');
+    }
+
+
+    const verifyOtpCode = (code) => {            
+      confirmResult.value.confirm(code).then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        console.log(user)
+        if(props.isRegistrationPage) {
+          currentStep.value  = 'mainRegister'
+        } else {
+          currentStep.value  = 'newPass'
+        }
+        // ...
+      }).catch((error) => {
+        // User couldn't sign in (bad verification code?)
+        // ...
+        console.log(error)
+        store.dispatch('notifications/add', getNotification('warning', "Invalid Code"))
+
+        
+      });
     }
 
     return {
       userPhoneNumber,
       handleSendOtp,
       currentStep,
+      verifyOtpCode
     }
   }
 }

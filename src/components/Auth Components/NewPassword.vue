@@ -14,18 +14,37 @@
 import { ref } from '@vue/reactivity'
 import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.vue'
 import CustomAuthInput from './CustomAuthInput.vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   components: {  CustomLoginRegisterBtn, CustomAuthInput },
   name: 'NewPassword',
   setup() {
+    const store = useStore();
+    const router = useRouter();
     const newPassObj = ref({
       newPass: '',
       confirmPass: ''
     })
 
     const currentStep = ref('otp')
-    const handleNewPasswordSubmit = () => {
+    const handleNewPasswordSubmit = async () => {
       console.log('handleNewPasswordSubmit btn clicked')
+      if(newPassObj.value.newPass.length < 5 || newPassObj.value.confirmPass.length < 5) {
+        store.dispatch('notifications/add', {type: 'warning', message: 'Password must be at least 5 character'})
+        return;
+      } else if(newPassObj.value.newPass !== newPassObj.value.confirmPass) {
+        store.dispatch('notifications/add', {type: 'warning', message: 'Password does not match'})
+        return
+      }
+
+      // try{
+      //   await store.dispatch('userState/setNewPassword')
+      //   router.push('/login')
+
+      // }catch(err) {
+      //   console.log(err)
+      // }
     }
 
     return {
