@@ -110,6 +110,7 @@ export default {
 
       try{
         await store.dispatch('examResult/submitExamResult')
+        localStorage.removeItem(`deadline${id}`)
         if(isExamSubmitted.value) {
           store.commit('examResult/setExamIsSubmitted', false);
           const routeData = router.resolve({

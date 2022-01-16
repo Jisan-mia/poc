@@ -21,6 +21,7 @@
       :date="tDate"
       :hour="tHour"
       :minute="tMinute"
+      :examId="id"
      />
   </header>
 </template>
@@ -74,7 +75,8 @@ export default {
     const deadline = new Date(currentTime + timeInMinutes*60*1000);
     console.log(dayjs(deadline).format(("YYYY-MM-DD HH:mm:ss")));
     
-    const totalExamTimeEndTime = computed(() => dayjs(deadline).format(("YYYY-MM-DD HH:mm:ss")));
+    const totalExamTimeEndTimed = computed(() => dayjs(deadline).format(("YYYY-MM-DD HH:mm:ss")));
+    const totalExamTimeEndTime = computed(() => localStorage.getItem(`deadline${currentExam.value.id}`))
 
     const tYear = computed(() => dayjs(totalExamTimeEndTime.value).get('year'))
     const tMonth = computed(() => dayjs(totalExamTimeEndTime.value).get('month'))
@@ -103,7 +105,8 @@ export default {
         tMonth,
         tDate,
         tHour,
-        tMinute
+        tMinute,
+        id
     };
   },
   components: { Counter }

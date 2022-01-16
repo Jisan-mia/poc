@@ -47,6 +47,9 @@ export default {
     notVisible: {
       type: Boolean,
       default: () => false
+    },
+    examId: {
+      type: [Number, String]
     }
   },
   setup(props) {
@@ -95,7 +98,7 @@ export default {
           clearInterval(timer);
           expired.value = true;
           loaded.value = true;
-
+          localStorage.removeItem(`deadline${props.examId}`)
 
           try{
             await store.dispatch('examResult/submitExamResult')

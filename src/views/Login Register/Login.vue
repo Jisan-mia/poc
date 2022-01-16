@@ -9,11 +9,11 @@
       <CustomPhoneInput v-model="userInputs.phone_number" placeholder="Enter your phone number" />
       <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" type="text"/>
 
-      <p>
+      <!-- <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
         <br />
         <span @click="handleForgotStep" class="special"> Forgot Password</span>
-      </p>
+      </p> -->
 
       <CustomLoginRegisterBtn  buttonText="Login" />
     </form>

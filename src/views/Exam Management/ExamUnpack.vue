@@ -104,13 +104,35 @@ export default {
        
         const handleStartExam = (exam) => {
           if(!exam.isExpired && !getDateDiff(exam.Exam_end_date, exam.Exam_end_time)) {
+            if(localStorage.getItem(`deadline${exam.id}`)) {
+              // noting to do
+              console.log('came previously')
+            } else {
+              const timeInMinutes = exam.exam_total_time;
+              const currentTime = Date.parse(new Date());
+              const deadline = new Date(currentTime + timeInMinutes*60*1000);
+              const totalExamTimeEndTime = computed(() => dayjs(deadline).format(("YYYY-MM-DD HH:mm:ss")));
+
+              localStorage.setItem(`deadline${exam.id}`, totalExamTimeEndTime.value);
+              
+            }
+
+
+            
+            
             const routeData = router.resolve({
               name: 'ExamPage',
               params: { id: exam.id }
             })
 
             window.open(routeData.href, '_blank');
-          } else return;
+          } else {
+            if(localStorage.getItem(`deadline${exam.id}`)) {
+              console.log('what to do expired')
+              localStorage.removeItem(`deadline${exam.id}`)
+            }
+            return;
+          }
         }
         return {
             exams,
