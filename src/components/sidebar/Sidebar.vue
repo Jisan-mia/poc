@@ -47,22 +47,24 @@ export default {
   <div :class="['sidebar', isActive ? 'active' : '']">
     <span>
       <h1>
-        <span class="crossBar__parent" v-if="isActive">
+        <!-- <span class="crossBar__parent" v-if="isActive">
           <img alt="Vue logo" class= "poc_logo2" src="@/assets/poc_logo_small.png" />
 
           <div class="crossBar" @click="toggleActive">
             <div class="bar1"></div>
             <div class="bar2"></div>
           </div>
-        </span>
-        <span class="bigSpan"><img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" /></span>
+        </span> -->
+        <span class="bigSpan">
+          <img alt="Vue logo" class= "poc_logo" src="@/assets/poc_logo.svg" />
+          </span>
       </h1>
 
       <span>
         <SidebarLink to="/dashboard" icon="fas fa-home">Dashboard</SidebarLink>
         <SidebarLink to="/exam-pack" icon="fas fa-columns">Exam Pack</SidebarLink>
         <SidebarLink to="/reporting" icon="fas fa-chart-bar">Reporting</SidebarLink>
-        <SidebarLink to="/edit-profile" icon="fas fa-cog">Edit Profile</SidebarLink>
+        <SidebarLink to="/edit-profile" icon="fas fa-user">Edit Profile</SidebarLink>
       </span>
 
     </span>
@@ -130,6 +132,9 @@ export default {
 
 .logout {
   margin-bottom:0.9rem;
+  @include maxMedia(768px) {
+    margin-bottom: 1.3rem;
+  }
   }
 
 .sidebar.active {
@@ -146,8 +151,8 @@ export default {
   position: relative;
   left: 28px;
   top: 40px;
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
 
   @include maxMedia(768px) {
     display: flex;
@@ -172,8 +177,15 @@ export default {
 
 .bigSpan {
   display: block;
+  max-width: 130px;
+  img {
+    width: 100%;
+    height: 100%;
+
+  }
   @include maxMedia(768px) {
-    display: none;
+    max-width: 123px
+    // display: none;
   }
 }
 .crossBar {
@@ -183,6 +195,7 @@ export default {
   justify-content: space-around;
   flex-direction: column;
   cursor: pointer;
+  display: none;
 
   .bar1, .bar2 {
     height: 2px;
@@ -209,6 +222,9 @@ export default {
 .sidebar h1 {
   height: 4em;
   padding-top: 2.5rem;
+  @include maxMedia(768px) {
+    height: 6em;
+  }
 }
 .collapse-icon {
   position: absolute;

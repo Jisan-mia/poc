@@ -197,6 +197,9 @@ h2{
   margin-top: -5rem;
   @include maxMedia(768px) {
     margin-top: 0;
+    line-height: 2.4rem;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
   }
 }
 

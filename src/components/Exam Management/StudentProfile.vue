@@ -4,8 +4,10 @@
     <!-- {{JSON.stringify(profile.Profile_image)}} -->
     <div class="profile">
       <div class="profile__info">
-        <div class="img__container1">
+
+        <div class="img__container1" v-if="profile.Profile_image">
           <img :src="profile.Profile_image ? imageUrl(profile.Profile_image) : '/images/placeholderImg2.svg'" alt="">
+          
         </div>
 
         <div class="profile__detail">

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="unpack">
   <div class="container">
   <div class="pack_container">
     <div v-for="examPack in examPacks" :key="examPack.id"  class="card" >
@@ -68,6 +68,12 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/config.scss';
 
+
+.unpack {
+  @include maxMedia(768px) {
+    padding: 2rem;
+  }
+}
 .container{
   display: flex;
   flex-direction: column;

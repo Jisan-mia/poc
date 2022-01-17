@@ -38,6 +38,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/config.scss';
+
 
   .outlined{
     border-radius: 23px;
@@ -53,6 +55,9 @@ export default {
     width: 100%;
     height: 180px;
     overflow: hidden;
+    @include maxMedia(768px) {
+      height: 155px;
+    }
   }
   .img__container img{
     width: 100%;
@@ -71,12 +76,20 @@ export default {
     text-decoration: underline;
     color: #00A9DC;
     cursor: pointer;
+
+    @include maxMedia(768px) {
+      font-size: 1.09rem;
+    }
+    
   }
   }
   .text p{
     font-size: 0.9rem;
     color: #000;
     line-height: 17px;
+    @include maxMedia(768px) {
+      font-size: 0.88rem;
+    }
   }
 
 </style>

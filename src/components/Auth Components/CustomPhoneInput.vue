@@ -1,13 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container" :class="[disabled && 'disabled']">
     <span>+88</span>
-    <input 
+    <input
       min="0" 
       type="number" 
       :value="modelValue" 
       @input="updateValue" 
       :placeholder="placeholder"
-      v-bind="$attrs" >
+      v-bind="$attrs"
+      :disabled="disabled"
+       >
   </div>
 </template>
 
@@ -20,6 +22,10 @@ export default {
     },
     placeholder: {
       type: String
+    },
+    disabled: {
+      type: Boolean,
+      default: () => false
     }
   },
   setup(props, cxt) {
@@ -47,6 +53,10 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.disabled {
+  background-color:  #F4F4F4 !important;
+  border-color: #c4c4c4 !important
+}
 .container {
   display: flex;
   justify-content: flex-start;
@@ -80,6 +90,9 @@ input[type=number] {
     @include maxMedia(500px) {
       font-size: 1rem;
       padding: 1.2rem 0.5rem;
+    }
+    :disabled {
+      cursor: none;
     }
 
     &::placeholder {

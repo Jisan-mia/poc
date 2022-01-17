@@ -179,6 +179,10 @@ h2{
 	-webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
+
+  @include maxMedia(768px) {
+    font-size: 1.4rem;
+  }
 }
 
 .img__div {
@@ -250,6 +254,10 @@ h2{
   flex: 1;
   justify-content: center;
   margin: 2rem auto;
+
+  @include maxMedia(768px) {
+    grid-template-columns: repeat(auto-fit, minmax(219px, 1fr));
+  }
 }
 .form__area::after{
   content: "";

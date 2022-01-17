@@ -35,7 +35,8 @@ export default {
   </router-link>
 </template>
 
-<style scoped>
+<style scoped lang="scss" >
+@import '@/styles/config.scss';
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.1s;
@@ -68,6 +69,9 @@ span{
 
   color: black;
   text-decoration: none;
+  @include maxMedia(768px) {
+    padding: 0.78rem 0.4rem
+  }
 }
 
 /* .link:hover {
@@ -79,11 +83,17 @@ span{
   color: var(--sidebar-item-active);
 }
 
+.fa-sign-out-alt{
+  transform: rotate(180deg)
+}
 .link .icon {
   flex-shrink: 0;
   width: 25px;
   color: #00A9DC;
   margin-right: 5px;
+  @include maxMedia(768px) {
+    margin-right: 15px;
+  }
 }
 .link .iconNested {
   flex-shrink: 0;

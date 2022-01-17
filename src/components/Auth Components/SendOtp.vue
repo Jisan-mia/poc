@@ -5,7 +5,7 @@
     </h3>
 
     <form  v-on:submit.prevent :class="isRegistrationPage && 'mt-4'">
-      <CustomPhoneInput v-model="userPhoneNumber" placeholder="Enter your phone number" />
+      <CustomPhoneInput v-model="userPhoneNumber" placeholder="Enter your phone number" :disabled="isRegistrationPage" :readonly="isRegistrationPage" />
       <div class="recaptcha-container" id="recaptcha-container"></div>
       <CustomLoginRegisterBtn @click="handleSendOtp" buttonText="Send OTP" id="log-in"/>
     </form>
@@ -39,6 +39,9 @@ export default {
     isRegistrationPage: {
       type: Boolean,
       default: () => false
+    },
+    regPhone: {
+      type: [String, Number]
     }
   }, 
   setup(props) {
@@ -54,6 +57,8 @@ export default {
     const recaptchaWidgetId = ref(null);
     const smsSent = ref(false)
     const smsVerified = ref(false)
+
+    userPhoneNumber.value = props.isRegistrationPage ? props.regPhone : userPhoneNumber.value
 
     onMounted(() => {
       // auth().useDeviceLanguage()
