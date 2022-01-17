@@ -52,7 +52,7 @@ export default {
     // const user = computed(() => store.state.userState.user)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const profile = computed(() => store.state.userState.profile)
-    console.log(profile.value)
+    // console.log(profile.value)
 
 
     const showPassword = ref(false);

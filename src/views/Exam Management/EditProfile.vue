@@ -5,7 +5,7 @@
     <form class="main_form" @submit.prevent="handleEditProfile">
       <div class="img__div">
         <div class="img__container">
-          <img :src="previewImage || profile.Profile_image ? imageUrl(profile.Profile_image) : '/images/placeholderImg2.svg'" alt="">
+          <img :src="previewImage ? previewImage : profile.Profile_image ? imageUrl(profile.Profile_image) : '/images/placeholderImg2.svg'" alt="">
 
           <span>
             <i class="fas fa-edit "></i>
@@ -75,7 +75,17 @@ export default {
       level: profileFields.value.level,
       name: profileFields.value.name,
   });
-    const imageUrl = computed(() => (img) => img.includes("https://www.exam.poc.ac") ? img : `https://www.exam.poc.ac${img}`);
+    const imageUrl = computed(() => (img) => {
+      // console.log(img)
+      if(typeof img === 'string') {
+        // console.log(img)
+        if(img.includes("https://www.exam.poc.ac")) {
+          return img
+        } else {
+          return `https://www.exam.poc.ac${img}`
+        }
+      }
+    });
 
     watch(profileFields, () => {
       profile.value = {
@@ -86,7 +96,7 @@ export default {
         institution: profileFields.value.institution,
         level: profileFields.value.level,
         name: profileFields.value.name,
-    }
+      }
     })
     const handleEditProfile = async () => {
       const isError = ref(false);

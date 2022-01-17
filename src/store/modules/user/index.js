@@ -156,7 +156,11 @@ const actions = {
   },
 
   async updateStudentProfile (context, profile) {
-    const res = await userApi.updateUserProfile(profile)
+    const mainProfile = {...profile}
+    if(!mainProfile.Profile_image) {
+      delete mainProfile.Profile_image
+    }
+    const res = await userApi.updateUserProfile(mainProfile)
     const data = await res.payload;
 
     if(data) {
