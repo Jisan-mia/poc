@@ -249,7 +249,8 @@ h2{
   width: 100%;
   height: 100%;
   
-  margin-top: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
   grid-gap:2rem 1.2em;

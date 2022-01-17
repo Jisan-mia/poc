@@ -80,6 +80,7 @@ export default {
 		transition: all 0.4s;
 		padding: 0.2rem 1.8rem;
 		margin-top: 45px;
+    min-height: calc(100vh - 80px);
 
     @include maxMedia(768px) {
       margin-left: 0rem;

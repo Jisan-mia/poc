@@ -28,8 +28,8 @@ const handleUserLogin = async (data) => {
         ...data,
       },
     )
-    //console.log(res);
-    if(res.status != 200) {
+    console.log(res);
+    if(res.data.code == 401) {
       throw Error('Error logging user')
     }
     return res;

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
 import CustomPhoneInput from './CustomPhoneInput.vue'
 import CustomLoginRegisterBtn from '../ui/CustomLoginRegisterBtn.vue'
 import SubmitOtp from './SubmitOtp.vue'
@@ -47,6 +47,9 @@ export default {
   setup(props) {
     console.log(props.isRegistrationPage);
     const store = useStore();
+    const phone_number = computed(() => store.state.userState.user.phone_number);
+    const password = computed(() => store.state.userState.user.password);
+
 
     // const loginSteps = ref(['sendOtp', 'submitOtp']);
     const currentStep = ref('sendOtp');
@@ -109,17 +112,38 @@ export default {
       console.log('send otp from login page');
     }
 
+    const handleLogin = async () => {
+      const data = {
+        phone_number: phone_number.value,
+        password: password.value
+      }
+      
+      if(data) {
+        try{
+          await store.dispatch('userState/userLogin', data)
+          if(props.isRegistrationPage) {
+            currentStep.value  = 'mainRegister'
+          } else {
+            currentStep.value  = 'newPass'
+          }
+        } catch(err) {
+          throw Error(err);
+        }
+      }
+    }
 
-    const verifyOtpCode = (code) => {            
+
+    const verifyOtpCode = async (code) => {            
       confirmResult.value.confirm(code).then((result) => {
         // User signed in successfully.
         const user = result.user;
         console.log(user)
-        if(props.isRegistrationPage) {
-          currentStep.value  = 'mainRegister'
-        } else {
-          currentStep.value  = 'newPass'
-        }
+        
+        handleLogin();
+
+      
+        
+        
         // ...
       }).catch((error) => {
         // User couldn't sign in (bad verification code?)

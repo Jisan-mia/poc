@@ -6,7 +6,17 @@
 
     <form @submit.prevent="handleUserRegister">
       <CustomPhoneInput v-model="userAuthInput.phone_number" placeholder="Enter your phone number" />
-      <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" type="password"/>
+      <div class="pass_cont">
+        <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" :type="inputType"/>
+        <!-- <i class="fas fa-eye-slash"></i> -->
+        <button class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
+          <i class="fas fa-eye-slash" ></i>
+        </button>
+
+        <button class="btn" @click="showPassword = !showPassword" v-else-if="showPassword" >
+          <i class="fas fa-eye" ></i>
+        </button>
+      </div>
 
       <p>
         Already have an account? <router-link  :to="{name: 'Login'}"> <span class="special"> Login </span></router-link>
@@ -51,7 +61,16 @@ export default {
     const profile = computed(() => store.state.userState.profile)
     console.log(profile.value)
     // console.log(user.value, notificationsState.value)
-    
+    const showPassword = ref(false);
+
+    const toggleShow = (e) => {
+      e.preventDefault();
+      showPassword.value = !showPassword.value
+    }
+
+    const inputType = computed(() => showPassword.value ? "text" : "password")
+
+
     watchEffect(async () => {
       if(isAuthenticated.value) {
         try{
@@ -116,7 +135,10 @@ export default {
       handleUserRegister,
       currentStep,
       user,
-      notificationsState
+      notificationsState,
+      toggleShow,
+      showPassword,
+      inputType
     }
   }
 }
@@ -168,6 +190,27 @@ export default {
         text-decoration-line: underline;
         font-weight: bold;
       } 
+    }
+
+    .pass_cont{
+      position: relative;
+      input {
+        width: 90% !important;
+      }
+
+      .btn {
+        border: none;
+        outline: none;
+        position: absolute;
+        top: 38%;
+        right: 4%;
+        border: 0;
+        z-index: 2;
+        cursor: pointer;
+        background-color: #fff;
+        width: 30px;
+      }
+
     }
   }
 }

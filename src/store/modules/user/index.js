@@ -68,11 +68,11 @@ const actions = {
     if(data) {
       context.commit(userMutationTypes.SET_USER , data)
       
-      try{
-        await context.dispatch('userLogin', data)
-      } catch(err) {
-        throw Error(err);
-      }
+      // try{
+      //   await context.dispatch('userLogin', data)
+      // } catch(err) {
+      //   throw Error(err);
+      // }
     } else {
       context.commit(userMutationTypes.SET_USER , {
         phone_number: '',
@@ -80,7 +80,7 @@ const actions = {
       })
       const notification = {
         type: 'error',
-        message: 'Error registering user'
+        message: 'Already Have an account'
       }
 
       context.dispatch('notifications/add', notification , {root: true})
@@ -90,20 +90,24 @@ const actions = {
   },
   async userLogin(context, payload) {
     const res = await userApi.handleUserLogin(payload);
+    console.log(res)
 
-    if(res.data) {
-      const token = res.data.access_token;
-      const userId = res.data.user_id
+    const data = await res.data;
+    
+
+    if(data?.access_token) {
+      const token = data.access_token;
+      const userId = data.user_id
+      localStorage.setItem('token', token)
+      localStorage.setItem('userId', userId)
       context.commit('setToken', token);
       context.commit('setUserId', userId);
 
-      localStorage.setItem('token', token)
-      localStorage.setItem('userId', userId)
 
     } else {
       const notification = {
         type: 'error',
-        message: 'Error Logging in user'
+        message: 'No user found'
       }
 
       context.dispatch('notifications/add', notification , {root: true})
@@ -130,7 +134,7 @@ const actions = {
   },
   async loadUserProfile(context) {
     const res = await userApi.getAllStudentList();
-    console.log(res)
+    // console.log(res)
 
     const data = await res.data
     if(data) {

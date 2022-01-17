@@ -50,7 +50,7 @@ const actions = {
     
     const data = await res.data;
     const reportingData = await resReporting.data
-    console.log(reportingData)
+    // console.log(reportingData)
 
 
     if(data && reportingData) {
@@ -64,7 +64,7 @@ const actions = {
 
       // hasExamAlreadyGiven = hasExamAlreadyGiven
 
-      console.log(userId, reportingData, data)
+      // console.log(userId, reportingData, data)
 
       const mainExam = data.map(exam => {
         //console.log(exam)

@@ -7,7 +7,18 @@
 
     <form @submit.prevent="handleUserLogin">
       <CustomPhoneInput v-model="userInputs.phone_number" placeholder="Enter your phone number" />
-      <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" type="password"/>
+
+      <div class="pass_cont">
+      <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" :type="inputType"/>
+        <!-- <i class="fas fa-eye-slash"></i> -->
+        <button class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
+          <i class="fas fa-eye-slash" ></i>
+        </button>
+
+        <button class="btn" @click="showPassword = !showPassword" v-else-if="showPassword" >
+          <i class="fas fa-eye" ></i>
+        </button>
+      </div>
 
       <!-- <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
@@ -42,6 +53,16 @@ export default {
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const profile = computed(() => store.state.userState.profile)
     console.log(profile.value)
+
+
+    const showPassword = ref(false);
+
+    const toggleShow = (e) => {
+      e.preventDefault();
+      showPassword.value = !showPassword.value
+    }
+
+    const inputType = computed(() => showPassword.value ? "text" : "password")
 
    
     watchEffect(async () => {
@@ -100,14 +121,15 @@ export default {
       }
       
     }
-
-
     
     return {
       userInputs,
       handleUserLogin,
       handleForgotStep,
-      currentStep
+      currentStep,
+      toggleShow,
+      showPassword,
+      inputType
     }
   }
 }
@@ -161,6 +183,28 @@ export default {
         text-decoration-line: underline;
         font-weight: bold;
       } 
+    }
+
+
+    .pass_cont{
+      position: relative;
+      input {
+        width: 90% !important;
+      }
+
+      .btn {
+        border: none;
+        outline: none;
+        position: absolute;
+        top: 38%;
+        right: 4%;
+        border: 0;
+        z-index: 2;
+        cursor: pointer;
+        background-color: #fff;
+        width: 30px;
+      }
+
     }
   }
 }
