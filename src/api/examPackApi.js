@@ -72,7 +72,7 @@ const getQuestionOptions = async (questionName) => {
     
     const res = await axios({
       method: 'post',
-      url: 'http://exam.poc.ac/api/all_option_get/',
+      url: 'https://exam.poc.ac/api/all_option_get/',
       headers: {
         // 'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'

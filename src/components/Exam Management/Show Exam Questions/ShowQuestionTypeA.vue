@@ -47,7 +47,7 @@ export default {
     const selectedOption = ref('');
     const allSelectedAns = computed(() => store.state.examResult.allSelectedAns)
 
-    const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
+    const imageUrl = computed(() => (img) => img.includes('https://www.exam.poc.ac') ? img : `https://www.exam.poc.ac${img}`)
 
     
     watch(selectedOption,() => {

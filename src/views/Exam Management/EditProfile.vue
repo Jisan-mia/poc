@@ -5,7 +5,7 @@
     <form class="main_form" @submit.prevent="handleEditProfile">
       <div class="img__div">
         <div class="img__container">
-          <img :src="previewImage || imageUrl(profile.Profile_image)" alt="">
+          <img :src="previewImage || profile.Profile_image ? imageUrl(profile.Profile_image) : '/images/placeholderImg2.svg'" alt="">
 
           <span>
             <i class="fas fa-edit "></i>
@@ -75,7 +75,7 @@ export default {
       level: profileFields.value.level,
       name: profileFields.value.name,
   });
-    const imageUrl = computed(() => (img) => img.includes("http://www.exam.poc.ac") ? img : `http://www.exam.poc.ac${img}`);
+    const imageUrl = computed(() => (img) => img.includes("https://www.exam.poc.ac") ? img : `https://www.exam.poc.ac${img}`);
 
     watch(profileFields, () => {
       profile.value = {
@@ -193,6 +193,7 @@ h2{
   border-radius: 50%;
   position: relative;
   padding-top: 0.3rem;
+  background: #dddddd;
 }
 .img__container img{
   width:100%;

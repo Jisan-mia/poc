@@ -85,6 +85,7 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   @include maxMedia(768px) {
       grid-template-columns: 1fr;
+      margin: 0 1.5rem;
     }
   .item1{
     background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
@@ -123,24 +124,24 @@ export default {
 
 
     h3{
-    margin: 1.6rem 0;
-    margin-bottom: 3.8rem;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 3rem;
-    line-height: 3.1rem;
-    text-align: center;
-    background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    // margin: 0;
-    @include maxMedia(768px) {
-     font-size: 1.95rem;
-     line-height: 2rem;
-     margin-bottom: 1.8rem;
-     margin-top: 1.4rem;
+      margin: 1.6rem 0;
+      margin-bottom: 3.8rem;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 3rem;
+      line-height: 3.1rem;
+      text-align: center;
+      background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      // margin: 0;
+      @include maxMedia(768px) {
+        font-size: 1.95rem;
+        line-height: 2rem;
+        margin-bottom: 1.8rem;
+        margin-top: 1.4rem;
 
-    }
+      }
   }
     .img__container {
       max-width: 150px;
@@ -164,7 +165,6 @@ export default {
         max-width: 400px;
         min-width: 150px;
         width: 100%;
-        padding: 1rem;
         margin-top: 55px;
     }
     }

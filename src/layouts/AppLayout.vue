@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <Sidebar />
-    <main class="main">
+    <main class="main" id="app" @click="isActive && toggleActive()">
       <span v-if="isLoading">
         loading..
       </span>
@@ -16,6 +16,7 @@ import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex'
 import Sidebar from '../components/sidebar/Sidebar.vue'
 import { watchEffect } from '@vue/runtime-core';
+import { isActive, toggleActive } from '../components/sidebar/state';
 export default {
   components: { Sidebar },
   name: 'AppLayout',
@@ -23,8 +24,9 @@ export default {
     const store = useStore(); 
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const isLoading = computed(() => store.state.isLoading);
-    const profile = computed(() => store.state.userState.profile)
+    const profile = computed(() => store.state.userState.profile);
 
+  
 
     store.commit('setIsLoading', true)
 
@@ -53,7 +55,9 @@ export default {
 
 
     return {
-      isLoading
+      isLoading,
+      toggleActive,
+      isActive
     }
   }
 }

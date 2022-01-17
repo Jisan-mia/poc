@@ -1,6 +1,6 @@
 <script>
 import SidebarLink from './SidebarLink'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { isActive, toggleActive } from './state'
 import axios from 'axios'
 import { useStore } from 'vuex'
@@ -30,7 +30,8 @@ export default {
         console.log(err)
       }
     }
-  
+
+    
     return {toggleActive, isActive, handleLogout }
   }
 }

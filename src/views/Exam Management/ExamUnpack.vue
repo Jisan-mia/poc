@@ -15,7 +15,7 @@
     <tbody v-else>
       <tr>
         <th>Exam ID</th>
-        <th>Subject</th>
+        <th>Exam Name</th>
         <th>Data & Time</th>
         <th class="status_header">Status</th> 
       </tr>

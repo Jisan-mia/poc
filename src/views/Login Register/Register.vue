@@ -6,7 +6,7 @@
 
     <form @submit.prevent="handleUserRegister">
       <CustomPhoneInput v-model="userAuthInput.phone_number" placeholder="Enter your phone number" />
-      <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" type="text"/>
+      <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" type="password"/>
 
       <p>
         Already have an account? <router-link  :to="{name: 'Login'}"> <span class="special"> Login </span></router-link>
@@ -120,6 +120,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/config.scss';
 
 .login_cont {
   height: calc(100vh - 125px);
@@ -139,6 +140,10 @@ export default {
     background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    @include maxMedia(768px) {
+      font-size: 2.4rem;
+      // line-height: 2.48rem;
+    }
     // margin: 0;
   }
   form {

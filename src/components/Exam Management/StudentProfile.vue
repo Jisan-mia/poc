@@ -1,13 +1,15 @@
 <template>
   <div class="container">
     <!-- dashboard profile start -->
+    <!-- {{JSON.stringify(profile.Profile_image)}} -->
     <div class="profile">
       <div class="profile__info">
         <div class="img__container1">
-          <img :src="imageUrl(profile.Profile_image)" alt="">
+          <img :src="profile.Profile_image ? imageUrl(profile.Profile_image) : '/images/placeholderImg2.svg'" alt="">
         </div>
+
         <div class="profile__detail">
-          <p class="basic">{{profile.board}} | {{profile.level}} {{profile.batch}} | Science</p>
+          <p class="basic">{{profile.board}} | {{profile.level}} {{profile.batch}}</p>
           <h3 class="name">{{profile.name}}</h3>
           <p class="institute">{{profile.institution}}</p>
         </div>
@@ -152,8 +154,9 @@ export default {
 
     const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 1)))
 
-    const imageUrl = computed(() => (img) => img.includes('http://www.exam.poc.ac') ? img : `http://www.exam.poc.ac${img}`)
+    const imageUrl = computed(() => (img) => img.includes('https://www.exam.poc.ac') ? img : `https://www.exam.poc.ac${img}`)
 
+    // console.log(imageUrl.value, profile.value)
 
 
 
@@ -242,6 +245,7 @@ export default {
       width: 180px;
       height: 180px;
       min-height: 120px;
+      background: #dddddd;
       img {
         width: 100%;
         height: 100%;
@@ -264,6 +268,7 @@ export default {
         line-height: 2.3rem;
         letter-spacing: 0.5px;
         white-space: nowrap;
+        text-transform: capitalize;
         @include maxMedia(768px) {
           white-space: normal;
           text-align: left;

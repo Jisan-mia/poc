@@ -1,7 +1,7 @@
 <template>
  
     <div class="img__container" :class="[outline ? 'notOutlined' : 'outlined']">
-      <img :src="'http://www.exam.poc.ac'+examPack.pack_image" alt="Exam Pack Image">
+      <img :src="'https://www.exam.poc.ac'+examPack.pack_image" alt="Exam Pack Image">
     </div>
     <div class="text">
       <router-link :to="{name: 'ExamUnpack', params: {packId: examPack.id}}" >

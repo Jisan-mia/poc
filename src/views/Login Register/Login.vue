@@ -7,7 +7,7 @@
 
     <form @submit.prevent="handleUserLogin">
       <CustomPhoneInput v-model="userInputs.phone_number" placeholder="Enter your phone number" />
-      <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" type="text"/>
+      <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" type="password"/>
 
       <!-- <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
@@ -135,6 +135,10 @@ export default {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     // margin: 0;
+    @include maxMedia(768px) {
+      font-size: 2.4rem;
+      // line-height: 2.48rem;
+    }
   }
   form {
     display: flex;
