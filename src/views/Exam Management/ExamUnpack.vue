@@ -58,6 +58,8 @@
               <CustomAdminBtn type="primary" :rounded="true" :disabled="true" v-if="exam.hasExamAlreadyGiven">
                 Completed
               </CustomAdminBtn>
+
+             
               
             </div>
           </span>
@@ -88,6 +90,7 @@ export default {
 
         const exams = computed(() => examLists.value.filter(exam => exam.exam_pack == packId));
         // console.log(packId, exams.value);
+        console.log(exams.value)
 
         const cutHash = computed(() => (id) => id.split("").filter(c => c == "#" ? false : c).join(""));
         const dateF = computed(() => (date) => {

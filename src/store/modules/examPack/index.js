@@ -56,11 +56,15 @@ const actions = {
     if(data && reportingData) {
       const userId = context.rootState.userState.user.userId;
 
-      let hasExamAlreadyGiven = reportingData.find(report => data.findIndex(exam => exam.id == report.exam_name) !== -1);
+      // let hasExamAlreadyGiven = reportingData.find(report => {
+      //   if(data.findIndex(exam => exam.id == report.exam_name) !== -1) {
+      //     return report.student == userId
+      //   }
+      // });
 
       // hasExamAlreadyGiven = hasExamAlreadyGiven
 
-      console.log(userId, reportingData, hasExamAlreadyGiven, data)
+      console.log(userId, reportingData, data)
 
       const mainExam = data.map(exam => {
         //console.log(exam)
@@ -74,11 +78,25 @@ const actions = {
             ...exam,
             isNotYetStarted: true
           }
-        } else if(hasExamAlreadyGiven) {
-          return {
-            ...exam,
-            hasExamAlreadyGiven: true
+        } 
+        // else if(hasExamAlreadyGiven) {
+        //   return {
+        //     ...exam,
+        //     hasExamAlreadyGiven: true
+        //   }
+        else {
+          let hasExamAlreadyGiven = reportingData.find(report => {
+            if(exam.id == report.exam_name) {
+              return report.student == userId
+            }
+          })
+          if(hasExamAlreadyGiven) {
+            return {
+              ...exam,
+              hasExamAlreadyGiven: true
+            }
           }
+
         } return exam
       })
       //console.log(mainExam)

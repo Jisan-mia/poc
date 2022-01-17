@@ -10,17 +10,17 @@
 
       <p>
         Already have an account? <router-link  :to="{name: 'Login'}"> <span class="special"> Login </span></router-link>
-        
       </p>
 
       <CustomLoginRegisterBtn  buttonText="Register" />
     </form>
   </div>
-  <!-- its main -->
-  <SendOtp isRegistrationPage="true" v-else/> 
+  <!-- its main /now it's not main-->
+  <SendOtp :isRegistrationPage="true" v-else/> 
 
-  <!-- it's temporary -->
-  <!-- <MainRegisterUser v-else /> -->
+  <!-- it's temporary / now it's main-->
+  <!-- <SubmitOtp v-else-if="currentStep"/>
+  <MainRegisterUser v-else /> -->
 
 </template>
 
@@ -36,9 +36,10 @@ import { watchEffect } from '@vue/runtime-core'
 import { getNotification } from '../../api/common'
 import router from '../../router'
 import { useRouter } from 'vue-router'
+import SubmitOtp from '../../components/Auth Components/SubmitOtp.vue'
 
 export default {
-  components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
+  components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser, SubmitOtp },
   name: 'Register',
   setup() {
     const router = useRouter()
@@ -93,6 +94,8 @@ export default {
         return;
       } 
       try {
+
+
         await store.dispatch('userState/registerByPhonePass', {
           ...userAuthInput.value
         })
