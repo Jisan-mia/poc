@@ -12,9 +12,8 @@ const submitResultToApi = async (data) => {
     formData.append(key, object[key]);
     return formData;
   }, new FormData());
-  try{
   
-    
+  try{
     const res = await axios({
       method: 'POST',
       url: 'https://www.exam.poc.ac/api/show_all_report/',

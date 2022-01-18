@@ -110,9 +110,14 @@ export default {
 
               window.open(routeData.href, '_blank');
               window.close()
+            } else {
+              router.push('/')
             }
           } catch(err) {
+            // alert(err.message)
             console.log(err)
+            router.push('/')
+            
           }
 
 

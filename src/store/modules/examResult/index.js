@@ -51,7 +51,7 @@ const actions = {
   handleScoreCalculation(context) {
     const allSelectedAns = context.state.allSelectedAns;
     const examQuestions = context.rootState.examPackState.examQuestions;
-    console.log(examQuestions)
+    // console.log(examQuestions)
     if(allSelectedAns.length !== 0 && examQuestions.length !== 0) {
       const { mark_per_question, amount_per_mistake, isNegativeMarking} = examQuestions[0];
       //console.log(mark_per_question, amount_per_mistake, isNegativeMarking)
@@ -82,7 +82,9 @@ const actions = {
   },
 
   async submitExamResult(context) {
+    console.log('submit')
     const examQuestions = context.rootState.examPackState.examQuestions;
+    // console.log(examQuestions)
     const {exam_name} = examQuestions[0]
 
     const student = context.rootState.userState.user.userId;
@@ -90,8 +92,9 @@ const actions = {
     const score = context.state.score;
     const negative_marking = context.state.negative_marking;
     const timestamp = dayjs(new Date()).format('HH:mm:ss');
+    console.log('submit2')
 
-    console.log(score, negative_marking, timestamp, exam_name, student)
+    // console.log(score, negative_marking, timestamp, exam_name, student)
 
     const dataToSend = {
       score,
@@ -107,6 +110,7 @@ const actions = {
     }
 
     const res = await examApi.submitResultToApi(dataToSend)
+    // console.log(res)
 
     const data = await res.data
     if(data) {
@@ -127,10 +131,6 @@ const actions = {
 
       context.dispatch('notifications/add', notification , {root: true})
     }
-
-
-    
-
   }   
   
 }
