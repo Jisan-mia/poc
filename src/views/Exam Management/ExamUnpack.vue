@@ -84,6 +84,16 @@ export default {
         const route = useRoute();
         const router = useRouter();
         const store = useStore();
+        const windowWidth = ref(window.innerWidth)
+
+        onMounted(() => {
+          windowWidth.value = window.innerWidth
+        })
+
+        watchEffect(() => {
+          console.log(windowWidth.value)
+        })
+
         const examLists = computed(() => store.state.examPackState.examLists);
 
         const { packId } = route.params;
@@ -154,9 +164,9 @@ export default {
 
 .table_main {
   width: 100%;
-  @include maxMedia(768px) {
-    overflow-x: scroll;
-  }
+  // @include maxMedia(768px) {
+  //   overflow-x: scroll;
+  // }
 }
 
 table {

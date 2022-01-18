@@ -45,7 +45,7 @@
 
       <input name="institution" v-model="profile.institution" placeholder="institution" type="text" class="input__field">
 
-      <input class="edit__btn" type="submit" value="Edit">
+      <input class="edit__btn" type="submit" value="Save">
 
       </div>
 
@@ -284,6 +284,7 @@ h2{
 }
 
 .edit__btn{
+  font-weight: bold;
   border: none;
   outline: none;
   width: 100%;
