@@ -155,8 +155,14 @@ const actions = {
         let mainOptions = []
         if(optionData) {
           //console.log(optionData)
+          const mainOptionsData = optionData.map(o => {
+            return {
+              ...o,
+              qName: question.question_name
+            }
+          })
           
-          return {...question, options: optionData}
+          return {...question, options: mainOptionsData}
           // for(let optionKey in optionData) {
           //   if(optionData[optionKey].length) {
           //     mainOptions = [...optionData[optionKey]]

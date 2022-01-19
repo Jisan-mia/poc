@@ -208,7 +208,7 @@ table {
     //   display: inherit;
     // }
     @include maxMedia(768px) {
-       grid-template-columns: repeat(5, 200px);
+       grid-template-columns: repeat(6, 200px);
     }
 
     &:first-child{

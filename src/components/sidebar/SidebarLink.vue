@@ -1,7 +1,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { collapsed,  toggleActive } from './state'
+import { collapsed,  toggleActive, isActive } from './state'
 
 export default {
   props: {
@@ -17,15 +17,16 @@ export default {
     // const isActive = computed(() => route.path === props.to)
     const activeLink = computed(() => route.path.includes(props.to))
     const nested = ref(['nest1, nest2'])
-    return { toggleActive, activeLink, collapsed, nested }
+    
+    return { toggleActive, activeLink, collapsed, nested, isActive }
   }
 }
 </script>
 
 <template>
-    <router-link :to="to || ''" class="link" :class="{ active: activeLink && to}">
+    <router-link :to="to || ''" class="link" :class="{ active: activeLink && to}" @click="isActive && toggleActive()" >
     <i class="icon" :class="icon" v-if="isNested === false" />
-    <i class="iconNested" :class="[icon]" v-else />
+    <i class="iconNested" :class="[icon]" v-else  />
     
     <transition name="fade">
       <span v-if="!collapsed">

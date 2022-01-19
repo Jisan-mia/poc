@@ -97,7 +97,7 @@ export default {
           } else { router.push('/')}
         }
         catch(error) {
-          //console.log(error)
+          console.log(error)
         }
       
       } else {
@@ -106,7 +106,6 @@ export default {
     })
 
     const handleSubmitExam = async () => {
-      
 
       try{
         await store.dispatch('examResult/submitExamResult')
@@ -121,18 +120,18 @@ export default {
           window.close()
         }
       } catch(err) {
-        //console.log(err)
+        console.log(err)
       }
     }
 
-window.addEventListener("beforeunload", function (e) {
-  var confirmationMessage = "\o/";
+// window.addEventListener("beforeunload", function (e) {
+//   var confirmationMessage = "\o/";
 
-  (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-  return confirmationMessage;     //Webkit, Safari, Chrome
-  //  e.preventDefault();
-  //   e.returnValue = '';                       
-});
+//   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+//   return confirmationMessage;     //Webkit, Safari, Chrome
+//   //  e.preventDefault();
+//   //   e.returnValue = '';                       
+// });
 
 document.addEventListener('contextmenu', function (e) {
   e.preventDefault();

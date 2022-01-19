@@ -52,11 +52,11 @@
           <span>
             <div class="wrapper">
 
-              <CustomAdminBtn  type="primary" :rounded="true" :disabled="true" v-if="exam.isNotYetStarted">
+              <CustomAdminBtn :style="{fontSize: '0.98rem', borderRadius: '15px', padding: '1rem 1.2rem'}"  type="primary" :rounded="true" :disabled="true" v-if="exam.isNotYetStarted">
                 Not Started
               </CustomAdminBtn>
 
-              <CustomAdminBtn type="info" :rounded="true" v-if="!exam.isExpired && !exam.isNotYetStarted && !exam.hasExamAlreadyGiven" @onClick="handleStartExam(exam)">
+              <CustomAdminBtn :style="{fontSize: '0.98rem', borderRadius: '15px', padding: '1rem 1.2rem'}" type="info" :rounded="true" v-if="!exam.isExpired && !exam.isNotYetStarted && !exam.hasExamAlreadyGiven" @onClick="handleStartExam(exam)">
                 Start Exam
               </CustomAdminBtn>
 
@@ -64,7 +64,7 @@
                 Expired
               </CustomAdminBtn>
 
-              <CustomAdminBtn type="primary" :rounded="true" :disabled="true" v-if="exam.hasExamAlreadyGiven">
+              <CustomAdminBtn :style="{fontSize: '0.98rem', borderRadius: '15px', padding: '1rem 1.2rem'}" type="primary" :rounded="true" :disabled="true" v-if="exam.hasExamAlreadyGiven">
                 Completed
               </CustomAdminBtn>
               
@@ -171,9 +171,9 @@ export default {
 
 .table_main {
   width: 100%;
-  // @include maxMedia(768px) {
-  //   overflow-x: scroll;
-  // }
+  @include maxMedia(768px) {
+    overflow-x: scroll;
+  }
 }
 
 table {
@@ -185,10 +185,11 @@ table {
     border-bottom: 1px solid #CDCDCD;
     display: grid;
     // grid-template-columns: 1.5fr 2fr 1.5fr 1.5fr 1.5fr;
-    grid-template-columns: 179px 250px 206px 206px auto;
+    // grid-template-columns: 179px 250px 206px 206px auto;
+    grid-template-columns: repeat(5, 210px);
 
     @include maxMedia(768px) {
-      grid-template-columns: repeat(4, 180px)
+      grid-template-columns: repeat(5, 190px)
     }
     
 
@@ -238,10 +239,12 @@ table {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    white-space: nowrap;
     @include maxMedia(968px) {
       padding: 0.5rem 0.9rem;
     }
+  }
+  th {
+     white-space: nowrap;
   }
   // .status__column , .status_header{
   //   justify-self: center;

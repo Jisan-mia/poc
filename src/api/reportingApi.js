@@ -4,7 +4,7 @@ const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNz
 
 const getStudentReporting = async () => {
     try{
-      const res = await axios.get('https://www.exam.poc.ac/api/get_student_report/',
+      const res = await axios.get('https://www.exam.poc.ac/api/show_all_report/',
       {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

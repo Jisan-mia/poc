@@ -367,9 +367,9 @@ table {
     display: grid;
     grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1fr 1.5fr;
     // grid-template-columns: repeat(6, 1fr);
-    // @include maxMedia(968px) {
-    //   display: inherit;
-    // }
+    @include maxMedia(768px) {
+      grid-template-columns: repeat(6, 200px);
+    }
 
     &:first-child{
       font-weight: 600;

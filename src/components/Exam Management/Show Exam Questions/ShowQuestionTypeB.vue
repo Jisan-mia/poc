@@ -35,10 +35,10 @@
       <div class="item__cont">
         <CustomRadioButton
           v-for="option in examQuestion.options"
-          :key="option.id"
+          :key="option.ans"
           :option="option.ans"
-          :name='option.id'
           v-model="selectedOption"
+          :name="examQuestion.question_name"
         />
       </div>
     </div>
@@ -84,8 +84,9 @@ export default {
     const selectedOption = ref('')
 
     watch(selectedOption, () => {
-      //console.log('selected', selectedOption.value)
-      const optionObj = computed(() => examQuestion.options.find(o => o.ans === selectedOption.value))
+      // console.log('selected', selectedOption.value)
+      const optionObj = computed(() => examQuestion.options.find(o => o.ans == selectedOption.value))
+      // console.log(optionObj.value)
       if(optionObj.value) {
         store.dispatch('examResult/selectedAnsHandle', {...optionObj.value})
 

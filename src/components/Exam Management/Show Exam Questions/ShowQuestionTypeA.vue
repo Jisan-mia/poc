@@ -17,7 +17,7 @@
           v-for="option in examQuestion.options" 
           :key="option.ans" 
           :option="option.ans"
-          :name="examQuestion.id"
+          :name="examQuestion.question_name"
           v-model="selectedOption"
         />
       </div>
@@ -51,10 +51,11 @@ export default {
 
     
     watch(selectedOption,() => {
-      //console.log('selected', selectedOption.value)
+      // console.log('selected', selectedOption.value)
+
       
       const optionObj = computed(() => examQuestion.options.find(o => o.ans === selectedOption.value));
-      //console.log(optionObj.value)
+      // console.log(optionObj.value)
       if(optionObj.value) {
         store.dispatch('examResult/selectedAnsHandle', {...optionObj.value})
       }
