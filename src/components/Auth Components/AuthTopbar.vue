@@ -27,13 +27,19 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 2rem 2.5rem;
+
+  @include maxMedia(500px) {
+      justify-content: center;
+      padding: 0;
+    padding-top: 4.65em;
+    }
   
  
   .img__container {
     max-width: 150px;
     cursor: pointer;
     @include maxMedia(500px) {
-      max-width: 120px;
+      max-width: 125px;
     }
     img{
       width: 100%;
@@ -47,8 +53,9 @@ header {
     text-decoration-line: underline;
     color: #000000;
     @include maxMedia(500px) {
+      display: none;
       font-size: 1rem;
-    line-height: 1.09rem;
+      line-height: 1.09rem;
     }
   }
 }

@@ -48,13 +48,11 @@
         v-model="profile.board"
         :options="boardOptions"
         :style="selectStyle"
-      
-      
       />
 
       <input name="institution" v-model="profile.institution" placeholder="institution" type="text" class="input__field">
 
-      <input class="edit__btn" type="submit" value="Save">
+      <input class="edit__btn" type="submit" value="Edit & Save">
 
       </div>
 

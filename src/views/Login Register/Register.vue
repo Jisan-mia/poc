@@ -154,6 +154,9 @@ export default {
   justify-content: flex-start;
   align-items: center;
   margin: 0 1rem;
+  @include maxMedia(768px) {
+    margin: 0;
+  }
 
   h3{
     margin: 1.1rem 0 1.5rem 0;
@@ -168,6 +171,8 @@ export default {
     @include maxMedia(768px) {
       font-size: 2.4rem;
       // line-height: 2.48rem;
+          line-height: 75px;
+    margin: 1rem 0;
     }
     // margin: 0;
   }
@@ -180,6 +185,9 @@ export default {
     width: 100%;
     max-width: 400px;
     min-width: 200px;
+     @include maxMedia(768px) {
+    margin-top: 2rem;
+  }
     p {
       color: #00325B;
       font-size: 1rem;
