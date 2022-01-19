@@ -49,19 +49,14 @@
         
 
         <td class="id" > 
-          <router-link :to="{name: 'SpecificExamReport', params: {examId: cutHash(report.exam_id)}}">
-            <span>
-              #{{cutHash(report.exam_id)}}
-            </span>
-          </router-link>
-         
+          <span @click="handleSpecificReportShow(report,cutHash(report.exam_id))">
+            #{{cutHash(report.exam_id)}}
+          </span>
         </td>
         <td class="subject">
-          <router-link :to="{name: 'SpecificExamReport', params: {examId: cutHash(report.exam_id)}}">
             <span>
               {{report.Exam_name}}
             </span>
-          </router-link>
         </td>
         <td>
           <div class="date__time">
@@ -78,17 +73,17 @@
 
         <td class="highest">
           <span>
-            {{`${report.score}/${report.total_mark}`}}
+            {{report.isExpired ? `${report.score}/${report.total_mark}` : 'Pending'}}
           </span>
         </td>
         <td class="average">
           <span>
-            {{report.negative_marking}}
+            {{report.isExpired ? report.negative_marking : 'Pending'}}
           </span>
         </td>
         <td class="average">
           <span>
-            3
+            {{report.isExpired ? Number(report.score)+Number(report.negative_marking) : 'Pending'}}
           </span>
         </td>
       </tr>
@@ -102,6 +97,7 @@ import { computed, onMounted, ref, watchEffect } from '@vue/runtime-core';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex';
 import dayjs from "dayjs";
+import router from '../../router';
 
 export default {
   name: 'ReportingComp',
@@ -111,11 +107,11 @@ export default {
     const idSearch = ref('')
     const subjectSearch = ref('')
 
-    const mainReportD = computed(() => store.state.reportingState.reportings)
+    const mainReport = computed(() => store.state.reportingState.reportings)
 
-    const mainReport = computed(() => mainReportD.value.filter(r => r.isExpired === true))
+    // const mainReport = computed(() => mainReportD.value.filter(r => r.isExpired === true))
 
-
+    console.log(mainReport.value)
     const examLists = computed(() => store.state.examPackState.examLists);
 /*
     // const reportingExamIds = computed(() => {
@@ -177,6 +173,19 @@ export default {
     
   // watchEffect(() => console.log(reports.value))
 
+    const handleSpecificReportShow = (report,exam_id) => {
+      if(report.isExpired) {
+        const routeData = {
+          name: 'SpecificExamReport',
+          params: {
+            examId: exam_id
+          }
+        }
+      router.push(routeData)
+      }
+      
+    }
+
 
     return {
       reports,
@@ -185,7 +194,8 @@ export default {
       dateF,
       timeF,
       idSearch,
-      subjectSearch
+      subjectSearch,
+      handleSpecificReportShow
     }
   }
 }

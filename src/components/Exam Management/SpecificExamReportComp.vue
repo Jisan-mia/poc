@@ -154,7 +154,7 @@
       <tr class="main_row" v-for="report in specificReports" :key="report.id">
         <td> 
           <span>
-            {{report.rank}}
+            {{report.mainRank}}
           </span>
         </td>
         <td>
@@ -212,7 +212,18 @@ export default {
 
     const examPacks = computed(() => store.state.examPackState.examPacks);
     const examLists = computed(() => store.state.reportingState.reportings);
-    const specificReportsState = computed(() => store.state.reportingState.specificReportings);
+    const specificReportsStateM = computed(() => store.state.reportingState.specificReportings);
+    
+    const specificReportsState = computed(() => {
+      const main = ref([...specificReportsStateM.value])
+      main.value.sort((a,b) => b.score - a.score);
+      return main.value.map((item, index) => {
+        return {
+          ...item,
+          mainRank: index+1
+        }
+      } )
+    })
     
     
 
@@ -261,7 +272,7 @@ export default {
         return specificReportsMain.value
 
       } else {
-        return specificReportsState.value.sort((a,b) => a.rank - b.rank)
+        return specificReportsState.value.sort((a,b) => a.mainRank - b.mainRank)
       }
     })
 
@@ -313,7 +324,7 @@ export default {
       console.log(fullDate)
       return dayjs(fullDate).format("hh:mm:ss A")
     })
-    console.log(timeStampF.value)
+    // console.log(timeStampF.value)
 
     const endDate = computed(() => dayjs(currentExam.value.Exam_end_date).format("DD/MM/YYYY"));
     // const endTime = currentExam.value.Exam_end_time;
@@ -368,7 +379,8 @@ table {
     grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1fr 1.5fr;
     // grid-template-columns: repeat(6, 1fr);
     @include maxMedia(768px) {
-      grid-template-columns: repeat(6, 200px);
+      // grid-template-columns: repeat(6, 200px);
+      grid-template-columns: 100px 260px 170px 150px 100px 100px;
     }
 
     &:first-child{
