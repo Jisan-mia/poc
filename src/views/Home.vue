@@ -25,7 +25,7 @@ export default {
     console.log("homie", isAuthenticated)
     const profile = computed(() => store.state.userState.profile)
     const user = computed(() => store.state.userState)
-    console.log(profile.value, user.value)
+    // console.log(profile.value, user.value)
     
    
 

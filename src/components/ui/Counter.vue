@@ -85,7 +85,7 @@ export default {
     // formate num
     const formatNum = num => num < 10 ? '0'+num : num
 
-    console.log(endP.value, new Date())
+    // console.log(endP.value, new Date())
 
     const showRemaining = () => {
       const timer = setInterval(async () => {

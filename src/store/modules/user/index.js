@@ -158,7 +158,7 @@ const actions = {
   async updateStudentProfile (context, profile) {
     const mainProfile = {...profile}
     if(!mainProfile.Profile_image || typeof mainProfile.Profile_image == 'string') {
-      console.log(mainProfile.Profile_image)
+      // console.log(mainProfile.Profile_image)
       delete mainProfile.Profile_image
     }
     const res = await userApi.updateUserProfile(mainProfile)

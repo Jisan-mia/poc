@@ -111,7 +111,7 @@ export default {
 
     // const mainReport = computed(() => mainReportD.value.filter(r => r.isExpired === true))
 
-    console.log(mainReport.value)
+    // console.log(mainReport.value)
     const examLists = computed(() => store.state.examPackState.examLists);
 /*
     // const reportingExamIds = computed(() => {

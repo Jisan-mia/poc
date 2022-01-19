@@ -15,7 +15,7 @@ const registerUserByPhonePass = async (data) => {
     }
     return res.data;
   } catch(error) {
-    //console.log(error)
+    console.log(error)
     return "Couldn't register user"
   }
 }
@@ -34,7 +34,7 @@ const handleUserLogin = async (data) => {
     }
     return res;
   } catch(error) {
-    //console.log(error)
+    console.log(error)
     return "Couldn't login user"
   }
 }
@@ -84,7 +84,7 @@ const getAllStudentList = async () => {
     }
     return res.data;
   } catch(error) {
-    //console.log(error)
+    console.log(error)
     return "Couldn't login user"
   }
 }
@@ -119,7 +119,7 @@ const updateUserProfile = async (data) => {
     }
     return res.data;
   } catch(error) {
-    //console.log(error)
+    console.log(error)
     return "Couldn't update profile"
   }
 }

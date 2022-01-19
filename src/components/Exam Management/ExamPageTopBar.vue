@@ -47,8 +47,8 @@ export default {
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
     // all we need in this component is totalTime
     const { exam_total_time, Exam_end_date, Exam_end_time} = currentExam.value;
-    console.log(exam_total_time);
-    console.log(currentExam.value, Exam_end_date, Exam_end_time);
+    // console.log(exam_total_time);
+    // console.log(currentExam.value, Exam_end_date, Exam_end_time);
 
 // exam end time
     const endTime = computed(() => {
@@ -57,7 +57,7 @@ export default {
       return examDate
       
     })
-    console.log(endTime.value ,'\n', dayjs(endTime.value).get('year'), dayjs(endTime.value).get('month')+1,dayjs(endTime.value).get('date'), dayjs(endTime.value).get('hour'), dayjs(endTime.value).get('minute'), dayjs(endTime.value).get('second'))
+    // console.log(endTime.value ,'\n', dayjs(endTime.value).get('year'), dayjs(endTime.value).get('month')+1,dayjs(endTime.value).get('date'), dayjs(endTime.value).get('hour'), dayjs(endTime.value).get('minute'), dayjs(endTime.value).get('second'))
     
 
     const year = computed(() => dayjs(endTime.value).get('year'))

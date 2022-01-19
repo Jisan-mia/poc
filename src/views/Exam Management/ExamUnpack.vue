@@ -107,7 +107,7 @@ export default {
 
         const exams = computed(() => examLists.value.filter(exam => exam.exam_pack == packId));
         // console.log(packId, exams.value);
-        console.log(exams.value)
+        // console.log(exams.value)
 
         const cutHash = computed(() => (id) => id.split("").filter(c => c == "#" ? false : c).join(""));
         const dateF = computed(() => (date) => {

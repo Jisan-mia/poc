@@ -17,7 +17,7 @@ const getStudentReporting = async () => {
       }
       return res.data;
     } catch (err) {
-      //console.log(err.message)
+      // console.log(err.message)
       return 'Error getting student reporting'
     }
 }
@@ -37,7 +37,7 @@ const getSpecificReporting = async (exam_name) => {
     }
     return res.data;
   } catch (err) {
-    //console.log(err.message)
+    // console.log(err.message)
     return 'Error getting student specific reporting'
   }
 }

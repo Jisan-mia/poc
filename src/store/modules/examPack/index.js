@@ -170,7 +170,7 @@ const actions = {
           // }
           
         }
-        // //console.log({...question, options: mainOptions})
+        //console.log({...question, options: mainOptions})
       }
 
       const allQuestionWithOptions =await Promise.all(allQuestion.map(setQuestionOption))
