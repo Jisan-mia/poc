@@ -98,10 +98,9 @@ export default {
           clearInterval(timer);
           expired.value = true;
           loaded.value = true;
-          localStorage.removeItem(`deadline${props.examId}`)
 
           try{
-            await store.dispatch('examResult/submitExamResult')
+            await store.dispatch('examResult/submitExamResult', props.examId)
             if(isExamSubmitted.value) {
               store.commit('examResult/setExamIsSubmitted', false);
               const routeData = router.resolve({

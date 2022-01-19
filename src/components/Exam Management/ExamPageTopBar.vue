@@ -83,12 +83,6 @@ export default {
     const tDate = computed(() => dayjs(totalExamTimeEndTime.value).get('date'))
     const tHour = computed(() => dayjs(totalExamTimeEndTime.value).get('hour'))
     const tMinute = computed(() => dayjs(totalExamTimeEndTime.value).get('minute'))
-    
-
-
-
-
-
 
 
    

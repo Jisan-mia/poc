@@ -108,8 +108,8 @@ export default {
     const handleSubmitExam = async () => {
 
       try{
-        await store.dispatch('examResult/submitExamResult')
-        localStorage.removeItem(`deadline${id}`)
+        await store.dispatch('examResult/submitExamResult', id)
+        // localStorage.removeItem(`deadline${id}`)
         if(isExamSubmitted.value) {
           store.commit('examResult/setExamIsSubmitted', false);
           const routeData = router.resolve({
@@ -121,6 +121,12 @@ export default {
         }
       } catch(err) {
         console.log(err)
+        const routeData = router.resolve({
+            path: '/dashboard',
+          })
+
+        window.open(routeData.href, '_blank');
+        window.close()
       }
     }
 

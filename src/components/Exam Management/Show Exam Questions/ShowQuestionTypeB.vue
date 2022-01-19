@@ -129,7 +129,7 @@ export default {
 .img__container img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   background-position: center center;
   border-radius: 5px;
 }
