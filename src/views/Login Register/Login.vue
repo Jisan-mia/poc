@@ -11,19 +11,19 @@
       <div class="pass_cont">
       <CustomAuthInput v-model="userInputs.password" placeholder="Enter your password" :type="inputType"/>
         <!-- <i class="fas fa-eye-slash"></i> -->
-        <button class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
+        <span class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
           <i class="fas fa-eye-slash" ></i>
-        </button>
+        </span>
 
-        <button class="btn" @click="showPassword = !showPassword" v-else-if="showPassword" >
+        <span class="btn" @click="showPassword = !showPassword" v-else-if="showPassword" >
           <i class="fas fa-eye" ></i>
-        </button>
+        </span>
       </div>
 
-      <!-- <p>
+      <p>
         Don’t have an account? <router-link  :to="{name: 'Register'}"> <span class="special"> Register </span></router-link>
-        <br />
-        <span @click="handleForgotStep" class="special"> Forgot Password</span>
+        <br /> </p>
+        <!-- <span @click="handleForgotStep" class="special"> Forgot Password</span>
       </p> -->
 
       <CustomLoginRegisterBtn  buttonText="Login" />
@@ -147,7 +147,8 @@ export default {
   margin: 0 1rem;
 
   h3{
-    margin: 1.6rem 0;
+    margin: 1.1rem 0 1.5rem 0;
+
     font-style: normal;
     font-weight: bold;
     font-size: 3rem;
@@ -166,7 +167,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1em;
+    gap: 1.3em;
     text-align: center;
     width: 400px;
     min-width: 200px;

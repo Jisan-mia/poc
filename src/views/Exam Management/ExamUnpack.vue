@@ -16,7 +16,8 @@
       <tr>
         <th>Exam ID</th>
         <th>Exam Name</th>
-        <th>Data & Time</th>
+        <th >Start Date & Time</th>
+        <th>End Date & Time</th>
         <th class="status_header">Status</th> 
       </tr>
 
@@ -39,11 +40,19 @@
             </span>
           </div>
         </td>
+        <td>
+          <div class="date__time">
+            <span class="date">{{dateF(exam.Exam_end_date)}}</span>
+            <span class="time">
+              {{timeF(exam.Exam_end_date, exam.Exam_end_time)}}
+            </span>
+          </div>
+        </td>
         <td class="status__column">
           <span>
             <div class="wrapper">
 
-              <CustomAdminBtn type="primary" :rounded="true" :disabled="true" v-if="exam.isNotYetStarted">
+              <CustomAdminBtn  type="primary" :rounded="true" :disabled="true" v-if="exam.isNotYetStarted">
                 Not Started
               </CustomAdminBtn>
 
@@ -51,15 +60,13 @@
                 Start Exam
               </CustomAdminBtn>
 
-              <CustomAdminBtn type="warning" :rounded="true" :disabled="true" v-if="exam.isExpired">
+              <CustomAdminBtn :style="{fontSize: '0.98rem', borderRadius: '15px', padding: '1rem 1.2rem'}" type="warning" :rounded="true" :disabled="true" v-if="exam.isExpired">
                 Expired
               </CustomAdminBtn>
 
               <CustomAdminBtn type="primary" :rounded="true" :disabled="true" v-if="exam.hasExamAlreadyGiven">
                 Completed
               </CustomAdminBtn>
-
-             
               
             </div>
           </span>
@@ -177,7 +184,8 @@ table {
   tbody tr{
     border-bottom: 1px solid #CDCDCD;
     display: grid;
-    grid-template-columns: 1.5fr 2fr 1.5fr 1.5fr;
+    // grid-template-columns: 1.5fr 2fr 1.5fr 1.5fr 1.5fr;
+    grid-template-columns: 179px 250px 206px 206px auto;
 
     @include maxMedia(768px) {
       grid-template-columns: repeat(4, 180px)
@@ -230,14 +238,14 @@ table {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    white-space: none;
+    white-space: nowrap;
     @include maxMedia(968px) {
       padding: 0.5rem 0.9rem;
     }
   }
-  .status__column , .status_header{
-    justify-self: center;
-  }
+  // .status__column , .status_header{
+  //   justify-self: center;
+  // }
 
 }
 </style>

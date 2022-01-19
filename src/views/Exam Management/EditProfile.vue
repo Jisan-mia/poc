@@ -35,13 +35,22 @@
       </select>
 
 
-      <select name="board" id="board" v-model="profile.board">
+      <!-- <select name="board" id="board" v-model="profile.board">
         <option value="Dhaka">Dhaka</option>
         <option value="Chittagong">Chittagong</option>
         <option value="Comilla">Comilla</option>
         <option value="Sylhet">Sylhet</option>
         <option value=" Mymensingh"> Mymensingh</option>
-      </select>
+      </select> -->
+
+      <CustomSelect 
+        placeholder="Board"
+        v-model="profile.board"
+        :options="boardOptions"
+        :style="selectStyle"
+      
+      
+      />
 
       <input name="institution" v-model="profile.institution" placeholder="institution" type="text" class="input__field">
 
@@ -60,10 +69,22 @@ import { computed, ref } from '@vue/reactivity';
 import { useStore } from 'vuex'
 import { watch, watchEffect } from '@vue/runtime-core';
 import ImgInputModel from '../../components/ui/ImgInputModel.vue';
+import CustomSelect from '../../components/ui/CustomSelect.vue';
 export default {
   name: "EditProfile",
   setup() {
     const store = useStore();
+    const boardOptions = ref(['Dhaka', 'Chittagong','Sylhet', 'Comilla', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Barisal'])
+     const selectStyle = ref({
+      borderRadius: '1.1rem',
+      outline: 'none',
+      fontSize: '1.1rem',
+      padding: '1rem 1.1rem',
+      border: '1.5px solid #00294E'
+    })
+   
+
+
     const profileFields = computed(() => store.state.userState.profile);
     console.log(profileFields.value);
     const profile = ref({
@@ -156,10 +177,12 @@ export default {
       imageUrl,
       handleEditProfile,
       handleIInput,
-      previewImage
+      previewImage,
+      boardOptions,
+      selectStyle
     };
   },
-  components: { ImgInputModel }
+  components: { ImgInputModel, CustomSelect }
 }
 </script>
 
@@ -182,16 +205,19 @@ export default {
 h2{
   font-style: normal;
   font-weight: bold;
-  font-size: 3rem;
-  line-height: 110px;
+  font-size: 2.3rem;
+  line-height: 2.4rem;
   text-align: center;
   background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
 	-webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
+  margin-bottom: 2rem;
 
   @include maxMedia(768px) {
-    font-size: 1.4rem;
+    
+    font-size: 1.5rem;
+    // margin-bottom: 2rem;
   }
 }
 
@@ -294,11 +320,11 @@ h2{
 }
 @media  (max-width:768px) {
   .form__area .input__field,  .form__area select, .edit__btn{
-    border-radius: 1rem;
-    outline: none;
-    font-size: 1.1rem;
-    padding: 0.9rem 1rem;
-    border: 1.5px solid #00294E;
+    // border-radius: 1rem;
+    // outline: none;
+    // font-size: 1.1rem;
+    // padding: 0.9rem 1rem;
+    // border: 1.5px solid #00294E;
   }
 }
 

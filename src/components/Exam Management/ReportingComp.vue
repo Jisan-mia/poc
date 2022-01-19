@@ -2,6 +2,8 @@
   <header>
     <div class="header__input">
       <input v-model="idSearch" type="text" placeholder="Search With Exam ID" name="" id="">
+      <input v-model="subjectSearch" type="text" placeholder="Filter With Subject" name="" id="">
+
       <!-- <input v-model="" type="datetime-local" name="" id="" placeholder="Date Range"> -->
     </div>
   </header>
@@ -17,22 +19,27 @@
         </td>
         <td>
           <span>
-            Subject
+            Exam Name
           </span>
         </td>
         <td>
           <span>
-            Data & Time
+            Date & Time
           </span>
         </td>
         <td>
           <span>
-            Highest Score
+            Your Score
           </span>
         </td>
         <td>
           <span>
             Negative Marking
+          </span>
+        </td>
+        <td>
+          <span>
+            Final Score
           </span>
         </td>
       </tr>
@@ -58,7 +65,9 @@
         </td>
         <td>
           <div class="date__time">
-            <span class="date">{{dateF(report.Exam_end_date)}}</span>
+            <span class="date">
+              {{dateF(report.Exam_start_date)}} <!-- changed from Exam_end_date -->
+            </span>
             <span class="time">
               <!-- {{report.Exam_end_time}} -->
               {{timeF(report.Exam_start_date, report.Exam_start_time)}}
@@ -75,6 +84,11 @@
         <td class="average">
           <span>
             {{report.negative_marking}}
+          </span>
+        </td>
+        <td class="average">
+          <span>
+            3
           </span>
         </td>
       </tr>
@@ -95,6 +109,7 @@ export default {
     const store = useStore();
     const isLoading = computed(() => store.state.isLoading);
     const idSearch = ref('')
+    const subjectSearch = ref('')
 
     const mainReportD = computed(() => store.state.reportingState.reportings)
 
@@ -147,9 +162,14 @@ export default {
       if(idSearch.value) {
         return mainReport.value.filter(report => {
         // return report.exam_id.toLowerCase().indexOf(`#${idSearch.value.toLowerCase()}`) != -1 
-        return idSearch.value.toLowerCase().split(' ').every(v => report.exam_id.toLowerCase().includes(v))
+          return idSearch.value.toLowerCase().split(' ').every(v => report.exam_id.toLowerCase().includes(v))
         })
-      } else {
+      } if(subjectSearch.value) {
+        return mainReport.value.filter(report => {
+          return subjectSearch.value.toLowerCase().split(' ').every(v => report.Exam_name.toLowerCase().includes(v))
+        })
+      }
+      else {
         return mainReport.value
       }
       
@@ -164,7 +184,8 @@ export default {
       cutHash,
       dateF,
       timeF,
-      idSearch
+      idSearch,
+      subjectSearch
     }
   }
 }
@@ -182,7 +203,7 @@ table {
     border-bottom: 1px solid #CDCDCD;
     display: grid;
     // grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     // @include maxMedia(968px) {
     //   display: inherit;
     // }
@@ -257,7 +278,7 @@ table {
   margin-bottom: 1.2rem;
 
   input {
-    border: 1px solid #FF6F00;
+    border: 1px solid #00a9dc;
     box-sizing: border-box;
     border-radius: 8px;
     font-weight: 500;

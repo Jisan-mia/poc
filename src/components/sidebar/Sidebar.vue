@@ -131,10 +131,7 @@ export default {
 }
 
 .logout {
-  margin-bottom:0.9rem;
-  @include maxMedia(768px) {
-    margin-bottom: 1.3rem;
-  }
+  margin-bottom:1.3rem;
   }
 
 .sidebar.active {

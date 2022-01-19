@@ -480,7 +480,7 @@ table {
   
 
   input, select, button {
-    border: 1px solid #FF6F00;
+    border: 1px solid #00A9DC;
     box-sizing: border-box;
     border-radius: 8px;
     font-weight: 500;
@@ -509,7 +509,7 @@ table {
   // }
 
   button.selected {
-    background: #FF6F00;
+    background: #00A9DC;
     transition: all 0.3s ease;
     color: #fff;
   }

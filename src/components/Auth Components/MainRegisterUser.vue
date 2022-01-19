@@ -89,7 +89,7 @@ export default {
         
     const levelOptions = ref(['JSC', 'SSC', 'HSC', 'O-Level', 'A-Level'])
     const batchOptions = ref(['2021', '2022', '2023'])
-    const boardOptions = ref(['Dhaka', 'Shylet', 'Comilla'])
+    const boardOptions = ref(['Dhaka', 'Chittagong','Sylhet', 'Comilla', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Barisal'])
     const selectStyle = ref({
       borderRadius: '1.1rem',
       outline: 'none',
@@ -188,7 +188,7 @@ h2{
   font-style: normal;
   font-weight: bold;
   font-size: 2.3rem;
-  line-height: 2.4;
+  line-height: 2.4rem;
   text-align: center;
   background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);
 	-webkit-background-clip: text;
