@@ -31,7 +31,7 @@ header {
   @include maxMedia(500px) {
       justify-content: center;
       padding: 0;
-    padding-top: 4.65em;
+    // padding-top: 4.65em;
     }
   
  

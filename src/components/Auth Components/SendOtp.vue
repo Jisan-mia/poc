@@ -7,11 +7,11 @@
     <form  v-on:submit.prevent :class="isRegistrationPage && 'mt-4'">
       <CustomPhoneInput v-model="userPhoneNumber" placeholder="Enter your phone number" :disabled="isRegistrationPage" :readonly="isRegistrationPage" />
       <div class="recaptcha-container" id="recaptcha-container"></div>
-      <CustomLoginRegisterBtn @click="handleSendOtp" buttonText="Send OTP" id="log-in"/>
+      <CustomLoginRegisterBtn :isSpin="buttonLoading" @click="handleSendOtp" buttonText="Send OTP" id="log-in"/>
     </form>
   </div>
 
-  <SubmitOtp :isRegistrationPage="isRegistrationPage" @verifyOtp="verifyOtpCode" v-else-if="currentStep == 'submitOtp'" />
+  <SubmitOtp :buttonLoading="buttonLoading" :isRegistrationPage="isRegistrationPage" @verifyOtp="verifyOtpCode" v-else-if="currentStep == 'submitOtp'" />
   <MainRegisterUser :isRegistrationPage="isRegistrationPage" v-else-if="currentStep == 'mainRegister'" />
   <NewPassword v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
 
@@ -49,7 +49,8 @@ export default {
     const store = useStore();
     const phone_number = computed(() => store.state.userState.user.phone_number);
     const password = computed(() => store.state.userState.user.password);
-
+    const buttonLoading = ref(false)
+    
 
     // const loginSteps = ref(['sendOtp', 'submitOtp']);
     const currentStep = ref('sendOtp');
@@ -81,6 +82,7 @@ export default {
         store.dispatch('notifications/add', getNotification('warning', 'Please enter a valid phone number'))
         return;
       }
+      buttonLoading.value = true;
 
       console.log('send otp from resister page');
       // const phoneNumber = '+88'+userPhoneNumber.value;
@@ -100,11 +102,20 @@ export default {
           smsSent.value=true
           console.log(confirmResult.value)
           console.log('sms sent!')
+           buttonLoading.value = false
+          
           currentStep.value = 'submitOtp'
+
           // ...
         }).catch((error) => {
           // Error; SMS not sent
           console.log('sms not sent', error.message)
+          // alert(error.message)
+          store.dispatch('notifications/add', getNotification('warning', 'Firebase error: Too many requests'))
+          setTimeout(() => {
+            buttonLoading.value = false
+          }, 1000); 
+
           // ...
         });
       
@@ -123,17 +134,25 @@ export default {
           await store.dispatch('userState/userLogin', data)
           if(props.isRegistrationPage) {
             currentStep.value  = 'mainRegister'
+            buttonLoading.value = false;
+
           } else {
             currentStep.value  = 'newPass'
           }
         } catch(err) {
+          setTimeout(() => {
+          buttonLoading.value = false
+        }, 1000);
+
           throw Error(err);
         }
       }
     }
 
 
-    const verifyOtpCode = async (code) => {            
+    const verifyOtpCode = async (code) => {  
+      buttonLoading.value = true;
+
       confirmResult.value.confirm(code).then((result) => {
         // User signed in successfully.
         const user = result.user;
@@ -150,6 +169,9 @@ export default {
         // ...
         console.log(error)
         store.dispatch('notifications/add', getNotification('warning', "Invalid Code"))
+        setTimeout(() => {
+          buttonLoading.value = false
+        }, 1000);
 
         
       });
@@ -159,7 +181,8 @@ export default {
       userPhoneNumber,
       handleSendOtp,
       currentStep,
-      verifyOtpCode
+      verifyOtpCode,
+      buttonLoading
     }
   }
 }
@@ -168,7 +191,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
 .forgot {
-  height: calc(100vh - 125px);
+  // height: calc(100vh - 125px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

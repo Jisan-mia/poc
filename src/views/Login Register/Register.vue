@@ -1,36 +1,37 @@
 <template>
-  <div class="login_cont" v-if="currentStep === 'register'">
-    <h3>
-      Register
-    </h3>
+<div class="login_cont" v-if="currentStep === 'register'">
+  <h3>
+    Register
+  </h3>
 
-    <form @submit.prevent="handleUserRegister">
-      <CustomPhoneInput v-model="userAuthInput.phone_number" placeholder="Enter your phone number" />
-      <div class="pass_cont">
-        <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" :type="inputType"/>
-        <!-- <i class="fas fa-eye-slash"></i> -->
-        <span class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
-          <i class="fas fa-eye-slash" ></i>
-        </span>
+  <form @submit.prevent="handleUserRegister">
+    <CustomPhoneInput v-model="userAuthInput.phone_number" placeholder="Enter your phone number" />
+    <div class="pass_cont">
+      <CustomAuthInput v-model="userAuthInput.password" placeholder="Enter your password" :type="inputType"/>
+      <!-- <i class="fas fa-eye-slash"></i> -->
+      <span class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
+        <i class="fas fa-eye-slash" ></i>
+      </span>
 
-        <span class="btn" @click="showPassword = !showPassword" v-else-if="showPassword" >
-          <i class="fas fa-eye" ></i>
-        </span>
-      </div>
+      <span class="btn" @click="showPassword = !showPassword" v-else-if="showPassword" >
+        <i class="fas fa-eye" ></i>
+      </span>
+    </div>
 
-      <p>
-        Already have an account? <router-link  :to="{name: 'Login'}"> <span class="special"> Login </span></router-link>
-      </p>
+    <p>
+      Already have an account? <router-link  :to="{name: 'Login'}"> <span class="special"> Login </span></router-link>
+    </p>
 
-      <CustomLoginRegisterBtn  buttonText="Register" />
-    </form>
-  </div>
+    <CustomLoginRegisterBtn  buttonText="Register" :isSpin="buttonLoading"/>
+  </form>
+</div>
   <!-- its main /now it's not main-->
   <SendOtp :isRegistrationPage="true" :regPhone="userAuthInput.phone_number" v-else/> 
+  
 
   <!-- it's temporary / now it's main-->
-  <!-- <SubmitOtp v-else-if="currentStep"/>
-  <MainRegisterUser v-else /> -->
+  <!-- <SubmitOtp v-else-if="currentStep"/> -->
+  <!-- <MainRegisterUser />  -->
 
 </template>
 
@@ -52,8 +53,9 @@ export default {
   components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser, SubmitOtp },
   name: 'Register',
   setup() {
-    const router = useRouter()
+    const router = useRouter();
     const store = useStore();
+    const buttonLoading = ref(false)
     const user = computed(() => store.state.userState.user)
     const notificationsState = computed(() => store.state.notifications.notifications)
     const error = ref(null)
@@ -96,6 +98,7 @@ export default {
         // alert('User could not register');
         return;
       } 
+
       currentStep.value = 'sendOtp'
     }
 
@@ -114,14 +117,20 @@ export default {
       } 
       try {
 
-
+        buttonLoading.value = true
         await store.dispatch('userState/registerByPhonePass', {
           ...userAuthInput.value
         })
 
+      
+          buttonLoading.value = false
+
       } catch(err) {
         console.log(err.message);
         error.value = err.message;
+        setTimeout(() => {
+          buttonLoading.value = false
+        }, 1000);
       }
       
       
@@ -138,7 +147,8 @@ export default {
       notificationsState,
       toggleShow,
       showPassword,
-      inputType
+      inputType,
+      buttonLoading
     }
   }
 }
@@ -148,7 +158,7 @@ export default {
 @import '@/styles/config.scss';
 
 .login_cont {
-  height: calc(100vh - 125px);
+  // height: calc(100vh - 125px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

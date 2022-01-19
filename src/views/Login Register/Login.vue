@@ -26,7 +26,7 @@
         <!-- <span @click="handleForgotStep" class="special"> Forgot Password</span>
       </p> -->
 
-      <CustomLoginRegisterBtn  buttonText="Login" />
+      <CustomLoginRegisterBtn  buttonText="Login" :isSpin="buttonLoading"/>
     </form>
   </div>
     <SendOtp v-else/>
@@ -48,7 +48,8 @@ export default {
   name: 'Login',
   setup() {
     const store = useStore();
-    const router = useRouter()
+    const router = useRouter();
+    const buttonLoading = ref(false)
     // const user = computed(() => store.state.userState.user)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const profile = computed(() => store.state.userState.profile)
@@ -111,12 +112,19 @@ export default {
         return;
       } 
       try {
+        buttonLoading.value = true
         await store.dispatch('userState/userLogin', {
           ...userInputs.value
         })
+        
+        buttonLoading.value = false
+      
         router.push('/')
       } catch(err) {
         console.log(err.message);
+        setTimeout(() => {
+          buttonLoading.value = false
+        }, 1000);
         error.value = err.message;
       }
       
@@ -129,7 +137,8 @@ export default {
       currentStep,
       toggleShow,
       showPassword,
-      inputType
+      inputType,
+      buttonLoading
     }
   }
 }
@@ -138,7 +147,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/config.scss';
 .login_cont {
-  height: calc(100vh - 125px);
+  // height: calc(100vh - 125px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

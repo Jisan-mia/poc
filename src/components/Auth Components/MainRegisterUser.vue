@@ -39,7 +39,7 @@
       />
 
       <input placeholder="Institution*" v-model="userInputs.institution" type="text" class="input__field">
-      <button @click="handleRegisterNewUser" class="edit__btn">Register</button>
+      <CustomLoginRegisterBtn buttonText="Register" :isSpin="buttonLoading" @onClick="handleRegisterNewUser" />
 
     </div>
 
@@ -55,6 +55,7 @@ import ImgInputModel from '../ui/ImgInputModel.vue'
 import CustomSelect from '../ui/CustomSelect.vue'
 import { getNotification } from '../../api/common'
 import { useStore } from 'vuex'
+import CustomLoginRegisterBtn from '../ui/CustomLoginRegisterBtn.vue'
 export default {
   name: "MainRegisterUser",
   props: {
@@ -67,6 +68,7 @@ export default {
 
     const router = useRouter();
     const store = useStore();
+    const buttonLoading = ref(false)
     const userPhoneNum = computed(() => store.state.userState.user.phone_number)
     const imgFile = ref(null);
     const userInputs = ref({
@@ -136,12 +138,17 @@ export default {
       }
 
       try {
+        buttonLoading.value = true
         await store.dispatch('userState/registerStudent', {
           ...userInputs.value
         })
+        buttonLoading.value = false
         router.push('/dashboard')
       } 
       catch(err) {
+        setTimeout(() => {
+          buttonLoading.value = false
+        }, 1000);
         console.log(err)
       }
 
@@ -166,10 +173,11 @@ export default {
       boardOptions,
       selectStyle,
       handleIInput,
-      previewImage
+      previewImage,
+      buttonLoading
     };
   },
-  components: { ImgInputModel, CustomSelect }
+  components: { ImgInputModel, CustomSelect, CustomLoginRegisterBtn }
 }
 </script>
 
@@ -183,6 +191,10 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+
+  @include maxMedia(768px) {
+    margin-top: 300px;
+  }
 }
 h2{
   font-style: normal;

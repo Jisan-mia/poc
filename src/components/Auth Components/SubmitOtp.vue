@@ -4,7 +4,7 @@
     <form v-on:submit.prevent>
       <CustomAuthInput v-model="userOtpInput" placeholder="Enter OTP" />
 
-      <CustomLoginRegisterBtn @click="handleOtpSubmit" buttonText="Submit" />
+      <CustomLoginRegisterBtn :isSpin="buttonLoading" @click="handleOtpSubmit" buttonText="Submit" />
     </form>
   </div>
   <!-- <NewPassword v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
@@ -24,6 +24,10 @@ export default {
   name: 'submitOtp',
   props: {
     isRegistrationPage: {
+      type: Boolean,
+      default: () => false
+    },
+    buttonLoading: {
       type: Boolean,
       default: () => false
     }
