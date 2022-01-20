@@ -7,7 +7,7 @@
     <form  v-on:submit.prevent :class="isRegistrationPage && 'mt-4'">
       <CustomPhoneInput v-model="userPhoneNumber" placeholder="Enter your phone number" :disabled="isRegistrationPage" :readonly="isRegistrationPage" />
       <div class="recaptcha-container" id="recaptcha-container"></div>
-      <CustomLoginRegisterBtn :isSpin="buttonLoading" @click="handleSendOtp" buttonText="Send OTP" id="log-in"/>
+      <CustomLoginRegisterBtn :isSpin="buttonLoading" @click="handleSendOtp" buttonText="Click for OTP" id="log-in"/>
     </form>
   </div>
 
