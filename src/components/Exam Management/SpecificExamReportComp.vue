@@ -256,7 +256,7 @@ export default {
     const specificReports = computed(() => {
       if(phoneSearch.value || boardSelected.value || selectedFilter.value) {
         let specificReportsMain = ref(specificReportsState.value);
-        console.log(specificReportsMain.value)
+        // console.log(specificReportsMain.value)
         if(phoneSearch.value) {
            specificReportsMain.value = specificReportsMain.value.filter(report => {
             return phoneSearch.value.toLowerCase().split(' ').every(v => report.name.toLowerCase().includes(v)) 
@@ -276,7 +276,7 @@ export default {
               const day2 = dayjs(currentExam.value.Exam_end_date+b.timestamp).format('YYYY-MM-DD hh:mm:ss')
               const t1 = dayjs(day1).diff(now, 'second');
               const t2 = dayjs(day2).diff(now, 'second');
-              return t2 - t1
+              return t1 - t2
               // return b.timestamp - a.timestamp
             });
           }
