@@ -110,6 +110,12 @@
         <option value="dhaka">Dhaka</option>
         <option value="chittagong">Chittagong</option>
         <option value="sylhet">Sylhet</option>
+        <option value="comilla">Comilla</option>
+        <option value="mymensingh">Mymensingh</option>
+        <option value="rajshahi">Rajshahi</option>
+        <option value="rangpur">Rangpur</option>
+        <option value="barisal">Barisal</option>
+
       </select>
     </div>
   </header>
@@ -152,6 +158,7 @@
       
 
       <tr class="main_row" v-for="report in specificReports" :key="report.id">
+        <!-- {{JSON.stringify(report)}} -->
         <td> 
           <span>
             {{report.mainRank}}
@@ -160,7 +167,7 @@
         <td>
           <div class="student__info">
             <div class="img__container">
-              <img :src="imageUrl(report.Profile_image)" alt="">
+              <img :src="report.Profile_image ? imageUrl(report.Profile_image) : '/images/placeholderImg2.svg'" alt="">
             </div>
             <div class="info">
               <h4> {{report.name}} </h4>
@@ -181,7 +188,7 @@
         </td>
         <td>
           <span>
-            {{`${report.score}/${100}`}}
+            {{`${report.score}/${currentExam.total_mark}`}}
           </span>
         </td>
         <td>
@@ -213,6 +220,7 @@ export default {
     const examPacks = computed(() => store.state.examPackState.examPacks);
     const examLists = computed(() => store.state.reportingState.reportings);
     const specificReportsStateM = computed(() => store.state.reportingState.specificReportings);
+
     
     const specificReportsState = computed(() => {
       const main = ref([...specificReportsStateM.value])
@@ -248,6 +256,7 @@ export default {
     const specificReports = computed(() => {
       if(phoneSearch.value || boardSelected.value || selectedFilter.value) {
         let specificReportsMain = ref(specificReportsState.value);
+        console.log(specificReportsMain.value)
         if(phoneSearch.value) {
            specificReportsMain.value = specificReportsMain.value.filter(report => {
             return phoneSearch.value.toLowerCase().split(' ').every(v => report.name.toLowerCase().includes(v)) 
@@ -260,7 +269,16 @@ export default {
           } else if(selectedFilter.value === 'lowToHigh') {
             specificReportsMain.value.sort((a, b) => a.score - b.score)
           } else if(selectedFilter.value === 'timestamp') {
-            specificReportsMain.value.sort((a, b) => b.timestamp - a.timestamp);
+            specificReportsMain.value.sort((a, b) => {
+	            const now = dayjs().format('YYYY-MM-DD hh:mm:ss');
+
+              const day1 = dayjs(currentExam.value.Exam_end_date+a.timestamp).format('YYYY-MM-DD hh:mm:ss')
+              const day2 = dayjs(currentExam.value.Exam_end_date+b.timestamp).format('YYYY-MM-DD hh:mm:ss')
+              const t1 = dayjs(day1).diff(now, 'second');
+              const t2 = dayjs(day2).diff(now, 'second');
+              return t2 - t1
+              // return b.timestamp - a.timestamp
+            });
           }
         }
         if(boardSelected.value) {
@@ -321,7 +339,7 @@ export default {
 
     const timeStampF = computed(() => (time)=>  {
       const fullDate =  dayjs(currentExam.value.Exam_end_date+time).format('YYYY-MM-DD hh:mm:ss A');
-      console.log(fullDate)
+      // console.log(fullDate)
       return dayjs(fullDate).format("hh:mm:ss A")
     })
     // console.log(timeStampF.value)
@@ -337,6 +355,7 @@ export default {
     const dayNum = computed(() => dayjs(endDate.value).day());
    
     const dayName = days.value[dayNum.value];
+
     
     
     return {
@@ -429,8 +448,10 @@ table {
     gap: 0.9rem;
     .img__container{
       height: 42px;
+      min-width: 42px;
       width: 42px;
       border-radius: 50%;
+      background-color: #cdcdcd;
       img{
         width:100%;
         height: 100%;
