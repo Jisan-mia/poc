@@ -92,6 +92,7 @@ export default {
         const router = useRouter();
         const store = useStore();
         const windowWidth = ref(window.innerWidth)
+        console.log('unpack')
 
         onMounted(() => {
           windowWidth.value = window.innerWidth

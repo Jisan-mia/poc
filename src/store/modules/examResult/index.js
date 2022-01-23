@@ -33,7 +33,7 @@ const actions = {
       const getMainAllAns = () => {
         const isItThere = mainAns.find(ans => ans.Question == option.Question && ans.qName == option.qName)
         if(isItThere) {
-          const findIndex = mainAns.findIndex(ans => ans.Question == option.Question)
+          const findIndex = mainAns.findIndex(ans => ans.Question == option.Question  && ans.qName == option.qName)
           mainAns.splice( findIndex,1,option)
         } else {
           mainAns.splice(mainAns.length, 0, option)
@@ -52,38 +52,40 @@ const actions = {
   handleScoreCalculation(context) {
     const allSelectedAns = context.state.allSelectedAns;
     const examQuestions = context.rootState.examPackState.examQuestions;
-    // console.log(allSelectedAns)
+    console.log(allSelectedAns)
     if(allSelectedAns.length !== 0 && examQuestions.length !== 0) {
       const { mark_per_question, amount_per_mistake, isNegativeMarking} = examQuestions[0];
-      //console.log(mark_per_question, amount_per_mistake, isNegativeMarking)
+      // console.log(mark_per_question, amount_per_mistake, isNegativeMarking, 199)
+      // console.log( typeof mark_per_question,typeof amount_per_mistake,typeof isNegativeMarking, 199)
+
 
       let total = 0;
       let totalNegativeMark = 0;
       if(isNegativeMarking) {
         const scoring = allSelectedAns.map(ans => {
-          return ans.is_correct ? mark_per_question : -amount_per_mistake
+          return ans.is_correct ? +mark_per_question : -amount_per_mistake
         })
         totalNegativeMark = scoring.filter(s => s < 0).reduce((acc, negMark) => acc + negMark, 0);
         
 
         const scoring1 = allSelectedAns.map(ans => {
-          return ans.is_correct ? mark_per_question : 0
+          return ans.is_correct ? +mark_per_question : 0
         })
-
+        
         total = scoring1.reduce((acc, score) => acc + score, 0)
 
       } else {
         const scoring = allSelectedAns.map(ans => {
-          return ans.is_correct ? mark_per_question : 0
+          return ans.is_correct ? +mark_per_question : 0
         })
         total = scoring.reduce((acc, score) => acc + score, 0)
       }
 
-
+      // console.log(total)
       context.commit('scoreCalculate', total)
       context.commit('negativeMarkCalculation', totalNegativeMark)
-      // console.log({total})
-      // console.log({totalNegativeMark})
+      console.log({total})
+      console.log({totalNegativeMark})
     }
   },
 

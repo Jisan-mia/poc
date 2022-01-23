@@ -84,6 +84,7 @@ export default {
 
     @include maxMedia(768px) {
       margin-left: 0rem;
+      margin-top: 50px;
     }
 	
 }

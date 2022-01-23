@@ -213,7 +213,7 @@ export default {
   @include flexVertical;
   justify-content: center;
   align-items: flex-start;
-  gap: 2.2rem;
+  gap: 1.5rem;
 }
 .statsProfile_common {
   width: 100%;

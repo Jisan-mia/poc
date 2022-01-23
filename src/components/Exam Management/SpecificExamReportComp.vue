@@ -77,10 +77,11 @@
           </div>
 
           <div class="view__btn">
-            <CustomAdminBtn type="warning" :style="{
+            <CustomAdminBtn type="gradient" :style="{
               fontSize: '12px',
               fonWeight: '400',
-              padding: '7px 10px'
+              padding: '7px 10px',
+              borderRadius: '3px'
             }">
               View Answer Sheet
             </CustomAdminBtn>

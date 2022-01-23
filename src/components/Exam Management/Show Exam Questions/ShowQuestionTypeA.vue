@@ -17,7 +17,7 @@
           v-for="option in examQuestion.options" 
           :key="option.ans" 
           :option="option.ans"
-          :name="examQuestion.question_name"
+          :name="option.qName"
           v-model="selectedOption"
         />
       </div>
