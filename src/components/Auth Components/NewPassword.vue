@@ -2,8 +2,26 @@
   <div class="otp_cont">
 
     <form v-on:submit.prevent>
-      <CustomAuthInput v-model="newPassObj.newPass" placeholder="Enter new password" />
-      <CustomAuthInput v-model="newPassObj.confirmPass" placeholder="Confirm password" />
+      <div class="cont">
+        <CustomAuthInput v-model="newPassObj.newPass" placeholder="Enter new password" :type="inputType"/>
+        <span class="btn" @click="showPassword = !showPassword" v-if="!showPassword" >
+          <i class="fas fa-eye-slash" ></i>
+        </span>
+
+        <span class="btn" @click="showPassword = !showPassword" v-else-if="showPassword"  >
+          <i class="fas fa-eye" ></i>
+        </span>
+      </div>
+      <div class="cont">
+        <CustomAuthInput v-model="newPassObj.confirmPass" placeholder="Confirm password" :type="inputType1" />
+        <span class="btn" @click=" showPassword1 = !showPassword1" v-if="!showPassword1" >
+          <i class="fas fa-eye-slash" ></i>
+        </span>
+
+        <span class="btn" @click="showPassword1 = !showPassword1" v-else-if="showPassword1"  >
+          <i class="fas fa-eye" ></i>
+        </span>
+      </div>
 
       <CustomLoginRegisterBtn :isSpin="buttonLoading"  @click="handleNewPasswordSubmit" buttonText="Submit" />
     </form>
@@ -11,7 +29,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
 import CustomLoginRegisterBtn from '../../components/ui/CustomLoginRegisterBtn.vue'
 import CustomAuthInput from './CustomAuthInput.vue'
 import { useStore } from 'vuex'
@@ -28,11 +46,17 @@ export default {
     const store = useStore();
     const router = useRouter();
     const buttonLoading = ref(false);
+    const showPassword = ref(false)
+    const showPassword1 = ref(false)
     // const phone_number = props.phone_number;
     const newPassObj = ref({
       newPass: '',
       confirmPass: ''
     })
+
+    const inputType = computed(() => showPassword.value ? "text" : "password")
+    const inputType1 = computed(() => showPassword1.value ? "text" : "password")
+
 
     const currentStep = ref('otp')
     const handleNewPasswordSubmit = async () => {
@@ -53,10 +77,10 @@ export default {
         })
 
         setTimeout(() => {
-          buttonLoading.value = false
-          
-          router.push('/login')
+          buttonLoading.value = false;
+          router.go();
         }, 1000);
+
 
       }catch(err) {
         console.log(err);
@@ -70,7 +94,11 @@ export default {
       newPassObj,
       handleNewPasswordSubmit,
       currentStep,
-      buttonLoading
+      buttonLoading,
+      showPassword,
+      showPassword1,
+      inputType,
+      inputType1
     }
   }
 }
@@ -105,5 +133,25 @@ export default {
   }
 }
 
+.cont{
+  position: relative;
+  input {
+    width: 90% !important;
+  }
+
+  .btn {
+    border: none;
+    outline: none;
+    position: absolute;
+    top: 38%;
+    right: 4%;
+    border: 0;
+    z-index: 2;
+    cursor: pointer;
+    background-color: #fff;
+    width: 30px;
+  }
+
+  }
 
 </style>

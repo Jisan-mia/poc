@@ -160,8 +160,6 @@ export default {
 
     // console.log(imageUrl.value, profile.value) http://www.exam.poc.ac
 
-
-
     const completedExams = computed(() => store.state.reportingState.reportings.length)
     // const completedExams = ref(0);
     const averageMark = ref(0);

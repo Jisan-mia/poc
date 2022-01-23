@@ -138,8 +138,6 @@ export default {
               
             }
 
-
-            
             
             const routeData = router.resolve({
               name: 'ExamPage',
