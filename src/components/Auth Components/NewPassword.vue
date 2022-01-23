@@ -5,7 +5,7 @@
       <CustomAuthInput v-model="newPassObj.newPass" placeholder="Enter new password" />
       <CustomAuthInput v-model="newPassObj.confirmPass" placeholder="Confirm password" />
 
-      <CustomLoginRegisterBtn @click="handleNewPasswordSubmit" buttonText="Submit" />
+      <CustomLoginRegisterBtn :isSpin="buttonLoading"  @click="handleNewPasswordSubmit" buttonText="Submit" />
     </form>
   </div>
 </template>
@@ -19,9 +19,16 @@ import { useRouter } from 'vue-router'
 export default {
   components: {  CustomLoginRegisterBtn, CustomAuthInput },
   name: 'NewPassword',
-  setup() {
+  props: {
+    phone_number: {
+      type: [Number, String]
+    }
+  },
+  setup(props,ctx) {
     const store = useStore();
     const router = useRouter();
+    const buttonLoading = ref(false);
+    // const phone_number = props.phone_number;
     const newPassObj = ref({
       newPass: '',
       confirmPass: ''
@@ -29,7 +36,7 @@ export default {
 
     const currentStep = ref('otp')
     const handleNewPasswordSubmit = async () => {
-      console.log('handleNewPasswordSubmit btn clicked')
+      // console.log('handleNewPasswordSubmit btn clicked')
       if(newPassObj.value.newPass.length < 5 || newPassObj.value.confirmPass.length < 5) {
         store.dispatch('notifications/add', {type: 'warning', message: 'Password must be at least 5 character'})
         return;
@@ -37,20 +44,33 @@ export default {
         store.dispatch('notifications/add', {type: 'warning', message: 'Password does not match'})
         return
       }
+      buttonLoading.value = true;
+      
+      try{
+        await store.dispatch('userState/setNewPassword', {
+          phone_number: props.phone_number,
+          password: newPassObj.value.newPass
+        })
 
-      // try{
-      //   await store.dispatch('userState/setNewPassword')
-      //   router.push('/login')
+        setTimeout(() => {
+          buttonLoading.value = false
+          
+          router.push('/login')
+        }, 1000);
 
-      // }catch(err) {
-      //   console.log(err)
-      // }
+      }catch(err) {
+        console.log(err);
+        setTimeout(() => {
+          buttonLoading.value = false;
+        }, 1000);
+      }
     }
 
     return {
       newPassObj,
       handleNewPasswordSubmit,
-      currentStep
+      currentStep,
+      buttonLoading
     }
   }
 }

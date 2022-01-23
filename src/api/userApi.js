@@ -125,15 +125,21 @@ const updateUserProfile = async (data) => {
 }
 
 const setNewPassword = async (data) => {
+
+  const getFormData = object => Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+  }, new FormData());
+
+
   try{
     const res = await axios({
       method: 'POST',
-      url: `https://www.exam.poc.ac/api/change-password`,
-      data: data,
-      // headers: {
-		  //   'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      //   'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
-      //  }
+      url: `https://www.exam.poc.ac/api/password_change/`,
+      data: getFormData(data),
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+       }
     });
 
     if(res.data.code !== 200) {

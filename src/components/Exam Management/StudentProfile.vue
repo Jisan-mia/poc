@@ -156,9 +156,9 @@ export default {
 
     const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 1)))
 
-    const imageUrl = computed(() => (img) => img.includes('https://www.exam.poc.ac') ? img : `https://www.exam.poc.ac${img}`)
+    const imageUrl = computed(() => (img) => img.includes('https://www.exam.poc.ac') || img.includes('http://www.exam.poc.ac')  ? img : `https://www.exam.poc.ac${img}`)
 
-    // console.log(imageUrl.value, profile.value)
+    // console.log(imageUrl.value, profile.value) http://www.exam.poc.ac
 
 
 

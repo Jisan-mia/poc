@@ -13,7 +13,7 @@
 
   <SubmitOtp :buttonLoading="buttonLoading" :isRegistrationPage="isRegistrationPage" @verifyOtp="verifyOtpCode" v-else-if="currentStep == 'submitOtp'" />
   <MainRegisterUser :isRegistrationPage="isRegistrationPage" v-else-if="currentStep == 'mainRegister'" />
-  <NewPassword v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
+  <NewPassword :phone_number="userPhoneNumber" v-else-if="!isRegistrationPage && currentStep == 'newPass' " />
 
 
 </template>
@@ -31,6 +31,7 @@ import NewPassword from './NewPassword.vue'
 import MainRegisterUser from './MainRegisterUser.vue'
 import { useStore } from 'vuex'
 import { getNotification } from '../../api/common'
+import { userMutationTypes } from '../../store/modules/user/user.mutationTypes'
 
 export default {
   components: { CustomPhoneInput, CustomLoginRegisterBtn, SubmitOtp, NewPassword, MainRegisterUser },
@@ -132,13 +133,9 @@ export default {
       if(data) {
         try{
           await store.dispatch('userState/userLogin', data)
-          if(props.isRegistrationPage) {
-            currentStep.value  = 'mainRegister'
-            buttonLoading.value = false;
+          currentStep.value  = 'mainRegister'
+          buttonLoading.value = false;
 
-          } else {
-            currentStep.value  = 'newPass'
-          }
         } catch(err) {
           setTimeout(() => {
           buttonLoading.value = false
@@ -156,9 +153,14 @@ export default {
       confirmResult.value.confirm(code).then((result) => {
         // User signed in successfully.
         const user = result.user;
-        console.log(user)
+        console.log(user);
+
+        if(props.isRegistrationPage) {
+          handleLogin();
+        } else {
+          currentStep.value  = 'newPass'
+        }
         
-        handleLogin();
 
       
         

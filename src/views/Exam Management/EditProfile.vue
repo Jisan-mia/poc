@@ -93,12 +93,12 @@ export default {
       institution: profileFields.value.institution,
       level: profileFields.value.level,
       name: profileFields.value.name,
-  });
+    });
     const imageUrl = computed(() => (img) => {
       // console.log(img)
       if(typeof img === 'string') {
         // console.log(img)
-        if(img.includes("https://www.exam.poc.ac")) {
+        if(img.includes("https://www.exam.poc.ac") || img.includes("http://www.exam.poc.ac")) {
           return img
         } else {
           return `https://www.exam.poc.ac${img}`

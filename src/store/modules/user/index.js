@@ -179,7 +179,8 @@ const actions = {
 
   async setNewPassword(context, payload){
     const res = await userApi.setNewPassword(payload)
-    if(res.data) {
+    const resCode = await res.code;
+    if(resCode == 200) {
       context.dispatch('notifications/add', {type: 'success', message: 'Successfully Password Changed'} , {root: true})
     } else {
       const notification = {
