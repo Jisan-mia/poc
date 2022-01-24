@@ -68,6 +68,10 @@ const actions = {
     const data = await res.data;
 
     if(data) {
+      if(data.length === 0) {
+        context.commit(reportingMutationsTypes.LOAD_SPECIFIC_REPORTING, []);
+        return;
+      }
       const specificReportsData = data;
       const allStudentList = context.rootState.userState.allStudentList;
       

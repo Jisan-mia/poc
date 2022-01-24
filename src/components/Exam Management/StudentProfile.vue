@@ -39,9 +39,9 @@
 
       <div class="stats__cards">
         <DashboardStatsCountCard label="Completed Exams" :value="`${completedExams}`"/>
-        <DashboardStatsCountCard label="Average Mark" :value="`${averageMark}%`"/>
-        <DashboardStatsCountCard label="Passed" :value="`${passedPercentage}%`"/>
-        <DashboardStatsCountCard label="Failed" :value="`${failedPercentage}%`"/>
+        <DashboardStatsCountCard label="Average Mark" :value="`${Math.round(averageMark*100)/100}%`"/>
+        <DashboardStatsCountCard label="Passed" :value="`${Math.round(passedPercentage*100)/100}%`"/>
+        <DashboardStatsCountCard label="Failed" :value="`${Math.round(failedPercentage*100)/100}%`"/>
       </div>
     </div>
     <div class="detail">
@@ -154,30 +154,36 @@ export default {
     const upcomingExams = computed(() => filterUpcoming.value.slice(Math.max(filterUpcoming.value.length-2, 1))) 
     //console.log(upcomingExams.value)
 
-    const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 1)))
+    const previousExam = computed(() => previousExamReport.value.slice(Math.max(previousExamReport.value.length-3, 0)))
 
     const imageUrl = computed(() => (img) => img.includes('https://www.exam.poc.ac') || img.includes('http://www.exam.poc.ac')  ? img : `https://www.exam.poc.ac${img}`)
 
     // console.log(imageUrl.value, profile.value) http://www.exam.poc.ac
 
-    const completedExams = computed(() => store.state.reportingState.reportings.length)
+    const completedExams = computed(() => previousExamReport.value.length)
     // const completedExams = ref(0);
-    const averageMark = ref(0);
-    const passedPercentage = ref(0);
-    const failedPercentage = ref(0);
-
-    const upcomingExamsD = ref([
-      {
-        id: 1,
-        examName: 'Chemistry 1st Paper',
-        date: '10:30 AM | Sunday, 19/10/2021'
-      },
-      {
-        id: 2,
-        examName: 'Chemistry 1st Paper',
-        date: '10:30 AM | Sunday, 19/10/2021'
+    const averageMark = computed(() => {
+      if(previousExamReport.value.length === 0) {
+        return 0;
       }
-    ])
+      const allAverages = previousExamReport.value.map(report => {
+        return (Number(report.score)/Number(report.total_mark)) * 100
+      })
+      return allAverages.reduce((acc, currentAverage) => acc + currentAverage, 0) / allAverages.length;
+    });
+
+    const passedPercentage = computed(() => {
+      if(previousExamReport.value.length === 0) {
+        return 0;
+      }
+      const passed = previousExamReport.value.filter(report => report.score >= report.pass_mark).length || 0;
+      return (passed/previousExamReport.value.length) * 100
+    }) 
+
+    const failedPercentage = computed(() => {
+      return 100 - passedPercentage.value 
+    });
+
     const handleClickUpcomingExam = (exam) => {
       // //console.log(exam)
     }
