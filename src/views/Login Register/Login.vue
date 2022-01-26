@@ -29,7 +29,8 @@
       <CustomLoginRegisterBtn  buttonText="Login" :isSpin="buttonLoading"/>
     </form>
   </div>
-    <SendOtp v-else/>
+    <SendOtp v-else-if="currentStep == 'sendOtp'"/>
+    <SendOtp v-else-if="currentStep == 'registered'" :isRegistrationPage="true" :regPhone="userInputs.phone_number" />
 </template>
 
 <script>
@@ -53,6 +54,7 @@ export default {
     // const user = computed(() => store.state.userState.user)
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const profile = computed(() => store.state.userState.profile)
+    
     // console.log(profile.value)
 
 
@@ -64,13 +66,12 @@ export default {
     }
 
     const inputType = computed(() => showPassword.value ? "text" : "password")
-
-   
+    
+    
     watchEffect(async () => {
       if(isAuthenticated.value) {
         try{
           await store.dispatch('userState/loadUserProfile');
-          console.log(profile.value)
           if(profile.value) {
             router.push('/dashboard')
           }
@@ -85,7 +86,10 @@ export default {
       phone_number: '',
       password: ''
     })
-    const loginSteps = ref(['login', 'sendOtp']);
+    const loginSteps = ref(['login', 'sendOtp', 'registered']); 
+    // add one more step... if user registered but not completed profile... 
+    // same register flow will be shown..
+    
     const currentStep = ref('login')
 
     const handleForgotStep = () => {
@@ -116,10 +120,17 @@ export default {
         await store.dispatch('userState/userLogin', {
           ...userInputs.value
         })
-        
+        await store.dispatch('userState/loadUserProfile');
+
         buttonLoading.value = false
-      
-        router.push('/')
+
+        if(profile.value) {
+          router.push('/')
+
+        } else {
+          currentStep.value  = 'registered'
+        }
+
       } catch(err) {
         console.log(err.message);
         setTimeout(() => {
@@ -129,6 +140,8 @@ export default {
       }
       
     }
+
+    
     
     return {
       userInputs,

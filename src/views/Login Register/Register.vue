@@ -123,7 +123,7 @@ export default {
         })
 
       
-          buttonLoading.value = false
+        buttonLoading.value = false
 
       } catch(err) {
         console.log(err.message);

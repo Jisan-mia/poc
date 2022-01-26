@@ -15,20 +15,21 @@ export default {
     console.log(profile.value)
     
     const handleLogout = async () => {
+      // try {
+      //   const res = axios.get('https://www.exam.poc.ac/api/LogOut/',
+      //   {
+      //     headers: `Bearer ${localStorage.getItem('token')}`
+      //   })
+
+      // } catch(err){
+      //   console.log(err)
+      // }
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
       store.commit('userState/initializeStore')
       router.push('/logout')
       
-      try {
-        const res = axios.get('https://www.exam.poc.ac/api/LogOut/',
-        {
-          headers: `Bearer ${localStorage.getItem('token')}`
-        })
-
-      } catch(err){
-        console.log(err)
-      }
+      
     }
 
     

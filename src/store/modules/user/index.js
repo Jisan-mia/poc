@@ -57,6 +57,10 @@ const mutations = {
   [userMutationTypes.SET_USER](state, payload) {
     state.user = {...state.user, ...payload }
     //console.log(state)
+  },
+  setUserPhonePass(state, payload) {
+    state.user.phone_number = payload.phone_number;
+    state.user.password = payload.password;
   }
 }
 
@@ -102,7 +106,11 @@ const actions = {
       localStorage.setItem('userId', userId)
       context.commit('setToken', token);
       context.commit('setUserId', userId);
-
+      
+      context.commit('setUserPhonePass', payload);
+      
+      // dispatching loadProfile actions
+      
 
     } else {
       const notification = {
@@ -132,6 +140,7 @@ const actions = {
       throw new Error('Error registering user profile')
     }
   },
+
   async loadUserProfile(context) {
     const res = await userApi.getAllStudentList();
     // console.log(res)
