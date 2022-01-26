@@ -46,7 +46,7 @@
     </div>
     <div class="detail">
       <h3 vi>Previous Exam</h3>
-      <p v-if="previousExam.length === 0">You didn't take any exam yet</p>
+      <p v-if="previousExam.length === 0">No exams to show</p>
       <table v-if="previousExam.length !== 0">
       <tbody>
         <tr>
@@ -137,9 +137,15 @@ export default {
   setup() {
     const store = useStore();
     const profile = computed(() => store.state.userState.profile);
-    const previousExamReport = computed(() => store.state.reportingState.reportings);
+    const previousExamReportD = computed(() => store.state.reportingState.reportings);
     const examLists = computed(() => store.state.examPackState.examLists);
-    //console.log(examLists.value)
+
+    const previousExamReport = computed(() => previousExamReportD.value.filter(r => {
+      return r.isExpired === true
+    }))
+
+    // console.log(previousExamReport.value);
+    
     
     const now = dayjs().format('YYYY-MM-DD hh:mm:ss A');
 
@@ -181,7 +187,7 @@ export default {
     }) 
 
     const failedPercentage = computed(() => {
-      return 100 - passedPercentage.value 
+      return previousExamReport.value.length === 0 ? 0 : 100 - passedPercentage.value 
     });
 
     const handleClickUpcomingExam = (exam) => {
