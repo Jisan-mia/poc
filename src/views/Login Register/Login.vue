@@ -31,8 +31,8 @@
   </div>
     <SendOtp v-else-if="currentStep == 'sendOtp'"/>
     <!-- currently not using firebase to register user  -->
-    <SendOtp v-else-if="currentStep == 'registered'" :isRegistrationPage="true" :regPhone="userInputs.phone_number" />
-    <!-- <MainRegisterUser v-else-if="currentStep == 'registered'"/> -->
+    <!-- <SendOtp v-else-if="currentStep == 'registered'" :isRegistrationPage="true" :regPhone="userInputs.phone_number" /> -->
+    <MainRegisterUser v-else-if="currentStep == 'registered'"/>
 </template>
 
 <script>
