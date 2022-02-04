@@ -104,7 +104,7 @@
 
           <td class="scores">
             <span>
-              {{exam.negative_marking}}
+              {{Math.round(exam.negative_marking*100)/100}}
             </span>
           </td>
 

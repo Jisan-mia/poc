@@ -78,7 +78,7 @@
         </td>
         <td class="average">
           <span>
-            {{report.isExpired ? report.negative_marking : 'Pending'}}
+            {{report.isExpired ? Math.round(report.negative_marking*100)/100 : 'Pending'}}
           </span>
         </td>
         <td class="average">
