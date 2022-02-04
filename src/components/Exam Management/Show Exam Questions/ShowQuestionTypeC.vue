@@ -14,8 +14,8 @@
     </div>
     <div class="question" v-for="examQuestion in examQuestionC.otherQuestions" :key="examQuestion">
 
-      <ShowQuestionTypeA v-if="examQuestion.type == 'data_one'" :examQuestion="examQuestion" :index="indexC+1"/>
-      <ShowQuestionTypeB v-if="examQuestion.type == 'data_two'" :examQuestion="examQuestion" :index="indexC+2"  />
+      <ShowQuestionTypeA v-if="examQuestion.type == 'data_one'" :examQuestion="examQuestion" :index="examQuestion.index"/>
+      <ShowQuestionTypeB v-if="examQuestion.type == 'data_two'" :examQuestion="examQuestion" :index="examQuestion.index"  />
 
     </div>
   </div>

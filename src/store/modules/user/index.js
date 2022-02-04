@@ -72,11 +72,12 @@ const actions = {
     if(data) {
       context.commit(userMutationTypes.SET_USER , data)
       
-      // try{
-      //   await context.dispatch('userLogin', data)
-      // } catch(err) {
-      //   throw Error(err);
-      // }
+      //uncommenting this because we are not using firebase now
+      try{
+        await context.dispatch('userLogin', data)
+      } catch(err) {
+        throw Error(err);
+      }
     } else {
       context.commit(userMutationTypes.SET_USER , {
         phone_number: '',

@@ -223,7 +223,7 @@ const actions = {
           const mainOptions = q.options.map(op => {
             return {
               ...op,
-              qName: question.uuid
+              qName: q.uuid
             }
           })
           return {
@@ -240,7 +240,7 @@ const actions = {
 
         allQuestionThree.push(mainQuestionThree);
       }
-
+      
       for(let key in question_data) {
         for(let i in question_data[key]) {
           if(key !== "data_three") {
@@ -282,8 +282,9 @@ const actions = {
       const allQuestionWithOptions =await Promise.all(allQuestion.map(setQuestionOption))
       const allMainQWithOptions = [...allQuestionWithOptions, ...allQuestionThree]
 
-      const finalQuestions = isRandomized ? shuffleArray(allMainQWithOptions) : [...allMainQWithOptions]
-
+      let finalQuestions = isRandomized ? shuffleArray(allMainQWithOptions) : [...allMainQWithOptions]
+      
+      
       context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, finalQuestions)
     } else {
       const notification = {

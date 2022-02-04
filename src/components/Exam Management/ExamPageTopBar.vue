@@ -113,7 +113,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  // margin-bottom: 2rem;
   
   @include maxMedia(768px) {
     padding: 1rem;

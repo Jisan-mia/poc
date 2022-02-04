@@ -1,9 +1,9 @@
 <template>
   <div class="question__container">
-    <div class="question__card" v-for="(examQuestion, index) in examAllQuestions" :key="examQuestion.id">
-      <ShowQuestionTypeA :examQuestion="examQuestion" :index="index+1"  v-if="examQuestion.type == 'data_one'"/>
-      <ShowQuestionTypeB :examQuestion="examQuestion" :index="index+1" v-else-if="examQuestion.type == 'data_two'" />
-      <ShowQuestionTypeC :examQuestionC="examQuestion" :indexC="index+1" v-else />
+    <div class="question__card" v-for="(examQuestion) in examAllQuestions" :key="examQuestion.id">
+      <ShowQuestionTypeA :examQuestion="examQuestion" :index="examQuestion.index"  v-if="examQuestion.type == 'data_one'"/>
+      <ShowQuestionTypeB :examQuestion="examQuestion" :index="examQuestion.index" v-else-if="examQuestion.type == 'data_two'" />
+      <ShowQuestionTypeC :examQuestionC="examQuestion" :indexC="examQuestion.index" v-else />
     </div>
   </div>
 </template>
@@ -19,8 +19,31 @@ export default {
   setup() {
     const store = useStore();
 
-    const examAllQuestions = computed(() => store.state.examPackState.examQuestions)
+    const examAllQuestionsDe = computed(() => store.state.examPackState.examQuestions)
     //console.log(examAllQuestions.value)
+    let i = 0;
+    const examAllQuestions = computed(() =>examAllQuestionsDe.value.map((q, ind) => {
+      i++
+      
+      if(q.type != 'data_three') {
+        return {
+          ...q,
+          index: i
+        }
+      } else {
+        const q3 = {...q, index:i}
+        const otherQ = q3.otherQuestions.map((oq, oi) => {
+          const mainOq = {...oq,index: i++}
+          
+          return mainOq
+        })
+        i--
+        return {
+          ...q3,
+          otherQuestions: [...otherQ]
+        }
+      }
+    }))
 
     const examAllQuestionsD = ref([
     {

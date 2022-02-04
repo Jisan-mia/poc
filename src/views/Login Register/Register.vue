@@ -25,13 +25,10 @@
     <CustomLoginRegisterBtn  buttonText="Register" :isSpin="buttonLoading"/>
   </form>
 </div>
-  <!-- its main /now it's not main-->
-  <SendOtp :isRegistrationPage="true" :regPhone="userAuthInput.phone_number" v-else/> 
-  
+  <!--now were are not using firebase-->
+  <!-- <SendOtp :isRegistrationPage="true" :regPhone="userAuthInput.phone_number" v-else/>  -->
 
-  <!-- it's temporary / now it's main-->
-  <!-- <SubmitOtp v-else-if="currentStep"/> -->
-  <!-- <MainRegisterUser />  -->
+  <MainRegisterUser v-else /> 
 
 </template>
 
