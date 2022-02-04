@@ -30,7 +30,9 @@
     </form>
   </div>
     <SendOtp v-else-if="currentStep == 'sendOtp'"/>
+    <!-- currently not using firebase to register user  -->
     <SendOtp v-else-if="currentStep == 'registered'" :isRegistrationPage="true" :regPhone="userInputs.phone_number" />
+    <!-- <MainRegisterUser v-else-if="currentStep == 'registered'"/> -->
 </template>
 
 <script>
@@ -43,9 +45,10 @@ import { useStore } from 'vuex'
 import { getNotification } from '../../api/common'
 import { watchEffect } from '@vue/runtime-core'
 import { useRouter } from 'vue-router'
+import MainRegisterUser from '../../components/Auth Components/MainRegisterUser.vue'
 
 export default {
-  components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp },
+  components: { CustomAuthInput, CustomPhoneInput, CustomLoginRegisterBtn, SendOtp, MainRegisterUser },
   name: 'Login',
   setup() {
     const store = useStore();

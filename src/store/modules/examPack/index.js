@@ -153,6 +153,9 @@ const actions = {
               question_name: question.question_name,
               exam_pack,
               exam_name,
+              mark_per_question,
+              isNegativeMarking,
+              amount_per_mistake,
               options: [
                 {
                   Question: question.question_name,
@@ -185,6 +188,9 @@ const actions = {
               data_one: question.sample_one,
               data_two: question.sample_two ,
               data_three: question.sample_three,
+              mark_per_question,
+              isNegativeMarking,
+              amount_per_mistake,
               options: [
                 {
                   Question: question.question_name_two,
