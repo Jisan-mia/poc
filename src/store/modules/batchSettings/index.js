@@ -28,9 +28,9 @@ const actions = {
       const levels = data.filter(item => item.level)
       const boards = data.filter(item => item.board)
 
-      const batchMain = batches.map(item => b.batch)
-      const levelMain = batches.map(item => b.level)
-      const boardMain = batches.map(item => b.board)
+      const batchMain = batches.map(item => item.batch)
+      const levelMain = levels.map(item => item.level)
+      const boardMain = boards.map(item => item.board)
 
       
       context.commit('setBatchOptions', batchMain)
@@ -39,6 +39,7 @@ const actions = {
     }
     
   },
+}
   
 export const batchSettings = {
   namespaced: true,

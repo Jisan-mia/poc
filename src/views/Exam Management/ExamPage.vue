@@ -156,7 +156,7 @@ document.addEventListener('contextmenu', function (e) {
 @import "@/styles/config.scss";
 
 .main__container {
-  padding: 2.8rem 2rem;
+  padding: 2.4rem 2rem;
   max-width: 1000px;
   margin: 0 auto;
 

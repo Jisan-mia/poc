@@ -3,7 +3,7 @@
     <div class="question__card" v-for="(examQuestion, index) in examAllQuestions" :key="examQuestion.id">
       <ShowQuestionTypeA :examQuestion="examQuestion" :index="index+1"  v-if="examQuestion.type == 'data_one'"/>
       <ShowQuestionTypeB :examQuestion="examQuestion" :index="index+1" v-else-if="examQuestion.type == 'data_two'" />
-      <!-- <ShowQuestionTypeC :examQuestionC="examQuestion" v-else /> -->
+      <ShowQuestionTypeC :examQuestionC="examQuestion" :indexC="index+1" v-else />
     </div>
   </div>
 </template>

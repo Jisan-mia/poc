@@ -6,6 +6,7 @@ import { notifications } from './modules/notifications'
 import { examPack } from './modules/examPack'
 import { reporting } from './modules/reporting'
 import {examResult} from './modules/examResult'
+import { batchSettings } from './modules/batchSettings';
 export default createStore({
   state: {
     isLoading: false
@@ -22,6 +23,7 @@ export default createStore({
     notifications: notifications,
     examPackState: examPack,
     reportingState: reporting,
-    examResult: examResult
+    examResult: examResult,
+    batchSettings: batchSettings
   }
 })

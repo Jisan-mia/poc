@@ -11,11 +11,14 @@
 </template>
 
 <script>
+import { watchEffect } from '@vue/runtime-core'
 import AuthTopbar from '../components/Auth Components/AuthTopbar.vue'
+import { useStore } from 'vuex'
+
 export default {
   components: { AuthTopbar },
 	name: 'AuthLayout',
-	setup(props, {slots}) {
+	setup(props) {
 		
 
 	}

@@ -38,6 +38,8 @@ export default {
             await store.dispatch('examPackState/loadExamPacks');
             await store.dispatch('examPackState/loadExamLists');
             await store.dispatch('reportingState/loadStudentReporting');
+				    await store.dispatch('batchSettings/loadBatchSettings')
+            
             store.commit('setIsLoading', false)
           } else {
             localStorage.removeItem('token')

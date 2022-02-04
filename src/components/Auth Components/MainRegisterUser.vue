@@ -89,9 +89,23 @@ export default {
       user: userPhoneNum.value
     }
         
-    const levelOptions = ref(['JSC', 'SSC', 'HSC', 'O-Level', 'A-Level'])
-    const batchOptions = ref(['2021', '2022', '2023'])
-    const boardOptions = ref(['Dhaka', 'Chittagong','Sylhet', 'Comilla', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Barisal'])
+    // const levelOptions = ref(['JSC', 'SSC', 'HSC', 'O-Level', 'A-Level'])
+    // const batchOptions = ref(['2021', '2022', '2023'])
+    // const boardOptions = ref(['Dhaka', 'Chittagong','Sylhet', 'Comilla', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Barisal'])
+
+		watchEffect(async () => {
+			try {
+				await store.dispatch('batchSettings/loadBatchSettings')
+			} catch(err) {
+				console.log(err)
+			}
+		})
+
+    const batchOptions = computed(() => store.state.batchSettings.batchOptions);
+    const levelOptions = computed(() => store.state.batchSettings.levelOptions);
+    const boardOptions = computed(() => store.state.batchSettings.boardOptions);
+    // console.log(batchOptions.value)
+
     const selectStyle = ref({
       borderRadius: '1.1rem',
       outline: 'none',

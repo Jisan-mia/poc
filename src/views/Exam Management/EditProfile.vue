@@ -23,15 +23,15 @@
       
 
       <select name="level" id="level" v-model="profile.level">
-        <option value="HSC">HSC</option>
-        <option value="SSC">SSC</option>
-        <option value="O-level">O-Level</option>
+        <option v-for="level in levelOptions" :key="level" :value="level">
+          {{level}}
+        </option>
       </select>
 
       <select  name="batch" id="batch" v-model="profile.batch">
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
+        <option v-for="batch in batchOptions" :key="batch" :value="batch">
+          {{batch}}
+        </option>
       </select>
 
 
@@ -72,7 +72,10 @@ export default {
   name: "EditProfile",
   setup() {
     const store = useStore();
-    const boardOptions = ref(['Dhaka', 'Chittagong','Sylhet', 'Comilla', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Barisal'])
+    const batchOptions = computed(() => store.state.batchSettings.batchOptions);
+    const levelOptions = computed(() => store.state.batchSettings.levelOptions);
+    const boardOptions = computed(() => store.state.batchSettings.boardOptions);
+    // const boardOptions = ref(['Dhaka', 'Chittagong','Sylhet', 'Comilla', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Barisal'])
      const selectStyle = ref({
       borderRadius: '1.1rem',
       outline: 'none',
@@ -177,6 +180,8 @@ export default {
       handleIInput,
       previewImage,
       boardOptions,
+      batchOptions,
+      levelOptions,
       selectStyle
     };
   },

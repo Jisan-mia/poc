@@ -1,6 +1,6 @@
 <template>
   <div class="one_main">
-    <div class="img__container" v-if="examQuestion.q_image">
+    <div class="img__container" v-if="examQuestion?.q_image">
       <img :src="imageUrl(examQuestion.q_image)" alt="">
     </div>
     <div class="question__cont">

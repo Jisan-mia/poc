@@ -2,6 +2,8 @@ import { getNotification, getDateDiff, shuffleArray } from "../../../api/common"
 import examPackApi from "../../../api/examPackApi";
 import reportingApi from "../../../api/reportingApi";
 import { examPackMutationTypes } from "./examPack.mutationTypes";
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 const state = {
@@ -132,6 +134,106 @@ const actions = {
 
     if(question_data) {
       const allQuestion = [];
+      const allQuestionThree = [];
+
+      const setUpQuestionThree = (question) => {
+        const {id, q_description, q_image, exam_pack, exam_name} = question;
+        const mainThreeQuestion = {
+          id,
+          uuid: uuidv4(),
+          type: 'data_three',
+          q_description,
+          q_image,
+          exam_pack,
+          exam_name,
+          otherQuestions: [
+            {
+              uuid: uuidv4(),
+              type: 'data_one',
+              question_name: question.question_name,
+              exam_pack,
+              exam_name,
+              options: [
+                {
+                  Question: question.question_name,
+                  ans: question.question_one_ans_one,
+                  is_correct: question.question_one_ans_one_is_correct
+                },
+                {
+                  Question: question.question_name,
+                  ans: question.question_one_ans_two,
+                  is_correct: question.question_one_ans_two_is_correct
+                },
+                {
+                  Question: question.question_name,
+                  ans: question.question_one_ans_three,
+                  is_correct: question.question_one_ans_three_is_correct
+                },
+                {
+                  Question: question.question_name,
+                  ans: question.question_one_ans_four,
+                  is_correct: question.question_one_ans_four_is_correct
+                }
+              ]
+            },
+            {
+              uuid: uuidv4(),
+              type: 'data_two',
+              question_name: question.question_name_two,
+              exam_pack,
+              exam_name,
+              data_one: question.sample_one,
+              data_two: question.sample_two ,
+              data_three: question.sample_three,
+              options: [
+                {
+                  Question: question.question_name_two,
+                  ans: question.question_two_ans_one,
+                  is_correct: question.question_two_ans_one_is_correct
+                },
+                {
+                  Question: question.question_name_two,
+                  ans: question.question_two_ans_two,
+                  is_correct: question.question_two_ans_two_is_correct
+                },
+                {
+                  Question: question.question_name_two,
+                  ans: question.question_two_ans_three,
+                  is_correct: question.question_two_ans_three_is_correct
+                },
+                {
+                  Question: question.question_name_two,
+                  ans: question.question_two_ans_four,
+                  is_correct: question.question_two_ans_four_is_correct
+                }
+              ]
+            }
+          ]
+
+        }
+        
+        const questionSelectedAns = mainThreeQuestion.otherQuestions.map((q) => {
+          // const rightAns = q.options.find(option => option.is_correct == true);
+          const mainOptions = q.options.map(op => {
+            return {
+              ...op,
+              qName: question.uuid
+            }
+          })
+          return {
+            ...q,
+            // selectedOption: rightAns.ans,
+            options: mainOptions
+          }
+        })
+
+        const mainQuestionThree = {
+          ...mainThreeQuestion,
+          otherQuestions: questionSelectedAns
+        }
+
+        allQuestionThree.push(mainQuestionThree);
+      }
 
       for(let key in question_data) {
         for(let i in question_data[key]) {
@@ -141,8 +243,12 @@ const actions = {
               type: key,
               mark_per_question,
               isNegativeMarking,
-              amount_per_mistake
+              amount_per_mistake,
+              uuid: uuidv4(),
             })
+          } else {
+            setUpQuestionThree(question_data[key][i])
+
           }
           
         }
@@ -158,25 +264,19 @@ const actions = {
           const mainOptionsData = optionData.map(o => {
             return {
               ...o,
-              qName: question.question_name
+              qName: question.uuid   // changed from question.question_name,
             }
           })
           
           return {...question, options: mainOptionsData}
-          // for(let optionKey in optionData) {
-          //   if(optionData[optionKey].length) {
-          //     mainOptions = [...optionData[optionKey]]
-          //   }
-          // }
-          
         }
         //console.log({...question, options: mainOptions})
       }
 
       const allQuestionWithOptions =await Promise.all(allQuestion.map(setQuestionOption))
-      
+      const allMainQWithOptions = [...allQuestionWithOptions, ...allQuestionThree]
 
-      const finalQuestions = isRandomized ? shuffleArray(allQuestionWithOptions) : [...allQuestionWithOptions]
+      const finalQuestions = isRandomized ? shuffleArray(allMainQWithOptions) : [...allMainQWithOptions]
 
       context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, finalQuestions)
     } else {

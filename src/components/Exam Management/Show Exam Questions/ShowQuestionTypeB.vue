@@ -1,6 +1,6 @@
 <template>
 <div class="two_main">
-    <div class="img__container" v-if="examQuestion.Q_image">
+    <div class="img__container" v-if="examQuestion?.Q_image">
       <img :src="imageUrl(examQuestion.Q_image)" alt="">
     </div>
     <!-- {{JSON.stringify(imageUrl(examQuestion.Q_image))}} -->
