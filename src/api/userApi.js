@@ -152,11 +152,28 @@ const setNewPassword = async (data) => {
   }
 }
 
+
+// 
+const getAdminStudent = async () => {
+  try{
+    const res = await axios.get(`https://www.exam.poc.ac/api/admin_student_info/`)
+
+    if(res.data.code != 200) {
+      throw Error('Error getting admin student')
+    }
+    return res.data;
+  } catch(error) {
+    console.log(error)
+    return "Couldn't get admin student list"
+  }
+}
+
 export default {
   registerUserByPhonePass,
   handleUserLogin,
   registerStudentApi,
   getAllStudentList,
   updateUserProfile,
-  setNewPassword
+  setNewPassword,
+  getAdminStudent
 }

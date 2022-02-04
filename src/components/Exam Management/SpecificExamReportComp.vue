@@ -73,7 +73,7 @@
           <div class="infos">
             <p>Score: {{currentExam.score}}/{{currentExam.total_mark}}</p>
             <p>Timestamp: {{timeStampF(currentExam.timestamp)}}</p>
-            <p>Negative Marketing: {{currentExam.negative_marking}}</p>
+            <p>Negative Marketing: {{Math.round(currentExam.negative_marking*100)/100}}</p>
           </div>
 
           <div class="view__btn">
@@ -93,7 +93,7 @@
     </div>
 
     <div class="header__input">
-      <input v-model="phoneSearch" type="text" placeholder="Search With Name" name="" id=""> <!--phone number was-->
+      <input v-model="phoneSearch" type="text" placeholder="Search with Phone Number" name="" id=""> <!--phone number was-->
       <button :class="{selected: isActive}"  @click="handleSelectFilter('highToLow')">
         Filter High To Low
       </button>
@@ -194,7 +194,7 @@
         </td>
         <td>
           <span>
-            {{report.negative_marking}}
+            {{Math.round(report.negative_marking*100)/100}}
           </span>
         </td>
       </tr>
@@ -222,6 +222,7 @@ export default {
     const examLists = computed(() => store.state.reportingState.reportings);
     const specificReportsStateM = computed(() => store.state.reportingState.specificReportings);
 
+
     
     const specificReportsState = computed(() => {
       const main = ref([...specificReportsStateM.value])
@@ -243,6 +244,8 @@ export default {
     watchEffect(async () => {
       try {
           await store.dispatch("reportingState/loadSpecificReports", currentExam.value.Exam_name);
+          console.log(specificReportsStateM.value)
+
       }
       catch (error) {
           console.log(error);
@@ -261,7 +264,7 @@ export default {
         // console.log(specificReportsMain.value)
         if(phoneSearch.value) {
            specificReportsMain.value = specificReportsMain.value.filter(report => {
-            return phoneSearch.value.toLowerCase().split(' ').every(v => report.name.toLowerCase().includes(v)) 
+            return phoneSearch.value.toLowerCase().split(' ').every(v => report.phone_number.toLowerCase().includes(v)) 
           })
         } 
         if(selectedFilter.value) {
@@ -522,7 +525,7 @@ table {
     font-size: 0.8rem;
     line-height: 0.9rem;
     outline: none;
-    padding: 0.7rem 1rem;
+    padding: 0.7rem 0.5rem;
     text-align: center;
     transition: all 0.3s;
     

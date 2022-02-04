@@ -140,9 +140,6 @@ export default {
         displayHours.value = formatNum(hours)
         displayDays.value = formatNum(days)
 
-
-
-
         loaded.value = true
       }, 1000);
     }

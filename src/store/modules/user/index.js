@@ -144,11 +144,32 @@ const actions = {
 
   async loadUserProfile(context) {
     const res = await userApi.getAllStudentList();
+    const adminStuRes = await userApi.getAdminStudent();
+
     // console.log(res)
 
     const data = await res.data
-    if(data) {
-      context.commit('setAllStudent', data)
+    const adminStuData = await adminStuRes?.data
+
+    if(data && adminStuData) {
+
+      const adminStuIds = adminStuData.map(stu => stu.user)
+
+        const allMainStu = data.map(student => {
+          if(adminStuIds.indexOf(student.user) != -1) {
+            const findAdminStu = adminStuData.find(stu => stu.user == student.user);
+            return {
+              ...student,
+              phone_number: findAdminStu.phone_number
+            }
+          } else {
+            return false
+          }
+        }).filter(Boolean)
+
+
+
+      context.commit('setAllStudent', allMainStu)
       const userId = context.state.user.userId
       console.log(userId)
       const profile = data.find(profile => profile.user == userId)
