@@ -52,7 +52,7 @@ const actions = {
   handleScoreCalculation(context) {
     const allSelectedAns = context.state.allSelectedAns;
     const examQuestions = context.rootState.examPackState.examQuestions;
-    console.log(allSelectedAns)
+    // console.log(allSelectedAns)
     if(allSelectedAns.length !== 0 && examQuestions.length !== 0) {
       const { mark_per_question, amount_per_mistake, isNegativeMarking} = examQuestions[0];
       // console.log(mark_per_question, amount_per_mistake, isNegativeMarking, 199)
@@ -84,8 +84,8 @@ const actions = {
       // console.log(total)
       context.commit('scoreCalculate', total)
       context.commit('negativeMarkCalculation', totalNegativeMark)
-      console.log({total})
-      console.log({totalNegativeMark})
+      // console.log({total})
+      // console.log({totalNegativeMark})
     }
   },
 

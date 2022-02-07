@@ -87,7 +87,7 @@ export default {
     watch(selectedOption, () => {
       // console.log('selected', selectedOption.value)
       const optionObj = computed(() => examQuestion.options.find(o => o.ans == selectedOption.value))
-      console.log(optionObj.value)
+      // console.log(optionObj.value)
       if(optionObj.value) {
         store.dispatch('examResult/selectedAnsHandle', {...optionObj.value})
 

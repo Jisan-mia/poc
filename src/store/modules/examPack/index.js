@@ -15,11 +15,11 @@ const state = {
 const mutations = {
   [examPackMutationTypes.SET_EXAM_PACK](state, payload) {
     state.examPacks = payload
-    //console.log(state)
+    ////console.log(state)
   },
   [examPackMutationTypes.SET_EXAM_LIST](state, payload) {
     state.examLists = payload
-    //console.log(state)
+    ////console.log(state)
   },
   [examPackMutationTypes.SET_EXAM_QUESTIONS](state, payload) {
     state.examQuestions = payload
@@ -29,7 +29,7 @@ const mutations = {
 const actions = {
   async loadExamPacks(context) {
     const res = await examPackApi.getExamPackList();
-    //console.log(res)
+    ////console.log(res)
     const data = await res.data;
 
     if(data) {
@@ -52,7 +52,7 @@ const actions = {
     
     const data = await res.data;
     const reportingData = await resReporting.data
-    // console.log(reportingData)
+    // //console.log(reportingData)
 
 
     if(data && reportingData) {
@@ -66,10 +66,10 @@ const actions = {
 
       // hasExamAlreadyGiven = hasExamAlreadyGiven
 
-      // console.log(userId, reportingData, data)
+      // //console.log(userId, reportingData, data)
 
       const mainExam = data.map(exam => {
-        //console.log(exam)
+        ////console.log(exam)
         if(getDateDiff(exam.Exam_end_date, exam.Exam_end_time)) {
           return {
             ...exam,
@@ -101,7 +101,7 @@ const actions = {
 
         } return exam
       })
-      //console.log(mainExam)
+      ////console.log(mainExam)
 
 
 
@@ -124,12 +124,12 @@ const actions = {
     
     const currentExam = examLists.find(exam => exam.id == id);
 
-    const {isRandomized, mark_per_question, amount_per_mistake, isNegativeMarking} = currentExam;
-    //console.log(isRandomized);
+    const {isRandomized, mark_per_question, amount_per_mistake, isNegativeMarking, question_amount} = currentExam;
+    // //console.log(question_amount);
     
 
     const res = await examPackApi.getExamQuestions(id);
-    //console.log(res);
+    ////console.log(res);
     const question_data = await res.question_data;
 
     if(question_data) {
@@ -266,7 +266,7 @@ const actions = {
         const optionData = await optionRes.data;
         let mainOptions = []
         if(optionData) {
-          //console.log(optionData)
+          ////console.log(optionData)
           const mainOptionsData = optionData.map(o => {
             return {
               ...o,
@@ -276,16 +276,83 @@ const actions = {
           
           return {...question, options: mainOptionsData}
         }
-        //console.log({...question, options: mainOptions})
+        ////console.log({...question, options: mainOptions})
       }
 
       const allQuestionWithOptions =await Promise.all(allQuestion.map(setQuestionOption))
-      const allMainQWithOptions = [...allQuestionWithOptions, ...allQuestionThree]
-
+      let allMainQWithOptions = [...allQuestionWithOptions, ...allQuestionThree]
       let finalQuestions = isRandomized ? shuffleArray(allMainQWithOptions) : [...allMainQWithOptions]
+      const sortedQuestion = finalQuestions.slice(0, question_amount);
+      //console.log(sortedQuestion)
+      const countQ = {}
+      sortedQuestion.forEach(q => {
+        if(countQ[q.type]) {
+          countQ[q.type] = countQ[q.type] + 1
+        } else {
+          countQ[q.type] = 1
+        }
+      })
+      const allMainQ = [...sortedQuestion]
+      //console.log(countQ)
+
+      const deleteOneTwo = (p1, p2) => {
+        if(allMainQ.findIndex(q => q.type == p1) !== -1) {
+          const index = allMainQ.findIndex(q => q.type == p1)
+          allMainQ.splice(index, 1)
+        
+        } else if(allMainQ.findIndex(q => q.type == p2) !== -1) {
+          const index = allMainQ.findIndex(q => q.type == p2);
+          allMainQ.splice(index, 1)
+        }
+      }
+
+
+      if(countQ?.data_three > 0)  {
+        const questionOverCount = countQ.data_three;
+        //console.log(questionOverCount)
+        if(questionOverCount == 1) {
+          deleteOneTwo('data_one', 'data_three')
+
+        } else if(questionOverCount == 2) {
+          const index = allMainQ.findIndex(q => q.type == 'data_three');
+          allMainQ.splice(index, 1)
+
+        } else if(questionOverCount == 3) {
+          const index = allMainQ.findIndex(q => q.type == 'data_three');
+          allMainQ.splice(index, 1)
+
+          deleteOneTwo('data_two', 'data_one')
+
+        } else if(questionOverCount > 3) {
+          if(questionOverCount % 2 == 0) {
+            const halfOver = questionOverCount / 2;
+            for(let i = 1; i <= halfOver; i++) {
+              const index = allMainQ.findIndex(q => q.type == 'data_three');
+              allMainQ.splice(index, 1)
+            }
+
+          } else {
+            const halfOver = Math.floor(questionOverCount / 2);
+            for(let i = 1; i <= halfOver; i++) {
+              const index = allMainQ.findIndex(q => q.type == 'data_three');
+              allMainQ.splice(index, 1)
+            }
+
+            deleteOneTwo('data_two', 'data_one')
+          }
+        }
+        
+        
+      }
+
+
+      
+
+
+
       
       
-      context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, finalQuestions)
+      context.commit(examPackMutationTypes.SET_EXAM_QUESTIONS, allMainQ)
     } else {
       const notification = {
         type: 'error',
