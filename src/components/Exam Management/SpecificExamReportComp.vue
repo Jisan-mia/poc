@@ -108,14 +108,9 @@
       <select name="" id="" placeholder="Filter with Board" v-model="boardSelected">
         <option selected disabled value="">Filter by Board</option>
         <option value="all">All Board</option>
-        <option value="dhaka">Dhaka</option>
-        <option value="chittagong">Chittagong</option>
-        <option value="sylhet">Sylhet</option>
-        <option value="comilla">Comilla</option>
-        <option value="mymensingh">Mymensingh</option>
-        <option value="rajshahi">Rajshahi</option>
-        <option value="rangpur">Rangpur</option>
-        <option value="barisal">Barisal</option>
+        <option v-for="board in boardOptions" :key="board" :value="board">
+          {{board}}
+        </option>
 
       </select>
     </div>
@@ -215,7 +210,9 @@ export default {
     const route = useRoute();
     const store = useStore();
     const selectedFilter = ref('') // 'highToLow', 'lowToHigh', 'timestamp'
-    const boardSelected = ref('')
+    const boardSelected = ref('');
+    const boardOptions = computed(() => store.state.batchSettings.boardOptions);
+
     const phoneSearch =ref('')
 
     const examPacks = computed(() => store.state.examPackState.examPacks);
@@ -378,7 +375,8 @@ export default {
       isActive2,
       isActive3,
       imageUrl,
-      timeStampF
+      timeStampF,
+      boardOptions
     };
   },
   components: { CustomAdminBtn }
