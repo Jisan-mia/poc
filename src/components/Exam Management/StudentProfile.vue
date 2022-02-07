@@ -35,6 +35,7 @@
     <!-- dashboard stats start -->
     <div class="stats">
       <div class="stats__chart">
+        <StatsChart :chartPercents="chartPercents" />
       </div>
 
       <div class="stats__cards">
@@ -127,12 +128,14 @@ import DashboardStatsCountCard from './DashboardStatsCountCard.vue'
 import UpcomingExamCard from './UpcomingExamCard.vue'
 import { useStore } from 'vuex'
 import dayjs from 'dayjs';
+import StatsChart from './StatsChart.vue';
 
 export default {
   components: {
     DashboardStatsCountCard,
-    UpcomingExamCard
-  },
+    UpcomingExamCard,
+    StatsChart
+},
   name: 'StudentDashboard', 
   setup() {
     const store = useStore();
@@ -144,7 +147,18 @@ export default {
       return r.isExpired === true
     }))
 
-    // console.log(previousExamReport.value);
+    const chartPercents = computed(() => {
+      return previousExamReport.value.map(report => {
+        return {
+          exam_name: report.Exam_name,
+          percent: (Number(report.score)/Number(report.total_mark)) * 100
+        }
+      })
+    })
+
+
+
+    console.log(previousExamReport.value);
     
     
     const now = dayjs().format('YYYY-MM-DD hh:mm:ss A');
@@ -209,7 +223,8 @@ export default {
       completedExams,
       averageMark,
       passedPercentage,
-      failedPercentage
+      failedPercentage,
+      chartPercents
     }
   }
 }
@@ -237,8 +252,6 @@ export default {
     display: flex;
     flex-direction: column;
   }
-
-
 }
 .profile {
   @extend .statsProfile_common;
@@ -327,7 +340,7 @@ export default {
     border: 1px solid #00A9DC;
     border-radius: 18px; 
     width: 100%;
-    background: #eae7f7;
+    // background: #eae7f7;
     padding: 0.5rem;
     min-height: 200px;
     @include maxMedia(768px) {

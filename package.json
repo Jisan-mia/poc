@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "apexcharts": "^3.33.0",
     "axios": "^0.24.0",
     "browser-tabs-lock": "^1.2.15",
     "core-js": "^3.6.5",
@@ -20,6 +21,7 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vue-toastification": "^2.0.0-rc.5",
+    "vue3-apexcharts": "^1.4.1",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
