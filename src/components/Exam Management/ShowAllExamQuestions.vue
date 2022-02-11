@@ -1,6 +1,5 @@
 <template>
   <div class="question__container">
-    <ShowCkContent content="this is content" />
     <div class="question__card" v-for="(examQuestion) in examAllQuestions" :key="examQuestion.id">
       <ShowQuestionTypeA :examQuestion="examQuestion" :index="examQuestion.index"  v-if="examQuestion.type == 'data_one'"/>
       <ShowQuestionTypeB :examQuestion="examQuestion" :index="examQuestion.index" v-else-if="examQuestion.type == 'data_two'" />

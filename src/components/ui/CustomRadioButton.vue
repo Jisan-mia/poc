@@ -68,6 +68,7 @@ export default {
   display: grid;
   grid-template-columns: 1em auto;
   gap: 0.7em;
+  align-items: baseline;
   cursor:pointer;
   transition: all 0.3s linear;
   color: hsla(0, 0%, 0%, 0.9);
