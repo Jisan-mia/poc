@@ -8,7 +8,8 @@ import VueApexCharts from "vue3-apexcharts";
 import '@fortawesome/fontawesome-free/js/all'
 
 
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 
 
-createApp(App).use(store).use(router).use(VueApexCharts).mount("#app");
+createApp(App).use(store).use(router).use(CKEditor).use(VueApexCharts).mount("#app");

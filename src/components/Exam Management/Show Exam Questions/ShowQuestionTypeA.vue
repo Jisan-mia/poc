@@ -6,11 +6,15 @@
     <div class="question__cont">
 
     <div class="sl">
-      {{index}}.
+      <!-- {{index}}. -->
     </div>
     <div class="question">
       <p>
-        {{examQuestion.question_name}}
+        <span>
+          {{index}}.
+        </span>
+        <ShowCkContent :content="examQuestion.question_name" />
+        <!-- {{examQuestion.question_name}} -->
       </p>
       <div class="options">
         <CustomRadioButton 
@@ -31,6 +35,7 @@ import { computed, ref } from '@vue/reactivity';
 import CustomRadioButton from "../../ui/CustomRadioButton.vue"
 import { watch, watchEffect } from '@vue/runtime-core';
 import { useStore } from 'vuex';
+import ShowCkContent from './ShowCkContent.vue';
 export default {
   name: "ShowQuestionTypeA",
   props: {
@@ -68,7 +73,7 @@ export default {
       imageUrl
     };
   },
-  components: { CustomRadioButton }
+  components: { CustomRadioButton, ShowCkContent }
 }
 </script>
 
@@ -116,6 +121,9 @@ export default {
   gap: 0.3rem;
   p{
     @extend .pDefault;
+    display: flex;
+    gap: 0.4rem;
+    align-items: baseline;
   }
   .question {
     display: flex;
@@ -124,11 +132,13 @@ export default {
     justify-content: center;
     gap: 1rem;
 
+
     .options{
       list-style-type: none;
       @include flexVertical;
       gap: 0.4rem;
       justify-content: center;
+      margin-left: 1rem;
     }
   }
 

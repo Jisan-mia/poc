@@ -8,7 +8,10 @@
       @change="$emit('update:modelValue', option)"
       :name="name"
     >
-    <span v-if="!isEditOption">{{option}}</span>
+    <span v-if="!isEditOption">
+      <ShowCkContent :content="option" />
+      <!-- {{option}} -->
+    </span>
   </label>
  
 </template>
@@ -18,6 +21,7 @@ import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import AdminCustomInput from '../Exam Management/AdminCustomInput.vue';
 import AdminCustomInput1 from '../Exam Management/AdminCustomInput.vue';
+import ShowCkContent from '../Exam Management/Show Exam Questions/ShowCkContent.vue';
 export default {
   name: "CustomRadioButton",
   props: {
@@ -49,7 +53,7 @@ export default {
         checked
     };
   },
-  components: { AdminCustomInput, AdminCustomInput1 }
+  components: { AdminCustomInput, AdminCustomInput1, ShowCkContent }
 }
 </script>
 

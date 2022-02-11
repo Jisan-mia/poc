@@ -1,5 +1,6 @@
 <template>
   <div class="question__container">
+    <ShowCkContent content="this is content" />
     <div class="question__card" v-for="(examQuestion) in examAllQuestions" :key="examQuestion.id">
       <ShowQuestionTypeA :examQuestion="examQuestion" :index="examQuestion.index"  v-if="examQuestion.type == 'data_one'"/>
       <ShowQuestionTypeB :examQuestion="examQuestion" :index="examQuestion.index" v-else-if="examQuestion.type == 'data_two'" />
@@ -14,6 +15,7 @@ import ShowQuestionTypeA from './Show Exam Questions/ShowQuestionTypeA.vue'
 import ShowQuestionTypeB from './Show Exam Questions/ShowQuestionTypeB.vue';
 import ShowQuestionTypeC from './Show Exam Questions/ShowQuestionTypeC.vue';
 import { useStore } from 'vuex';
+import ShowCkContent from './Show Exam Questions/ShowCkContent.vue';
 export default {
   name: "ShowAllExamQuestions",
   setup() {
@@ -119,7 +121,7 @@ export default {
       examAllQuestions
   };
 },
-  components: { ShowQuestionTypeA, ShowQuestionTypeB, ShowQuestionTypeC }
+  components: { ShowQuestionTypeA, ShowQuestionTypeB, ShowQuestionTypeC, ShowCkContent }
 }
 </script>
 

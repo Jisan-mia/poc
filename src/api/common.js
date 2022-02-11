@@ -43,3 +43,28 @@ export const  getTimeRemaining = (endtime) => {
 		seconds
 	};
 }
+
+
+export const editorConfig = {
+  toolbar: {
+    items: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'underline',
+      'strikethrough',
+      'link',
+      '|',
+      'code',
+      'subscript',
+      'superscript',
+      'MathType',
+      'ChemType',
+      'specialCharacters',
+      'blockQuote'
+    ]
+  },
+  language: 'en',
+  shouldNotGroupWhenFull: true
+}

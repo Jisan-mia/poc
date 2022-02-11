@@ -6,13 +6,16 @@
     <!-- {{JSON.stringify(imageUrl(examQuestion.Q_image))}} -->
   <div class="question__cont">
     <div class="paragraph" v-if="examQuestion?.description">
-      {{examQuestion.description}}
+      <!-- {{examQuestion.description}} -->
+      <ShowCkContent :content="examQuestion.description" />
     </div>
     <div class="hints">
       <p class="hints__header">
         <span>{{index}}.</span>
         <span>
-          {{examQuestion.question_name}}
+          <!-- {{examQuestion.question_name}} -->
+          <ShowCkContent :content="examQuestion.question_name" />
+
         </span>
       </p>
       <div class="hints__option">
@@ -51,9 +54,10 @@ import { computed, ref } from '@vue/reactivity';
 import CustomRadioButton from "../../ui/CustomRadioButton.vue"
 import { watch, watchEffect } from '@vue/runtime-core';
 import { useStore } from 'vuex';
+import ShowCkContent from './ShowCkContent.vue';
 export default {
   name: "ShowQuestionTypeB",
-  components: { CustomRadioButton },
+  components: { CustomRadioButton, ShowCkContent },
   props: {
     examQuestion: {
       type: Object
@@ -167,7 +171,7 @@ export default {
       color: #000;
       display: flex;
       justify-content: flex-start;
-      align-items: center;
+      align-items: baseline;
       gap: 0.3rem;
     }
 

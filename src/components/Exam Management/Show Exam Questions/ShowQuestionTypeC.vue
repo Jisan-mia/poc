@@ -10,7 +10,8 @@
       <img :src="imageUrl(examQuestionC.q_image)" alt="">
     </div>
     <div class="para">
-      {{examQuestionC?.q_description}}
+      <!-- {{examQuestionC?.q_description}} -->
+      <ShowCkContent :content="examQuestionC?.q_description" />
     </div>
     <div class="question" v-for="examQuestion in examQuestionC.otherQuestions" :key="examQuestion">
 
@@ -25,6 +26,7 @@
 import { computed } from '@vue/reactivity';
 import ShowQuestionTypeA from "./ShowQuestionTypeA.vue";
 import ShowQuestionTypeB from "./ShowQuestionTypeB.vue";
+import ShowCkContent from './ShowCkContent.vue';
 export default {
   name: "ShowQuestionTypeC",
   props: {
@@ -35,7 +37,7 @@ export default {
       type: [Number, String]
     }
   },
-  components: { ShowQuestionTypeA, ShowQuestionTypeB },
+  components: { ShowQuestionTypeA, ShowQuestionTypeB, ShowCkContent },
   setup(props) {
     // console.log(props.examQuestionC)
     const imageUrl = computed(() => (img) => img.includes('https://www.exam.poc.ac') || img.includes('http://www.exam.poc.ac')  ? img : `https://www.exam.poc.ac${img}`)
