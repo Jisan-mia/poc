@@ -232,7 +232,25 @@ const actions = {
     }
 
     
-  }   
+  },
+
+  async getViewDownloadAnswer(context, examId) {
+    const res = await examApi.getViewDownload(examId)
+    console.log(res)
+    const data = await res.data
+    if(data[0]) {
+      const viewDownloadAnswer = JSON.parse(data[0].all_question)
+      console.log(JSON.parse(viewDownloadAnswer))
+
+    } else {
+      const notification = {
+        type: 'error',
+        message: 'Could not get your answer sheet'
+      }
+
+      context.dispatch('notifications/add', notification , {root: true})
+    }
+  }
   
 }
 

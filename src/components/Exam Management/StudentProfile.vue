@@ -110,7 +110,7 @@
           </td>
 
           <td class="answer__sheet">
-            <span>
+            <span @click="handleViewDownload(exam.exam_name)">
               View/Download
             </span>
           </td>
@@ -220,6 +220,15 @@ export default {
       // //console.log(exam)
     }
 
+    const handleViewDownload= async (examId) => {
+      console.log(examId)
+      try {
+        await store.dispatch('examResult/getViewDownloadAnswer', examId)
+      } catch(err) {
+        console.log(err)
+      }
+    }
+
 
 
     const strJoin = (str) => {
@@ -236,7 +245,8 @@ export default {
       averageMark,
       passedPercentage,
       failedPercentage,
-      chartPercents
+      chartPercents,
+      handleViewDownload
     }
   }
 }
