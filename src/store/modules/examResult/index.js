@@ -6,7 +6,8 @@ const state = {
   allSelectedAns: [],
   score: 0,
   negative_marking: 0,
-  isExamSubmitted: false
+  isExamSubmitted: false,
+  viewDownloadQuestions: []
 }
 const mutations = {
   setSelectedAns(state, payload) {
@@ -21,6 +22,10 @@ const mutations = {
   },
   setExamIsSubmitted(state, payload) {
     state.isExamSubmitted = payload
+  },
+  setViewDownloadQuestions(state, payload) {
+    state.viewDownloadQuestions = payload
+    console.log(state.viewDownloadQuestions)
   }
 }
 
@@ -45,10 +50,35 @@ const actions = {
         ...option
       })
 
+      console.log(mainAns)
       context.commit('setSelectedAns', mainAns)
       context.dispatch('handleScoreCalculation')
     }
   },
+
+  viewDownloadSelectedAnsThree(context, option) {
+    const viewDownloadQuestions = [...context.state.viewDownloadQuestions]
+    const modifiedVDQ = viewDownloadQuestions.map(mainQ => {
+      // let main = []
+      if(mainQ.uuid == option.parentQuestion) {
+        const main = mainQ.otherQuestions.map(oQ => oQ.uuid == option.qName ? {...oQ, selectedAns: option.ans} : oQ)
+        return {...mainQ, otherQuestions: main}
+      }
+      return mainQ
+      
+    })
+    // console.log(modifiedVDQ)
+    context.commit('setViewDownloadQuestions', modifiedVDQ)
+  },
+
+  viewDownloadSelectedAns(context, option) {
+    const viewDownloadQuestions = [...context.state.viewDownloadQuestions]
+    const modifiedVDQ = viewDownloadQuestions.map(question => question.uuid == option.qName ? {...question, selectedAns: option.ans} : question)
+
+    // console.log(modifiedVDQ)
+    context.commit('setViewDownloadQuestions', modifiedVDQ)
+  },
+
   handleScoreCalculation(context) {
     const allSelectedAns = context.state.allSelectedAns;
     const examQuestions = context.rootState.examPackState.examQuestions;

@@ -21,7 +21,7 @@ export default {
     const editor = InlineEditor;
     // This editor will be read–only when created.
 
-    console.log(props.content)
+    // console.log(props.content)
 
     return {
       editor,

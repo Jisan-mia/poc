@@ -94,6 +94,12 @@ export default {
       // console.log(optionObj.value)
       if(optionObj.value) {
         store.dispatch('examResult/selectedAnsHandle', {...optionObj.value})
+        
+        if(optionObj.value?.isTypeThree) {
+          store.dispatch('examResult/viewDownloadSelectedAnsThree', {...optionObj.value})
+        } else {
+          store.dispatch('examResult/viewDownloadSelectedAns', {...optionObj.value})
+        }
 
       }
       //console.log(optionObj.value)

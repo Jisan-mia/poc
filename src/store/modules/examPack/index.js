@@ -223,7 +223,9 @@ const actions = {
           const mainOptions = q.options.map(op => {
             return {
               ...op,
-              qName: q.uuid
+              qName: q.uuid,
+              isTypeThree: true,
+              parentQuestion: mainThreeQuestion.uuid
             }
           })
           return {
