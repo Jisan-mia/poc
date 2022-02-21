@@ -64,8 +64,62 @@ const submitResultToSpecificApi = async (data, exam_str_name) => {
 }
 
 
+const submitViewDownloadQuestion = async (data) => {
+  const headers = getAuthorizationHeader();
+
+  const getFormData = object => Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+  }, new FormData());
+  
+  try{
+    const res = await axios({
+      method: 'POST',
+      url: 'https://exam.poc.ac/api/post_ans_sheet/',
+      data: getFormData(data),
+      headers: {
+		    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+       }
+    });
+
+
+    //console.log(res)
+    if(res.data.code !== 200) {
+      throw Error('Error posting answer sheet')
+    }
+    return res;
+  } catch (err) {
+    return 'Error answer sheet send'
+  }
+}
+
+
+const getViewDownload = async (examId) => {
+    try{
+      const res = await axios.get(`https://exam.poc.ac/api/get_ans_sheet/${examId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        }
+      }
+      );
+      //console.log(res)
+      if(res.data.code !== 200) {
+        throw Error('Error getting answer sheet')
+      }
+      return res.data
+    } catch (err) {
+      //console.log(err.message)
+      return 'error getting student answer sheet'
+    }
+  
+}
+
 
 export default {
   submitResultToApi,
-  submitResultToSpecificApi
+  submitResultToSpecificApi,
+  submitViewDownloadQuestion,
+  getViewDownload
 }

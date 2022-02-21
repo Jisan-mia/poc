@@ -131,7 +131,10 @@ const actions = {
     const allExams = context.rootState.examPackState.examLists;
     const currentExam = allExams.find(exam => exam.id == examId);
     // console.log(currentExam, name, board)
-    // return;
+
+    const allViewDownloadQ = context.state.viewDownloadQuestions;
+
+
 
 
 
@@ -163,6 +166,11 @@ const actions = {
       name,
       board
     }
+
+    const viewDownloadData = {
+      exam_id: exam_name,
+      all_question: JSON.stringify(allViewDownloadQ)
+    }
     
 
     if(localStorage.getItem(`deadline${examId}`)) {
@@ -181,7 +189,9 @@ const actions = {
       } else {
         console.log('not given')
         const res = await examApi.submitResultToApi(dataToSend)
-        const res1 = await examApi.submitResultToSpecificApi(dataToSendSpecificR, currentExam.Exam_name)
+        const res1 = await examApi.submitResultToSpecificApi(dataToSendSpecificR, currentExam.Exam_name);
+        const viewAnswerSheet = await examApi.submitViewDownloadQuestion(viewDownloadData)
+        console.log(viewAnswerSheet)
         // console.log(res1)
     
         const data = await res.data

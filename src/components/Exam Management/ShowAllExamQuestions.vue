@@ -15,7 +15,7 @@ import ShowQuestionTypeB from './Show Exam Questions/ShowQuestionTypeB.vue';
 import ShowQuestionTypeC from './Show Exam Questions/ShowQuestionTypeC.vue';
 import { useStore } from 'vuex';
 import ShowCkContent from './Show Exam Questions/ShowCkContent.vue';
-import { watch, watchEffect } from '@vue/runtime-core';
+import { onMounted, watch, watchEffect } from '@vue/runtime-core';
 export default {
   name: "ShowAllExamQuestions",
   setup() {
@@ -46,13 +46,19 @@ export default {
         }
       }
     }))
-    const allMainQ = [...examAllQuestions.value]
-    watch(allMainQ, () => {
-      console.log(examAllQuestions.value)
+    const allMainQ = ref([...examAllQuestions.value])
+    // watchEffect(() => {
+    //   console.log(examAllQuestions.value)
 
-      if(allMainQ) {
-        console.log('view download saving', allMainQ)
-        store.commit('examResult/setViewDownloadQuestions', allMainQ)
+    //   if(allMainQ) {
+    //     console.log('view download saving', allMainQ.value)
+    //     store.commit('examResult/setViewDownloadQuestions', allMainQ)
+    //   }
+    // })
+    onMounted(() => {
+      if(allMainQ.value.length) {
+        console.log('view download saving', allMainQ.value)
+        store.commit('examResult/setViewDownloadQuestions', allMainQ.value)
       }
     })
 
