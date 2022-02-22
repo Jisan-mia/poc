@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <Sidebar />
-    <main class="main" id="app" @click="isActive && toggleActive()">
+    <Sidebar v-if="visibleSidebar" />
+    <main class="main" :class="!visibleSidebar ? 'remove_margin' : 'add_margin'" id="app" @click="isActive && toggleActive()">
       <span v-if="isLoading">
         loading..
       </span>
@@ -17,6 +17,8 @@ import { useStore } from 'vuex'
 import Sidebar from '../components/sidebar/Sidebar.vue'
 import { watchEffect } from '@vue/runtime-core';
 import { isActive, toggleActive } from '../components/sidebar/state';
+import { visibleSidebar, setVisibleSidebar } from './sidebarState';
+
 export default {
   components: { Sidebar },
   name: 'AppLayout',
@@ -59,7 +61,8 @@ export default {
     return {
       isLoading,
       toggleActive,
-      isActive
+      isActive,
+      visibleSidebar
     }
   }
 }
@@ -78,7 +81,6 @@ export default {
 .main{
 
 		/* width: calc(100vw - 16rem); */
-		margin-left: 16rem;
 		transition: all 0.4s;
 		padding: 0.2rem 1.8rem;
 		margin-top: 45px;
@@ -89,5 +91,13 @@ export default {
       margin-top: 50px;
     }
 	
+}
+
+.main.remove_margin {
+		margin-left: 0rem;
+}
+.main.add_margin {
+		margin-left: 16rem;
+
 }
 </style>>

@@ -129,6 +129,7 @@ import UpcomingExamCard from './UpcomingExamCard.vue'
 import { useStore } from 'vuex'
 import dayjs from 'dayjs';
 import StatsChart from './StatsChart.vue';
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -139,6 +140,7 @@ export default {
   name: 'StudentDashboard', 
   setup() {
     const store = useStore();
+    const router = useRouter()
     const profile = computed(() => store.state.userState.profile);
     const previousExamReportD = computed(() => store.state.reportingState.reportings);
     const examLists = computed(() => store.state.examPackState.examLists);
@@ -221,12 +223,13 @@ export default {
     }
 
     const handleViewDownload= async (examId) => {
+     
+
+      router.push({name:'ViewDownloadComp',params:{ examId: examId}})
+      
+      
       console.log(examId)
-      try {
-        await store.dispatch('examResult/getViewDownloadAnswer', examId)
-      } catch(err) {
-        console.log(err)
-      }
+      
     }
 
 

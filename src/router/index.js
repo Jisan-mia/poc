@@ -80,6 +80,15 @@ const routes = [
             requireLogin: true
         }
     },
+    {
+        path: '/result/:examId',
+        name: 'ViewDownloadComp',
+        component: lazyLoadExam('ViewDownloadComp'),
+        meta: {
+            layout: AppLayout, 
+            requireLogin: true
+        }
+    },
     
     {
         path: '/reporting',
@@ -99,6 +108,7 @@ const routes = [
             requireLogin: true
         }
     },
+    
 
     {
         path: '/edit-profile',

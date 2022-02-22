@@ -167,7 +167,7 @@ export default {
   position: relative;
   bottom: 200px;
   height: 100%;
-   width: 50%;
+  width: 50%;
 }
 .timer {
   background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);

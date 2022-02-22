@@ -7,7 +7,8 @@ const state = {
   score: 0,
   negative_marking: 0,
   isExamSubmitted: false,
-  viewDownloadQuestions: []
+  viewDownloadQuestions: [],
+  answerSheet: []
 }
 const mutations = {
   setSelectedAns(state, payload) {
@@ -26,6 +27,9 @@ const mutations = {
   setViewDownloadQuestions(state, payload) {
     state.viewDownloadQuestions = payload
     console.log(state.viewDownloadQuestions)
+  },
+  setAnswerSheet(state, payload) {
+    state.answerSheet = payload
   }
 }
 
@@ -240,7 +244,8 @@ const actions = {
     const data = await res.data
     if(data[0]) {
       const viewDownloadAnswer = JSON.parse(data[0].all_question)
-      console.log(JSON.parse(viewDownloadAnswer))
+      // console.log(viewDownloadAnswer)
+      context.commit('setAnswerSheet',viewDownloadAnswer )
 
     } else {
       const notification = {
