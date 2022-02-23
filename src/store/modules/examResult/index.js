@@ -54,7 +54,7 @@ const actions = {
         ...option
       })
 
-      console.log(mainAns)
+      // console.log(mainAns)
       context.commit('setSelectedAns', mainAns)
       context.dispatch('handleScoreCalculation')
     }
@@ -118,8 +118,8 @@ const actions = {
       // console.log(total)
       context.commit('scoreCalculate', total)
       context.commit('negativeMarkCalculation', totalNegativeMark)
-      console.log({total})
-      console.log({totalNegativeMark})
+      // console.log({total})
+      // console.log({totalNegativeMark})
     }
   },
 
