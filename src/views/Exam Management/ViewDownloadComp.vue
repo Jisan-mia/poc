@@ -58,6 +58,7 @@ export default {
 
       } catch(err) {
         console.log(err)
+        router.push('/dashboard')
       }
     }
 
