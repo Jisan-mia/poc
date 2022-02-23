@@ -1,15 +1,18 @@
 
 <template>
+<div class="upper_cont">
   <div class="main__container">
-    <span v-if="isLoading && answerSheet.length">
-      <Spinner />
-    </span>
-    <span v-else>
-      <AnswerSheetTopbar />
-      <ExamPageExamDetail /> 
-      <ShowAllExamQuestions :isViewAnswerSheet="true" :viewAnswerSheet="answerSheet" />
-    </span>
-  </div>
+      <span v-if="isLoading && answerSheet.length">
+        <Spinner />
+      </span>
+      <span v-else>
+        <AnswerSheetTopbar />
+        <ExamPageExamDetail /> 
+        <ShowAllExamQuestions :isViewAnswerSheet="true" :viewAnswerSheet="answerSheet" />
+      </span>
+    </div>
+</div>
+  
 </template>
   
 <script>
@@ -91,14 +94,28 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/config.scss";
+.upper_cont {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000a3;
+  height: fit-content;
+  margin-top: 0;
+  padding-top: 4rem;
+
+}
 
 .main__container {
-  padding: 0 2rem 2rem 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   max-width: 1000px;
   margin: 0 auto;
+  background: #F4F4F4;
 
   @include maxMedia(768px) {
     max-width: 100%;
+    margin: auto 20px ;
   }
 }
 </style>
