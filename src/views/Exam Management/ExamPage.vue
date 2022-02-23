@@ -1,7 +1,7 @@
 <template>
   <div class="main__container" v-if="!isNotYetStarted && !isEnded">
-    <span v-if="isLoading && !isNotYetStarted && !isEnded">
-      ...
+    <span class="loadingSp" v-if="isLoading && !isNotYetStarted && !isEnded">
+      <Spinner />
     </span>
     <span v-else>
       <ExamPageTopBar />
@@ -22,19 +22,18 @@
   
 <script>
 import { computed, onBeforeMount, onMounted, ref, watchEffect } from '@vue/runtime-core';
-import { useRoute, useRouter } from 'vue-router'
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
 import ExamPageTopBar from '../../components/Exam Management/ExamPageTopBar.vue';
 import ExamPageExamDetail from '../../components/Exam Management/ExamPageExamDetail.vue';
 import ShowAllExamQuestions from '../../components/Exam Management/ShowAllExamQuestions.vue';
 import { useStore } from 'vuex';
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
-
-import dayjs from 'dayjs';
-import SuperTokensLock from "browser-tabs-lock";
+import { setVisibleSidebar } from '../../layouts/sidebarState';
+import Spinner from '../../components/ui/Spinner.vue';
 
 
 export default {
-  components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn },
+  components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn, Spinner },
   name: 'ExamPage',
   setup(props) {
     const route = useRoute();
@@ -43,66 +42,53 @@ export default {
 
     const {id} = route.params;
 
-    const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
-    const isLoading = computed(() => store.state.isLoading);
     const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
     
-    const profile = computed(() => store.state.userState.profile)
+    const examLists = computed(() => store.state.examPackState.examLists)
+    const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
 
-
-    store.commit('setIsLoading', true)
-
-
+    const isLoading = ref(false);
     const isEnded = ref(false);
     const isNotYetStarted = ref(false);
-    
-    onBeforeMount(async () => {
-      if(isAuthenticated.value) {
-        try{
-          await store.dispatch('userState/loadUserProfile');
-          if(profile.value) {
-            
-            await store.dispatch('examPackState/loadExamPacks');
-            await store.dispatch('reportingState/loadStudentReporting');
-  
-            await store.dispatch('examPackState/loadExamLists');
-            await store.dispatch('examPackState/loadExamQuestions', id);
-            store.commit('setIsLoading', false)
-  
-            const examLists = computed(() => store.state.examPackState.examLists)
-  
-            const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
-  
-            //console.log(currentExam.value)
-            
-  
-            if(currentExam.value) {
-              if(currentExam.value.isNotYetStarted) {
-                store.dispatch('notifications/add', {type: 'warning', message: 'The Exam Not Yet Started'})
-                router.push('/')
-                isNotYetStarted.value = true;
-              } else if(currentExam.value.isExpired) {
-  
-                store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
-  
-                router.push('/')
-                //console.log('exam time expired');
-                isEnded.value  = true
-              } else if(currentExam.value.hasExamAlreadyGiven) {
-                store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
-  
-                router.push('/')
-              }
-            }
-          } else { router.push('/')}
-        }
-        catch(error) {
-          console.log(error)
-        }
-      
-      } else {
-        router.push('/')
+
+
+    const setExamToLoad = async () => {
+      isLoading.value = true
+      try{
+        await store.dispatch('examPackState/loadExamQuestions', id);
+        isLoading.value = false
       }
+      catch(error) {
+        console.log(error)
+      }
+    }
+    
+    onMounted( () => {
+      setVisibleSidebar(false)
+      if(currentExam.value) {
+        if(currentExam.value.isNotYetStarted) {
+
+          store.dispatch('notifications/add', {type: 'warning', message: 'The Exam Not Yet Started'})
+          router.push('/')
+          isNotYetStarted.value = true;
+
+        } else if(currentExam.value.isExpired) {
+
+          store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
+          router.push('/')
+          isEnded.value  = true
+
+        } else if(currentExam.value.hasExamAlreadyGiven) {
+
+          store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
+          router.push('/')
+
+        } else {
+
+          setExamToLoad()
+        }
+      }
+      
     })
 
     const handleSubmitExam = async () => {
@@ -124,24 +110,18 @@ export default {
         const routeData = router.resolve({
             path: '/dashboard',
           })
-
         window.open(routeData.href, '_blank');
         window.close()
       }
     }
 
-// window.addEventListener("beforeunload", function (e) {
-//   var confirmationMessage = "\o/";
+ 
 
-//   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-//   return confirmationMessage;     //Webkit, Safari, Chrome
-//   //  e.preventDefault();
-//   //   e.returnValue = '';                       
-// });
 
-document.addEventListener('contextmenu', function (e) {
-  e.preventDefault();
-})
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    })
+
     return {
       isLoading,
       isEnded,
@@ -156,12 +136,19 @@ document.addEventListener('contextmenu', function (e) {
 @import "@/styles/config.scss";
 
 .main__container {
-  padding: 2.4rem 2rem;
+  padding: 0rem 2rem 2rem 2rem;
   max-width: 1000px;
   margin: 0 auto;
 
   @include maxMedia(768px) {
     max-width: 100%;
+  }
+  .loadingSp {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .btn__cont{

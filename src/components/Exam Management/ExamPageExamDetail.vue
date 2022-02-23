@@ -99,8 +99,6 @@ export default {
     const examPacks = computed(() => store.state.examPackState.examPacks)
     const examLists = computed(() => store.state.examPackState.examLists)
 
-
-    //console.log(examPacks.value,examLists.value )
     const { id } = route.params;
     //console.log({id})
 
@@ -119,17 +117,14 @@ export default {
     const dayNum = computed(() => dayjs(currentExam.value.Exam_end_date.value).day())
     //console.log(dayNum.value)
 
-// days[dayNum.value]
+    // days[dayNum.value]
     const timeF = computed(() => (date, time) => {
         const examDate = dayjs(date + time).format("YYYY-MM-DD hh:mm:ss A");
         return dayjs(examDate).format("hh:mm A");
     });
 
 
-    //console.log(dayNum.value)
     const dayName = days.value[dayNum.value]
-    //console.log(dayName)
-
 
     return {
       currentExam,

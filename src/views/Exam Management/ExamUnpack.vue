@@ -166,12 +166,14 @@ export default {
         }
 
         
-        const routeData = router.resolve({
-          name: 'ExamPage',
-          params: { id: exam.id }
-        })
+        // const routeData = router.resolve({
+        //   name: 'ExamPage',
+        //   params: { id: exam.id }
+        // })
 
-        window.open(routeData.href, '_blank');
+        // window.open(routeData.href, '_blank');
+        router.push({name:'ExamPage',params:{ id: exam.id }})
+
       } else {
         if(localStorage.getItem(`deadline${exam.id}`)) {
           console.log('what to do expired')

@@ -16,7 +16,8 @@
 import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { setVisibleSidebar } from '../../layouts/sidebarState';
 export default {
   name: 'Counter',
   // props: ['year', 'month','date','hour', 'minute', 'second', 'millisecond' ],
@@ -58,6 +59,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
+
+    const isLeaveGranted = ref(false)
 
 
     const endP = computed(() => {
@@ -103,6 +106,7 @@ export default {
             await store.dispatch('examResult/submitExamResult', props.examId)
             if(isExamSubmitted.value) {
               store.commit('examResult/setExamIsSubmitted', false);
+              isLeaveGranted.value = true
               const routeData = router.resolve({
                 path: '/dashboard',
               })
@@ -119,20 +123,12 @@ export default {
             
           }
 
-
-
-
-
           return
         }
 
         const days = Math.floor(distance / _days.value)
-
-
         const hours = Math.floor((distance % _days.value) / _hours.value) 
-
         const minutes = Math.floor((distance % _hours.value) / _minutes.value)
-
         const seconds = Math.floor((distance % _minutes.value) / _seconds.value)
 
         displayMinutes.value = formatNum(minutes)
@@ -146,6 +142,25 @@ export default {
 
     onMounted(() => {
       showRemaining();
+    })
+
+    onBeforeRouteLeave(() => {
+      if(isLeaveGranted.value) {
+        setVisibleSidebar(true)
+      } else {
+        setVisibleSidebar(true)
+
+        const answer = window.confirm(
+          'Do you really want to leave? you have unsaved changes!'
+        )
+        // cancel the navigation and stay on the same page
+        if (!answer) {
+          setVisibleSidebar(false)
+          return false
+        }
+      }
+
+      
     })
 
     return {
@@ -164,10 +179,10 @@ export default {
 @import '@/styles/config.scss';
 
 .timer.notVisible {
-  position: relative;
-  bottom: 200px;
-  height: 100%;
-  width: 50%;
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  top: -200px;
 }
 .timer {
   background: linear-gradient(45.01deg, #146AB4 9.93%, #00D4FE 88.64%);

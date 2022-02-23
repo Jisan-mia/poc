@@ -23,6 +23,7 @@ export default {
 
     const examAllQuestionsDe = computed(() => store.state.examPackState.examQuestions)
     //console.log(examAllQuestions.value)
+
     let i = 0;
     const examAllQuestions = computed(() =>examAllQuestionsDe.value.map((q, ind) => {
       i++
@@ -46,15 +47,9 @@ export default {
         }
       }
     }))
-    const allMainQ = ref([...examAllQuestions.value])
-    // watchEffect(() => {
-    //   console.log(examAllQuestions.value)
 
-    //   if(allMainQ) {
-    //     console.log('view download saving', allMainQ.value)
-    //     store.commit('examResult/setViewDownloadQuestions', allMainQ)
-    //   }
-    // })
+    const allMainQ = ref([...examAllQuestions.value])
+    
     onMounted(() => {
       if(allMainQ.value.length) {
         console.log('view download saving', allMainQ.value)
@@ -62,76 +57,7 @@ export default {
       }
     })
 
-    const examAllQuestionsD = ref([
-    {
-      id: 1,
-      questionNo: 1,
-      type: "data_one",
-      question: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-      options: [
-          "Option1",
-          "Option2",
-          "Option3",
-          "Option4"
-      ],
-    },
-    
-    {
-      id: 2,
-      type: "data_two",
-      paragraph: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-      questionNo: 2,
-      hintsHeader: "Follow below information",
-      hintsOption: {
-        i: "this is hint one" ,
-        ii: "this is hint two" ,
-        iii: "this is hint three" ,
-      },         
-      optionsHeader: "Which option is true",
-      options: [
-          "i & ii",
-          "ii & iii",
-          "i & iii",
-          "i, ii, iii"
-      ],
-    },
-    {
-      id: 3,
-      type: "C",
-      paragraphHeader: "Answer the below 2 questions following the paragraph",
-      paragraph: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-      questions: [
-        {
-          type: "A",
-          questionNo: 3,
-          question: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-          options: [
-              "Option 1 of c",
-              "Option 2 of c",
-              "Option 3 of c",
-              "Option 4 of c"
-          ],
-        },
-        {
-          type: "B",
-          questionNo: 4,
-          hintsHeader: "Follow below information",
-          hintsOption: {
-            i: "this is hint one" ,
-            ii: "this is hint two" ,
-            iii: "this is hint three" ,
-          },         
-          optionsHeader: "Which option is true",
-          options: [
-              "i & iii",
-              "i & ii",
-              "ii & iii",
-              "i, ii, iii"
-          ],
-        }
-      ]
-    },
-  ]);
+   
   return {
       examAllQuestions
   };

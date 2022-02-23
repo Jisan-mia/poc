@@ -152,11 +152,13 @@ export default {
     const chartPercents = computed(() => {
       return previousExamReport.value.map(report => {
         const mainScore = Number(report.score) + Number(report.negative_marking)
-        const scoreM = Math.round(mainScore*100)/100
+        const sM = (mainScore/Number(report.total_mark)) * 100
+        const scorePercent = Math.round(sM*100)/100
+        // console.log(mainScore, sM, scorePercent)
 
         return {
           exam_name: report.Exam_name,
-          percent: (scoreM/Number(report.total_mark)) * 100
+          percent: scorePercent
         }
       })
     })
@@ -170,7 +172,7 @@ export default {
 
     const filterUpcoming = computed(() => examLists.value.filter(exam => {
       const examDate = dayjs(exam.Exam_start_date + exam.Exam_start_time).format('YYYY-MM-DD hh:mm:ss A')
-      //console.log(examDate, now, dayjs(examDate).diff(now, 'hour'));
+      // console.log(examDate, now, dayjs(examDate).diff(now, 'hour'));
       if(dayjs(examDate).diff(now, 'hour') > 0) {
         return exam
       } return false;
@@ -223,13 +225,7 @@ export default {
     }
 
     const handleViewDownload= async (examId) => {
-     
-
       router.push({name:'ViewDownloadComp',params:{ examId: examId}})
-      
-      
-      console.log(examId)
-      
     }
 
 

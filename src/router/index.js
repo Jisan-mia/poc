@@ -77,6 +77,7 @@ const routes = [
         component: lazyLoadExam('ExamPage'),
         props: true,
         meta: {
+            layout: AppLayout, 
             requireLogin: true
         }
     },
