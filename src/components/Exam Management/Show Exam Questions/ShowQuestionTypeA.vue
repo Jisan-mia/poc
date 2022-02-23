@@ -16,7 +16,7 @@
         <ShowCkContent :content="examQuestion.question_name" />
         <!-- {{examQuestion.question_name}} -->
       </p>
-      <div class="options">
+      <div class="options" v-if="!isViewAnswerSheet">
         <CustomRadioButton 
           v-for="option in examQuestion.options" 
           :key="option.ans" 
@@ -25,6 +25,18 @@
           v-model="selectedOption"
         />
       </div>
+      <div class="options" v-else-if="isViewAnswerSheet">
+        <AnswerSheetRadioGroup 
+          :options="examQuestion.options"
+          :selected="examQuestion.selectedAns"
+        />
+      </div>
+
+
+      <span class="correct_ans" v-if="isViewAnswerSheet">
+        Correct Ans: <span>{{examQuestion.options.find(item => item.is_correct == true).ans}}</span>
+      </span>
+      
     </div>
     </div>
   </div>
@@ -36,6 +48,8 @@ import CustomRadioButton from "../../ui/CustomRadioButton.vue"
 import { watch, watchEffect } from '@vue/runtime-core';
 import { useStore } from 'vuex';
 import ShowCkContent from './ShowCkContent.vue';
+import AnswerSheetRadio from '../../ui/AnswerSheetRadio.vue';
+import AnswerSheetRadioGroup from '../../ui/AnswerSheetRadioGroup.vue';
 export default {
   name: "ShowQuestionTypeA",
   props: {
@@ -44,6 +58,10 @@ export default {
     },
     index: {
       type: Number
+    },
+    isViewAnswerSheet: {
+      type: Boolean,
+      default: () => false
     }
   },
   setup(props) {
@@ -78,7 +96,7 @@ export default {
       imageUrl
     };
   },
-  components: { CustomRadioButton, ShowCkContent }
+  components: { CustomRadioButton, ShowCkContent, AnswerSheetRadio, AnswerSheetRadioGroup }
 }
 </script>
 
@@ -138,12 +156,24 @@ export default {
     gap: 1rem;
 
 
+
     .options{
       list-style-type: none;
       @include flexVertical;
       gap: 0.4rem;
       justify-content: center;
       margin-left: 1rem;
+    }
+
+    .correct_ans {
+      display: block;
+      span {
+        background: #0080000f;
+        color: green;
+        padding: 5px 8px;
+        border-radius: 3px;
+        font-weight: 500;
+      }
     }
   }
 

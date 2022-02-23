@@ -6,10 +6,8 @@
     </span>
     <span v-else>
       <!-- <ExamPageTopBar />
-      <ExamPageExamDetail />
-      <ShowAllExamQuestions /> -->
-      answer sheet
-
+      <ExamPageExamDetail /> -->
+      <ShowAllExamQuestions :isViewAnswerSheet="true" :viewAnswerSheet="answerSheet" />
     </span>
   </div>
 </template>

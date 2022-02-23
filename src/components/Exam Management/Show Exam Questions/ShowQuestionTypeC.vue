@@ -15,8 +15,8 @@
     </div>
     <div class="question" v-for="examQuestion in examQuestionC.otherQuestions" :key="examQuestion">
 
-      <ShowQuestionTypeA v-if="examQuestion.type == 'data_one'" :examQuestion="examQuestion" :index="examQuestion.index"/>
-      <ShowQuestionTypeB v-if="examQuestion.type == 'data_two'" :examQuestion="examQuestion" :index="examQuestion.index"  />
+      <ShowQuestionTypeA :isViewAnswerSheet="isViewAnswerSheet" v-if="examQuestion.type == 'data_one'" :examQuestion="examQuestion" :index="examQuestion.index"/>
+      <ShowQuestionTypeB :isViewAnswerSheet="isViewAnswerSheet" v-if="examQuestion.type == 'data_two'" :examQuestion="examQuestion" :index="examQuestion.index"  />
 
     </div>
   </div>
@@ -35,6 +35,10 @@ export default {
     }, 
     indexC: {
       type: [Number, String]
+    },
+    isViewAnswerSheet: {
+      type: Boolean,
+      default: () => false
     }
   },
   components: { ShowQuestionTypeA, ShowQuestionTypeB, ShowCkContent },

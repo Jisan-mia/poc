@@ -35,7 +35,7 @@
         নিচের কোনটি সঠিক/Which one is correct?
       </p>
 
-      <div class="item__cont">
+      <div class="item__cont" v-if="!isViewAnswerSheet">
         <CustomRadioButton
           v-for="option in examQuestion.options"
           :key="option.ans"
@@ -44,6 +44,19 @@
           :name="option.qName"
         />
       </div>
+
+      <div class="item__cont" v-else-if="isViewAnswerSheet">
+        <AnswerSheetRadioGroup 
+          :options="examQuestion.options"
+          :selected="examQuestion.selectedAns"
+        />
+      </div>
+
+
+      <span class="correct_ans" v-if="isViewAnswerSheet">
+        Correct Ans: <span>{{examQuestion.options.find(item => item.is_correct == true).ans}}</span>
+      </span>
+
     </div>
   </div>
   </div>
@@ -55,15 +68,20 @@ import CustomRadioButton from "../../ui/CustomRadioButton.vue"
 import { watch, watchEffect } from '@vue/runtime-core';
 import { useStore } from 'vuex';
 import ShowCkContent from './ShowCkContent.vue';
+import AnswerSheetRadioGroup from '../../ui/AnswerSheetRadioGroup.vue';
 export default {
   name: "ShowQuestionTypeB",
-  components: { CustomRadioButton, ShowCkContent },
+  components: { CustomRadioButton, ShowCkContent, AnswerSheetRadioGroup },
   props: {
     examQuestion: {
       type: Object
     },
     index: {
       type: Number
+    },
+    isViewAnswerSheet: {
+      type: Boolean,
+      default: () => false
     }
   },
   setup(props) {
@@ -207,6 +225,17 @@ export default {
       @include flexVertical;
       gap: 0.4rem;
       justify-content: center;
+    }
+
+    .correct_ans {
+      display: block;
+      span {
+        background: #0080000f;
+        color: green;
+        padding: 5px 8px;
+        border-radius: 3px;
+        font-weight: 500;
+      }
     }
   }
 

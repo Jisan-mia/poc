@@ -87,7 +87,7 @@ export default {
     min-height: calc(100vh - 80px);
 
     @include maxMedia(768px) {
-      margin-left: 0rem;
+      margin-left: 0rem !important;
       margin-top: 50px;
     }
 	

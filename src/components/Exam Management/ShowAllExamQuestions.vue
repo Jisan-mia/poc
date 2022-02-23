@@ -1,9 +1,9 @@
 <template>
   <div class="question__container">
     <div class="question__card" v-for="(examQuestion) in examAllQuestions" :key="examQuestion.id">
-      <ShowQuestionTypeA :examQuestion="examQuestion" :index="examQuestion.index"  v-if="examQuestion.type == 'data_one'"/>
-      <ShowQuestionTypeB :examQuestion="examQuestion" :index="examQuestion.index" v-else-if="examQuestion.type == 'data_two'" />
-      <ShowQuestionTypeC :examQuestionC="examQuestion" :indexC="examQuestion.index" v-else />
+      <ShowQuestionTypeA :isViewAnswerSheet="isViewAnswerSheet" :examQuestion="examQuestion" :index="examQuestion.index"  v-if="examQuestion.type == 'data_one'"/>
+      <ShowQuestionTypeB :isViewAnswerSheet="isViewAnswerSheet" :examQuestion="examQuestion" :index="examQuestion.index" v-else-if="examQuestion.type == 'data_two'" />
+      <ShowQuestionTypeC :isViewAnswerSheet="isViewAnswerSheet" :examQuestionC="examQuestion" :indexC="examQuestion.index" v-else />
     </div>
   </div>
 </template>
@@ -18,14 +18,25 @@ import ShowCkContent from './Show Exam Questions/ShowCkContent.vue';
 import { onMounted, watch, watchEffect } from '@vue/runtime-core';
 export default {
   name: "ShowAllExamQuestions",
-  setup() {
+  props: {
+    isViewAnswerSheet: {
+      type: Boolean,
+      default: () => false
+    },
+    viewAnswerSheet: {
+      type: Array
+    }
+  },
+  setup(props) {
     const store = useStore();
 
     const examAllQuestionsDe = computed(() => store.state.examPackState.examQuestions)
     //console.log(examAllQuestions.value)
+    console.log(props.viewAnswerSheet)
+    const examAllQuestions = ref([])
 
     let i = 0;
-    const examAllQuestions = computed(() =>examAllQuestionsDe.value.map((q, ind) => {
+    examAllQuestions.value = !props.isViewAnswerSheet ? computed(() => examAllQuestionsDe.value.map((q, ind) => {
       i++
       
       if(q.type != 'data_three') {
@@ -46,12 +57,12 @@ export default {
           otherQuestions: [...otherQ]
         }
       }
-    }))
+    })) : props.viewAnswerSheet
 
     const allMainQ = ref([...examAllQuestions.value])
     
     onMounted(() => {
-      if(allMainQ.value.length) {
+      if(allMainQ.value.length && !props.isViewAnswerSheet) {
         console.log('view download saving', allMainQ.value)
         store.commit('examResult/setViewDownloadQuestions', allMainQ.value)
       }
