@@ -82,7 +82,7 @@ const routes = [
         }
     },
     {
-        path: '/result/:examId',
+        path: '/result/:id',
         name: 'ViewDownloadComp',
         component: lazyLoadExam('ViewDownloadComp'),
         meta: {

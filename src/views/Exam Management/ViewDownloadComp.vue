@@ -5,8 +5,8 @@
       <Spinner />
     </span>
     <span v-else>
-      <!-- <ExamPageTopBar />
-      <ExamPageExamDetail /> -->
+      <AnswerSheetTopbar />
+      <ExamPageExamDetail /> 
       <ShowAllExamQuestions :isViewAnswerSheet="true" :viewAnswerSheet="answerSheet" />
     </span>
   </div>
@@ -21,13 +21,14 @@ import ShowAllExamQuestions from '../../components/Exam Management/ShowAllExamQu
 import { useStore } from 'vuex';
 import CustomAdminBtn from '../../components/ui/CustomAdminBtn.vue';
 import Spinner from '../../components/ui/Spinner.vue';
-import { visibleSidebar, setVisibleSidebar } from '../../layouts/sidebarState';
+import { setVisibleSidebar } from '../../layouts/sidebarState';
+import AnswerSheetTopbar from '../../components/Exam Management/AnswerSheetTopbar.vue';
 
 
 
 
 export default {
-  components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn, Spinner },
+  components: { ExamPageTopBar, ExamPageExamDetail, ShowAllExamQuestions, CustomAdminBtn, Spinner, AnswerSheetTopbar },
   name: 'ViewDownloadComp',
   setup(props) {
     const route = useRoute();
@@ -37,7 +38,7 @@ export default {
     // console.log(examLists.value)
     const answerSheet = computed(() => store.state.examResult.answerSheet)
 
-    const {examId} = route.params;
+    const {id} = route.params;
 
     const isAuthenticated = computed(() => store.state.userState.user.isAuthenticated)
     const isLoading = ref(false);
@@ -47,7 +48,7 @@ export default {
     const fetchAnswerSheet = async () => {
       isLoading.value = true;
       try {
-        await store.dispatch('examResult/getViewDownloadAnswer', examId)
+        await store.dispatch('examResult/getViewDownloadAnswer', id)
         isLoading.value = false;
 
         console.log(answerSheet.value)
@@ -92,7 +93,7 @@ export default {
 @import "@/styles/config.scss";
 
 .main__container {
-  padding: 2.4rem 2rem;
+  padding: 0 2rem 2rem 2rem;
   max-width: 1000px;
   margin: 0 auto;
 

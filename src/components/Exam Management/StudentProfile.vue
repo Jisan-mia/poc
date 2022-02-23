@@ -225,7 +225,7 @@ export default {
     }
 
     const handleViewDownload= async (examId) => {
-      router.push({name:'ViewDownloadComp',params:{ examId: examId}})
+      router.push({name:'ViewDownloadComp',params:{ id: examId}})
     }
 
 
