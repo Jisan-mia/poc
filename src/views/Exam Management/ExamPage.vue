@@ -48,6 +48,7 @@ export default {
     
     const examLists = computed(() => store.state.examPackState.examLists)
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
+    // console.log(currentExam.value)
 
     const isLoading = ref(false);
     const isEnded = ref(false);

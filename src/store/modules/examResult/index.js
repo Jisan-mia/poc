@@ -26,7 +26,7 @@ const mutations = {
   },
   setViewDownloadQuestions(state, payload) {
     state.viewDownloadQuestions = payload
-    console.log(state.viewDownloadQuestions)
+    // console.log(state.viewDownloadQuestions)
   },
   setAnswerSheet(state, payload) {
     state.answerSheet = payload
@@ -118,8 +118,8 @@ const actions = {
       // console.log(total)
       context.commit('scoreCalculate', total)
       context.commit('negativeMarkCalculation', totalNegativeMark)
-      // console.log({total})
-      // console.log({totalNegativeMark})
+      console.log({total})
+      console.log({totalNegativeMark})
     }
   },
 

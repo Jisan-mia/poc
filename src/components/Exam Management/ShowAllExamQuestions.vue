@@ -63,7 +63,7 @@ export default {
     
     onMounted(() => {
       if(allMainQ.value.length && !props.isViewAnswerSheet) {
-        console.log('view download saving', allMainQ.value)
+        // console.log('view download saving', allMainQ.value)
         store.commit('examResult/setViewDownloadQuestions', allMainQ.value)
       }
     })
