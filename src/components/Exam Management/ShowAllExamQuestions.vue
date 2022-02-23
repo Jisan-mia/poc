@@ -31,12 +31,12 @@ export default {
     const store = useStore();
 
     const examAllQuestionsDe = computed(() => store.state.examPackState.examQuestions)
-    //console.log(examAllQuestions.value)
-    console.log(props.viewAnswerSheet)
-    const examAllQuestions = ref([])
+    // console.log(examAllQuestionsDe.value)
+    // console.log(props.viewAnswerSheet, props.isViewAnswerSheet)
+    // const examAllQuestions = ref([])
 
     let i = 0;
-    examAllQuestions.value = !props.isViewAnswerSheet ? computed(() => examAllQuestionsDe.value.map((q, ind) => {
+    const examAllQuestions = !props.isViewAnswerSheet ? computed(() => examAllQuestionsDe.value.map((q, ind) => {
       i++
       
       if(q.type != 'data_three') {
@@ -57,9 +57,9 @@ export default {
           otherQuestions: [...otherQ]
         }
       }
-    })) : props.viewAnswerSheet
+    })) : ref({...props.viewAnswerSheet})
 
-    const allMainQ = ref([...examAllQuestions.value])
+    const allMainQ = !props.isViewAnswerSheet ? ref([...examAllQuestions.value]) : ref([])
     
     onMounted(() => {
       if(allMainQ.value.length && !props.isViewAnswerSheet) {

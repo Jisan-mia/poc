@@ -59,6 +59,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
+    const examAllQuestionsDe = computed(() => store.state.examPackState.examQuestions)
+
 
     const isLeaveGranted = ref(false)
 
@@ -99,6 +101,7 @@ export default {
 
         if(distance < 0) {
           clearInterval(timer);
+          isLeaveGranted.value = true
           expired.value = true;
           loaded.value = true;
 
@@ -106,7 +109,6 @@ export default {
             await store.dispatch('examResult/submitExamResult', props.examId)
             if(isExamSubmitted.value) {
               store.commit('examResult/setExamIsSubmitted', false);
-              isLeaveGranted.value = true
               const routeData = router.resolve({
                 path: '/dashboard',
               })
@@ -114,12 +116,12 @@ export default {
               window.open(routeData.href, '_blank');
               window.close()
             } else {
-              router.push('/')
+              router.push('/dashboard')
             }
           } catch(err) {
             // alert(err.message)
             console.log(err)
-            router.push('/')
+            router.push('/dashboard')
             
           }
 
@@ -145,7 +147,7 @@ export default {
     })
 
     onBeforeRouteLeave(() => {
-      if(isLeaveGranted.value) {
+      if(isLeaveGranted.value || !examAllQuestionsDe.value.length) {
         setVisibleSidebar(true)
       } else {
         setVisibleSidebar(true)

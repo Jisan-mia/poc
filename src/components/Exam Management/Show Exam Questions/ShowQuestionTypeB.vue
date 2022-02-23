@@ -1,21 +1,18 @@
 <template>
 <div class="two_main">
-    <div class="img__container" v-if="examQuestion?.Q_image">
-      <img :src="imageUrl(examQuestion.Q_image)" alt="">
-    </div>
-    <!-- {{JSON.stringify(imageUrl(examQuestion.Q_image))}} -->
+  <div class="img__container" v-if="examQuestion?.Q_image">
+    <img :src="imageUrl(examQuestion.Q_image)" alt="">
+  </div>
+
   <div class="question__cont">
     <div class="paragraph" v-if="examQuestion?.description">
-      <!-- {{examQuestion.description}} -->
       <ShowCkContent :content="examQuestion.description" />
     </div>
     <div class="hints">
       <p class="hints__header">
         <span>{{index}}.</span>
         <span>
-          <!-- {{examQuestion.question_name}} -->
           <ShowCkContent :content="examQuestion.question_name" />
-
         </span>
       </p>
       <div class="hints__option">
@@ -24,7 +21,9 @@
             {{key}}.
           </span>
           <span v-if="allHints[key]">
-            {{allHints[key]}}
+            <!-- {{allHints[key]}} -->
+            <ShowCkContent :content="allHints[key]" />
+
           </span>
         </p>
       </div>
@@ -206,6 +205,9 @@ export default {
       gap: 0.45rem;
       p{
         @extend .pDefault;
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
       }
     }
   }

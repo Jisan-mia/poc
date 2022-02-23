@@ -6,7 +6,7 @@
     <span v-else>
       <ExamPageTopBar />
       <ExamPageExamDetail />
-      <ShowAllExamQuestions />
+      <ShowAllExamQuestions v-if="examAllQuestionsDe.length" />
       
       <div class="btn__cont">
         <div class="wrapper">
@@ -43,6 +43,8 @@ export default {
     const {id} = route.params;
 
     const isExamSubmitted = computed(() => store.state.examResult.isExamSubmitted)
+    const examAllQuestionsDe = computed(() => store.state.examPackState.examQuestions)
+
     
     const examLists = computed(() => store.state.examPackState.examLists)
     const currentExam = computed(() => examLists.value.find(exam => exam.id == id));
@@ -65,26 +67,27 @@ export default {
     
     onMounted( () => {
       setVisibleSidebar(false)
+      console.log('on mounting')
       if(currentExam.value) {
         if(currentExam.value.isNotYetStarted) {
 
           store.dispatch('notifications/add', {type: 'warning', message: 'The Exam Not Yet Started'})
-          router.push('/')
+          router.push('/dashboard')
           isNotYetStarted.value = true;
 
         } else if(currentExam.value.isExpired) {
 
           store.dispatch('notifications/add', {type: 'warning', message: 'The Exam has already Expired'})
-          router.push('/')
+          router.push('/dashboard')
           isEnded.value  = true
 
         } else if(currentExam.value.hasExamAlreadyGiven) {
 
           store.dispatch('notifications/add', {type: 'warning', message: 'You already completed this exam'})
-          router.push('/')
+          router.push('/dashboard')
 
         } else {
-
+          console.log('setting to load')
           setExamToLoad()
         }
       }
@@ -126,7 +129,8 @@ export default {
       isLoading,
       isEnded,
       isNotYetStarted,
-      handleSubmitExam
+      handleSubmitExam,
+      examAllQuestionsDe
     }
   }
 }

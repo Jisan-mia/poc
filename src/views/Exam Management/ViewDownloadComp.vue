@@ -8,7 +8,7 @@
       <span v-else>
         <AnswerSheetTopbar />
         <ExamPageExamDetail /> 
-        <ShowAllExamQuestions :isViewAnswerSheet="true" :viewAnswerSheet="answerSheet" />
+        <ShowAllExamQuestions v-if="answerSheet.length" :isViewAnswerSheet="true" :viewAnswerSheet="answerSheet" />
       </span>
     </div>
 </div>
@@ -54,7 +54,7 @@ export default {
         await store.dispatch('examResult/getViewDownloadAnswer', id)
         isLoading.value = false;
 
-        console.log(answerSheet.value)
+        // console.log(answerSheet.value)
 
       } catch(err) {
         console.log(err)

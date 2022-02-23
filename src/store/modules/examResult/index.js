@@ -127,113 +127,116 @@ const actions = {
     console.log('submit')
     const examQuestions = context.rootState.examPackState.examQuestions;
     // console.log(examQuestions)
-    const {exam_name} = examQuestions[0]
+    const exam_name= examQuestions?.[0]?.exam_name
+    if(exam_name) {
+      const student = context.rootState.userState.user.userId;
+      const {name,board} = context.rootState.userState.profile;
 
-    const student = context.rootState.userState.user.userId;
-    const {name,board} = context.rootState.userState.profile;
+      const allExams = context.rootState.examPackState.examLists;
+      const currentExam = allExams.find(exam => exam.id == examId);
+      // console.log(currentExam, name, board)
 
-    const allExams = context.rootState.examPackState.examLists;
-    const currentExam = allExams.find(exam => exam.id == examId);
-    // console.log(currentExam, name, board)
-
-    const allViewDownloadQ = context.state.viewDownloadQuestions;
-
-
+      const allViewDownloadQ = context.state.viewDownloadQuestions;
 
 
 
-    const score = context.state.score;
-    const negative_marking = context.state.negative_marking;
-    const timestamp = dayjs(new Date()).format('HH:mm:ss');
-    // console.log('submit2')
 
-    // console.log(score, negative_marking, timestamp, exam_name, student)
 
-    const dataToSend = {
-      score,
-      negative_marking,
-      timestamp,
-      exam_name,
-      student,
-      // todo
-      /* add 2 extra fields
-        1. passed: true/false 
-        2. failed: true/false
-      */
-    }
-    const dataToSendSpecificR = {
-      score,
-      negative_marking,
-      timestamp,
-      exam_name,
-      student,
-      name,
-      board
-    }
+      const score = context.state.score;
+      const negative_marking = context.state.negative_marking;
+      const timestamp = dayjs(new Date()).format('HH:mm:ss');
+      // console.log('submit2')
 
-    const viewDownloadData = {
-      exam_id: exam_name,
-      all_question: JSON.stringify(allViewDownloadQ)
-    }
-    
+      // console.log(score, negative_marking, timestamp, exam_name, student)
 
-    if(localStorage.getItem(`deadline${examId}`)) {
-      const reportingRes = await reportingApi.getStudentReporting();
-      const reportingData = await reportingRes.data;
+      const dataToSend = {
+        score,
+        negative_marking,
+        timestamp,
+        exam_name,
+        student,
+        // todo
+        /* add 2 extra fields
+          1. passed: true/false 
+          2. failed: true/false
+        */
+      }
+      const dataToSendSpecificR = {
+        score,
+        negative_marking,
+        timestamp,
+        exam_name,
+        student,
+        name,
+        board
+      }
 
-      const report = reportingData.find(r => r.exam_name == examId)
-      if(report) {
-        console.log('alreday given')
-        const notification = {
-          type: 'error',
-          message: "You've already given"
-        }
-  
-        context.dispatch('notifications/add', notification , {root: true})
-      } else {
-        console.log('not given')
-        const res = await examApi.submitResultToApi(dataToSend)
-        const res1 = await examApi.submitResultToSpecificApi(dataToSendSpecificR, currentExam.Exam_name);
-        const viewAnswerSheet = await examApi.submitViewDownloadQuestion(viewDownloadData)
-        console.log(viewAnswerSheet)
-        // console.log(res1)
-    
-        const data = await res.data
-        const specificData = await res1.data
-        // console.log(data)
-        if(data) {
-          const notification = {
-            type: 'success',
-            message: 'Your answer has been submitted'
-          }
-    
-          context.dispatch('notifications/add', notification , {root: true})
-          
-    
-          context.commit('setExamIsSubmitted', true)
-          localStorage.removeItem(`deadline${examId}`)
+      const viewDownloadData = {
+        exam_id: exam_name,
+        all_question: JSON.stringify(allViewDownloadQ)
+      }
+      
 
-    
-        } else {
+      if(localStorage.getItem(`deadline${examId}`)) {
+        const reportingRes = await reportingApi.getStudentReporting();
+        const reportingData = await reportingRes.data;
+
+        const report = reportingData.find(r => r.exam_name == examId)
+        if(report) {
+          console.log('alreday given')
           const notification = {
             type: 'error',
-            message: 'Error submitting you answer'
+            message: "You've already given"
           }
     
           context.dispatch('notifications/add', notification , {root: true})
-        }
-          
-      }
+        } else {
+          console.log('not given')
+          const res = await examApi.submitResultToApi(dataToSend)
+          const res1 = await examApi.submitResultToSpecificApi(dataToSendSpecificR, currentExam.Exam_name);
+          const viewAnswerSheet = await examApi.submitViewDownloadQuestion(viewDownloadData)
+          console.log(viewAnswerSheet)
+          // console.log(res1)
+      
+          const data = await res.data
+          const specificData = await res1.data
+          // console.log(data)
+          if(data) {
+            const notification = {
+              type: 'success',
+              message: 'Your answer has been submitted'
+            }
+      
+            context.dispatch('notifications/add', notification , {root: true})
+            
+      
+            context.commit('setExamIsSubmitted', true)
+            localStorage.removeItem(`deadline${examId}`)
 
       
-    } else {
-      const notification = {
-        type: 'error',
-        message: 'Could not submit you answer'
-      }
+          } else {
+            const notification = {
+              type: 'error',
+              message: 'Error submitting you answer'
+            }
+      
+            context.dispatch('notifications/add', notification , {root: true})
+          }
+            
+        }
 
-      context.dispatch('notifications/add', notification , {root: true})
+        
+      } else {
+        const notification = {
+          type: 'error',
+          message: 'Could not submit you answer'
+        }
+
+        context.dispatch('notifications/add', notification , {root: true})
+      }
     }
+
+    
 
     
   },
