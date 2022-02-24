@@ -34,7 +34,9 @@
 
 
       <span class="correct_ans" v-if="isViewAnswerSheet">
-        Correct Ans: <span>{{examQuestion.options.find(item => item.is_correct == true).ans}}</span>
+        Correct Ans: <span>
+          <ShowCkContent :content="examQuestion.options.find(item => item.is_correct == true).ans"/>
+        </span>
       </span>
       
     </div>
@@ -166,7 +168,10 @@ export default {
     }
 
     .correct_ans {
-      display: block;
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+      gap: 0.5rem;
       span {
         background: #0080000f;
         color: green;
